@@ -36,10 +36,18 @@ export type SparkWebhookEvent = 'checkout.completed' | 'subscription.activated' 
 // biome-ignore format: compact
 // biome-ignore format: compact
 export type SparkWebhookData = { status: string; payment_type: string | null; price_id: string | null; tier: Tier | null; plan_name: string | null; limits: Record<string, number>; features: string[]; current_period_end: string | null; is_lifetime: boolean; cancel_at_period_end: boolean; billing_interval: 'monthly' | 'yearly' | 'one_time' };
-export type SparkWebhookPayload = { event: SparkWebhookEvent | string; email: string; data: SparkWebhookData };
+export type SparkWebhookPayload = {
+  event: SparkWebhookEvent | string;
+  email: string;
+  data: SparkWebhookData;
+};
 export type SparkIdentity = { email: string; [k: string]: unknown };
 export type SparkGateOpts = { minTier?: Tier; requireVerified?: boolean; gracePastDue?: boolean };
-export type SparkRegisterResult = { success: true; pendingVerification: boolean; alreadyVerified: boolean };
+export type SparkRegisterResult = {
+  success: true;
+  pendingVerification: boolean;
+  alreadyVerified: boolean;
+};
 
 // ─── Fetch (shared) ────────────────────────────────────────────────────────
 const j = <T,>(p: Promise<Response>): Promise<T> =>
@@ -54,7 +62,8 @@ const urlOf = (path: string, params: Record<string, string | undefined> = {}) =>
   return u.toString();
 };
 const eq = encodeURIComponent;
-const ranksOf = (d: SparkStatus): Record<string, number> => Object.fromEntries(d.tiers.map((t) => [t.tier, t.rank]));
+const ranksOf = (d: SparkStatus): Record<string, number> =>
+  Object.fromEntries(d.tiers.map((t) => [t.tier, t.rank]));
 
 // ─── Status ────────────────────────────────────────────────────────────────
 // biome-ignore format: compact
@@ -105,7 +114,8 @@ export const hasReachedLimit = (d: SparkStatus, key: string, count: number, fall
 export const getLimitOrUnlimited = (d: SparkStatus, key: string): number | null => { const v = getLimit(d, key, 0); return v === -1 ? null : v; };
 export const isUnlimited = (d: SparkStatus, key: string) => getLimit(d, key, 0) === -1;
 export const isPayg = (d: SparkStatus) => d.subscription?.is_payg ?? false;
-export const getUnitPrice = (d: SparkStatus, key: string): number | null => d.plan?.unit_prices?.[key] ?? null;
+export const getUnitPrice = (d: SparkStatus, key: string): number | null =>
+  d.plan?.unit_prices?.[key] ?? null;
 // biome-ignore format: compact
 export const resolveEffectiveLimits = (appLimits: Partial<Record<string, number>>, tierLimits: Record<string, number>): Record<string, number> => Object.fromEntries(Object.keys(tierLimits).map((k) => [k, appLimits[k] ?? tierLimits[k]]));
 export const nextTier = (d: SparkStatus): Tier | null => {
@@ -142,7 +152,9 @@ export const validateCoupon = async (code: string, priceId?: string): Promise<Sp
 export type SparkCheckoutOpts = { priceId: string; email: string; couponCode?: string; ref?: string; successUrl?: string; cancelUrl?: string; returnUrl?: string };
 export const checkout = async (opts: SparkCheckoutOpts): Promise<string> => {
   const d = await jPost<{ checkout_url?: string; error?: string }>('/api/checkout/create-public', {
-    app_id: APP_ID, price_id: opts.priceId, customer_email: opts.email,
+    app_id: APP_ID,
+    price_id: opts.priceId,
+    customer_email: opts.email,
     ...(opts.couponCode && { coupon_code: opts.couponCode }),
     ...(opts.ref && { ref: opts.ref }),
     ...(opts.successUrl && { success_url: opts.successUrl }),
@@ -274,7 +286,12 @@ export const createWebhookHandler = <E extends string = SparkWebhookEvent>(handl
 export const POST = createWebhookHandler();
 
 // ─── Badge / Gate UI ───────────────────────────────────────────────────────
-const NAMES: Record<string, string> = { free: 'Free', startup: 'Essentials', ai_brain: 'Pro', galaxy_brains: 'Galaxy Brains' };
+const NAMES: Record<string, string> = {
+  free: 'Free',
+  startup: 'Essentials',
+  ai_brain: 'Pro',
+  galaxy_brains: 'Galaxy Brains',
+};
 const CROWN = new Set<string>(['ai_brain', 'galaxy_brains']);
 // biome-ignore format: compact
 const COLORS: Record<string, { bg: string; fg: string }> = { free: { bg: '#27272a', fg: '#a1a1aa' }, active: { bg: '#052e16', fg: '#4ade80' }, trialing: { bg: '#1e1b4b', fg: '#a78bfa' }, past_due: { bg: '#431407', fg: '#fb923c' }, canceled: { bg: '#1c1917', fg: '#78716c' } };
@@ -298,17 +315,23 @@ export const useSparkStatus = (email: string | null) => {
     // biome-ignore format: compact
     const fetchNow = (fresh: boolean) => (fresh ? getStatus(email) : getStatusCached(email)).then((d) => { if (off) return; _mem.set(k, { d, t: Date.now() }); setStatus(d); setLoading(false); }).catch(() => { if (!off) setLoading(false); });
     const hit = _mem.get(k);
-    if (hit) { setStatus(hit.d); setLoading(false); } else fetchNow(false);
+    if (hit) {
+      setStatus(hit.d);
+      setLoading(false);
+    } else fetchNow(false);
     // biome-ignore format: compact
     const onFocus = () => { if (document.visibilityState !== 'visible') return; const e = _mem.get(k); if (!e || Date.now() - e.t >= REFRESH_MIN_MS) fetchNow(true); };
     window.addEventListener('focus', onFocus);
     document.addEventListener('visibilitychange', onFocus);
-    const unsub = _subscribe(email, () => { if (!off) fetchNow(true); });
+    const unsub = _subscribe(email, () => {
+      if (!off) fetchNow(true);
+    });
     // biome-ignore format: compact
     return () => { off = true; window.removeEventListener('focus', onFocus); document.removeEventListener('visibilitychange', onFocus); unsub(); };
   }, [email]);
   return {
-    status, loading,
+    status,
+    loading,
     tier: status ? tierName(status.plan?.tier ?? status.access.tier) : null,
     isPaid: status?.access.is_paid ?? false,
     showPaywall: status ? showPaywall(status) : false,
@@ -319,10 +342,15 @@ export const useCheckout = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const go = async (opts: SparkCheckoutOpts) => {
-    setLoading(true); setError(null);
-    try { window.location.href = await checkout(opts); }
-    catch (e) { setError(e instanceof Error ? e.message : 'checkout failed'); }
-    finally { setLoading(false); }
+    setLoading(true);
+    setError(null);
+    try {
+      window.location.href = await checkout(opts);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'checkout failed');
+    } finally {
+      setLoading(false);
+    }
   };
   return { checkout: go, loading, error };
 };
@@ -337,7 +365,15 @@ const pickPromo = (cs: SparkCoupon[], s: SparkStatus): SparkCoupon | null => {
   return rel.sort((a, b) => a.discountPercent - b.discountPercent)[0] ?? null;
 };
 
-export function SparkBadge({ email, className, classNames }: { email: string; className?: string; classNames?: { root?: string; label?: string; link?: string } }) {
+export function SparkBadge({
+  email,
+  className,
+  classNames,
+}: {
+  email: string;
+  className?: string;
+  classNames?: { root?: string; label?: string; link?: string };
+}) {
   const { status: d } = useSparkStatus(email);
   const [promo, setPromo] = useState<SparkCoupon | null>(null);
   const [tip, setTip] = useState<{ rect: DOMRect; exit: boolean } | null>(null);
@@ -355,13 +391,17 @@ export function SparkBadge({ email, className, classNames }: { email: string; cl
 
   useEffect(() => {
     if (!d) return;
-    const cur = statusOf(d), prev = localStorage.getItem(skey);
+    const cur = statusOf(d),
+      prev = localStorage.getItem(skey);
     localStorage.setItem(skey, cur);
     if (!PAID.has(cur) || (prev && PAID.has(prev))) return;
     setWelcome({ label: tierName(d.plan?.tier ?? (cur as Tier)), visible: true });
     const t1 = setTimeout(() => setWelcome((w) => w && { ...w, visible: false }), 3500);
     const t2 = setTimeout(() => setWelcome(null), 4100);
-    return () => { clearTimeout(t1); clearTimeout(t2); };
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
   }, [d, skey]);
 
   if (!d) return null;
@@ -378,26 +418,68 @@ export function SparkBadge({ email, className, classNames }: { email: string; cl
 
   return (
     <span className="ss-wrap" onMouseEnter={openTip} onMouseLeave={closeTip}>
-      <a ref={ref} href={linkable ? pricingUrl({ email, coupon: promo?.code }) : undefined} className={cx('ss-badge', className, classNames?.root)} style={style} data-promo={hasPromo ? '' : undefined} onClick={(e) => !linkable && e.preventDefault()}>
-        {!!tier && CROWN.has(tier) && <svg className="ss-crown" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8l4.5 3L12 5l4.5 6L21 8l-2 10H5L3 8zm2 12h14v2H5v-2z" /></svg>}
+      <a
+        ref={ref}
+        href={linkable ? pricingUrl({ email, coupon: promo?.code }) : undefined}
+        className={cx('ss-badge', className, classNames?.root)}
+        style={style}
+        data-promo={hasPromo ? '' : undefined}
+        onClick={(e) => !linkable && e.preventDefault()}
+      >
+        {!!tier && CROWN.has(tier) && (
+          <svg className="ss-crown" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 8l4.5 3L12 5l4.5 6L21 8l-2 10H5L3 8zm2 12h14v2H5v-2z" />
+          </svg>
+        )}
         <span className={classNames?.label}>{tierName(tier)}</span>
-        {linkable && (<><span className="ss-sep" /><span className={cx('ss-upgrade', hasPromo && 'ss-discount', classNames?.link)}>{hasPromo ? `${promo!.discountPercent}% off` : 'Upgrade'}</span></>)}
+        {linkable && (
+          <>
+            <span className="ss-sep" />
+            <span className={cx('ss-upgrade', hasPromo && 'ss-discount', classNames?.link)}>
+              {hasPromo ? `${promo!.discountPercent}% off` : 'Upgrade'}
+            </span>
+          </>
+        )}
       </a>
-      {hasPromo && tip && createPortal(
-        <span className="ss-promo-tip" style={{ top: tip.rect.bottom + 8, left: tip.rect.left + tip.rect.width / 2 }} onMouseEnter={openTip} onMouseLeave={closeTip} {...(tip.exit ? { 'data-ss-exit': '' } : { 'data-ss-enter': '' })}>
-          <span className="ss-promo-tip-code">{promo!.code}</span>
-          <span className="ss-promo-tip-desc">Claim your discount while it lasts</span>
-          <button type="button" className="ss-promo-tip-x" onClick={(e) => { e.stopPropagation(); setPromo(null); localStorage.setItem(pkey, '1'); }}>✕</button>
-        </span>,
-        document.body,
+      {hasPromo &&
+        tip &&
+        createPortal(
+          <span
+            className="ss-promo-tip"
+            style={{ top: tip.rect.bottom + 8, left: tip.rect.left + tip.rect.width / 2 }}
+            onMouseEnter={openTip}
+            onMouseLeave={closeTip}
+            {...(tip.exit ? { 'data-ss-exit': '' } : { 'data-ss-enter': '' })}
+          >
+            <span className="ss-promo-tip-code">{promo!.code}</span>
+            <span className="ss-promo-tip-desc">Claim your discount while it lasts</span>
+            <button
+              type="button"
+              className="ss-promo-tip-x"
+              onClick={(e) => {
+                e.stopPropagation();
+                setPromo(null);
+                localStorage.setItem(pkey, '1');
+              }}
+            >
+              ✕
+            </button>
+          </span>,
+          document.body
+        )}
+      {welcome && (
+        <span className="ss-toast" style={{ opacity: welcome.visible ? 1 : 0 }}>
+          Welcome to {welcome.label}!
+        </span>
       )}
-      {welcome && <span className="ss-toast" style={{ opacity: welcome.visible ? 1 : 0 }}>Welcome to {welcome.label}!</span>}
     </span>
   );
 }
 
 export function SparkGate({
-  status, children, minTier,
+  status,
+  children,
+  minTier,
 }: { status: SparkStatus | null; children: React.ReactNode; minTier?: Tier }) {
   if (!status) return null;
   const allowed = minTier ? hasAccess(status, minTier) : !showPaywall(status);
@@ -405,11 +487,13 @@ export function SparkGate({
   return (
     <div className="spark-gate-wall">
       <p className="spark-gate-msg">
-        {trialDaysLeft(status) > 0 ? `${trialDaysLeft(status)} trial day(s) left` : 'Your free trial has ended'}
+        {trialDaysLeft(status) > 0
+          ? `${trialDaysLeft(status)} trial day(s) left`
+          : 'Your free trial has ended'}
       </p>
-      <a href={pricingUrl()} className="spark-gate-cta">Upgrade to continue</a>
+      <a href={pricingUrl()} className="spark-gate-cta">
+        Upgrade to continue
+      </a>
     </div>
   );
 }
-
-export { TRIAL_DAYS };

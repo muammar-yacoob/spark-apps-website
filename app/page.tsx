@@ -5,96 +5,14 @@ import { useRotatingTagline } from '@/app/_components/hooks/useRotatingTagline';
 import { ShareModal } from '@/app/_components/social/ShareModal';
 import { CloseButton } from '@/app/_components/ui/CloseButton';
 import { SITE_NAME, THEME_COLOR } from '@/lib/config/site';
+import { sparkApps } from '@/lib/data/apps';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Share2 } from 'lucide-react';
+import { Box, Share2 } from 'lucide-react';
 import { signIn } from 'next-auth/react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
-import styles from './dashboard/dashboard.module.css';
-
-const features = [
-  {
-    color: 'text-amber-400 bg-amber-600/20',
-    title: 'Lightning Fast',
-    description:
-      'Built on Next.js with Turbopack for instant dev feedback and optimized production builds.',
-  },
-  {
-    color: 'text-emerald-400 bg-emerald-600/20',
-    title: 'Secure by Default',
-    description:
-      'NextAuth v5 authentication, session management, and role-based access out of the box.',
-  },
-  {
-    color: 'text-violet-400 bg-violet-600/20',
-    title: 'Analytics Ready',
-    description:
-      'Track users, revenue, and growth with a built-in dashboard and real-time metrics.',
-  },
-];
-
-/** Inline SVG icons to avoid Dark Reader hydration mismatches with Lucide components. */
-function ZapIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={20}
-      height={20}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" />
-    </svg>
-  );
-}
-
-function ShieldIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={20}
-      height={20}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
-    </svg>
-  );
-}
-
-function ChartIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={20}
-      height={20}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <line x1="12" x2="12" y1="20" y2="10" />
-      <line x1="18" x2="18" y1="20" y2="4" />
-      <line x1="6" x2="6" y1="20" y2="16" />
-    </svg>
-  );
-}
-
-const featureIcons = [ZapIcon, ShieldIcon, ChartIcon];
 
 function GoogleLogo() {
   return (
@@ -116,6 +34,25 @@ function GoogleLogo() {
         fill="#EA4335"
       />
     </svg>
+  );
+}
+
+function AppIcon({ app }: { app: (typeof sparkApps)[number] }) {
+  if (app.icon) {
+    return (
+      <Image
+        src={app.icon}
+        alt={app.name}
+        width={40}
+        height={40}
+        className="rounded-lg object-cover"
+      />
+    );
+  }
+  return (
+    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500/30 to-purple-500/30 border border-white/[0.08] flex items-center justify-center">
+      <Box className="w-5 h-5 text-blue-400/70" />
+    </div>
   );
 }
 
@@ -188,14 +125,14 @@ function HomeContent() {
             </div>
           </div>
           <div className="flex items-center gap-4 sm:gap-6 text-sm text-gray-400">
+            <Link href="/team" className="hidden sm:inline hover:text-white transition-colors">
+              Team
+            </Link>
+            <Link href="/careers" className="hidden sm:inline hover:text-white transition-colors">
+              Careers
+            </Link>
             <Link href="/contact" className="hidden sm:inline hover:text-white transition-colors">
               Contact
-            </Link>
-            <Link href="/privacy" className="hidden sm:inline hover:text-white transition-colors">
-              Privacy
-            </Link>
-            <Link href="/terms" className="hidden sm:inline hover:text-white transition-colors">
-              Terms
             </Link>
             <button
               type="button"
@@ -220,48 +157,54 @@ function HomeContent() {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="max-w-3xl mx-auto px-6 py-20 sm:py-32 text-center relative z-[1]">
+        <div className="max-w-3xl mx-auto px-6 py-16 sm:py-24 text-center relative z-[1]">
           <h1 className="text-3xl sm:text-5xl font-bold tracking-tight bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent animate-fade-in-up">
-            Your Next Stack, Sparked
+            Productivity Apps for Vibe Coders
           </h1>
           <p className="mt-4 sm:mt-6 text-base sm:text-lg text-gray-400 leading-relaxed max-w-xl mx-auto animate-fade-in animation-delay-200">
-            Auth, database, dashboard, dark mode. The full stack, ready to go.
+            Tools, starters, and utilities built to help you ship faster.
           </p>
-          <div className="mt-10 animate-fade-in animation-delay-400">
-            <Link
-              href="/dashboard"
-              className="inline-flex items-center gap-2 px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold transition-colors btn-shimmer"
-            >
-              Go to Dashboard
-            </Link>
-          </div>
         </div>
       </section>
 
-      {/* Features */}
+      {/* Apps Grid */}
       {mounted && (
-        <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-20 sm:pb-32 relative z-[1]">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {features.map((feature, i) => {
-              const Icon = featureIcons[i];
-              return (
-                <div
-                  key={feature.title}
-                  className={`${styles.panel} p-5 flex items-start gap-4 ${styles.appCard}`}
-                  style={{ animationDelay: `${i * 80}ms` }}
-                >
-                  <div
-                    className={`w-10 h-10 ${feature.color} rounded-lg flex items-center justify-center flex-shrink-0`}
-                  >
-                    <Icon />
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-20 sm:pb-28 relative z-[1] w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {sparkApps.map((app, i) => (
+              <div
+                key={app.id}
+                className="group relative rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 transition-all duration-300 hover:border-blue-400/25 hover:bg-white/[0.05] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(104,176,245,0.08)] animate-fade-in-up"
+                style={{
+                  animationDelay: `${i * 60}ms`,
+                  animationFillMode: 'both',
+                }}
+              >
+                <div className="flex items-start gap-3.5">
+                  <div className="flex-shrink-0 transition-transform duration-300 group-hover:scale-110">
+                    <AppIcon app={app} />
                   </div>
-                  <div className="min-w-0">
-                    <h3 className="text-sm font-semibold text-white mb-1">{feature.title}</h3>
-                    <p className="text-sm text-gray-400 leading-relaxed">{feature.description}</p>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-sm font-semibold text-white mb-1 group-hover:text-blue-300 transition-colors duration-200">
+                      {app.name}
+                    </h3>
+                    <p className="text-xs text-gray-400 leading-relaxed line-clamp-2">
+                      {app.description}
+                    </p>
                   </div>
                 </div>
-              );
-            })}
+                <div className="flex flex-wrap gap-1.5 mt-3.5">
+                  {app.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2 py-0.5 text-[10px] font-medium text-gray-500 bg-white/[0.04] border border-white/[0.06] rounded-md transition-colors duration-200 group-hover:text-blue-400/70 group-hover:border-blue-400/15"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </section>
       )}
@@ -270,6 +213,14 @@ function HomeContent() {
       <footer className="border-t border-gray-800 py-6 relative z-[1] mt-auto">
         <div className="max-w-5xl mx-auto px-6">
           <div className="flex items-center justify-center gap-6 text-sm text-gray-500">
+            <Link href="/team" className="hover:text-gray-400 transition-colors">
+              Team
+            </Link>
+            <span>·</span>
+            <Link href="/careers" className="hover:text-gray-400 transition-colors">
+              Careers
+            </Link>
+            <span>·</span>
             <Link href="/privacy" className="hover:text-gray-400 transition-colors">
               Privacy
             </Link>
@@ -284,19 +235,16 @@ function HomeContent() {
       {/* Login modal */}
       {showLogin && (
         <div
-          className={`fixed inset-0 z-50 flex items-center justify-center ${loginClosing ? styles.modalBackdropOut : styles.modalBackdrop}`}
+          className={`fixed inset-0 z-50 flex items-center justify-center ${loginClosing ? 'animate-fade-out' : 'animate-fade-in'}`}
           onKeyDown={(e) => {
             if (e.key === 'Escape') closeLogin();
           }}
         >
           {/* biome-ignore lint/a11y/useKeyWithClickEvents: Escape handled on parent */}
           <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" onClick={closeLogin} />
-          <div
-            className={`relative z-10 max-w-sm w-full mx-4 bg-gray-900/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/[0.08] p-8 ${loginClosing ? styles.modalBoxOut : styles.modalBox}`}
-          >
+          <div className="relative z-10 max-w-sm w-full mx-4 bg-gray-900/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/[0.08] p-8 animate-scale-in">
             <CloseButton onClick={closeLogin} className="absolute top-3 right-3" />
             <div className="text-center">
-              {/* Favicon */}
               <div className="mb-5 flex justify-center">
                 <img src="/favicon.ico" alt="" width={40} height={40} className="rounded-lg" />
               </div>
@@ -304,7 +252,6 @@ function HomeContent() {
               <h2 className="text-xl font-bold text-white mb-1">{SITE_NAME}</h2>
               <p className="text-sm text-gray-400 mb-8">Sign in to access the dashboard.</p>
 
-              {/* Google sign-in (dark themed) */}
               <button
                 type="button"
                 disabled={signingIn}
@@ -322,7 +269,6 @@ function HomeContent() {
                 {signingIn ? 'Signing in...' : 'Sign in with Google'}
               </button>
 
-              {/* Privacy & Terms */}
               <p className="mt-6 text-xs text-gray-500">
                 <Link href="/privacy" className="hover:text-gray-400 underline transition-colors">
                   Privacy

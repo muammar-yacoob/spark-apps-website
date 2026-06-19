@@ -34,13 +34,21 @@ export type SparkWebhookEvent = 'checkout.completed' | 'subscription.activated' 
 // biome-ignore format: compact
 // biome-ignore format: compact
 export type SparkWebhookData = { status: string; payment_type: string | null; price_id: string | null; tier: Tier | null; plan_name: string | null; limits: Record<string, number>; features: string[]; current_period_end: string | null; is_lifetime: boolean; cancel_at_period_end: boolean; billing_interval: 'monthly' | 'yearly' | 'one_time' };
-export type SparkWebhookPayload = { event: SparkWebhookEvent | string; email: string; data: SparkWebhookData };
+export type SparkWebhookPayload = {
+  event: SparkWebhookEvent | string;
+  email: string;
+  data: SparkWebhookData;
+};
 export type SparkIdentity = { email: string; [k: string]: unknown };
 export type SparkGateOpts = { minTier?: Tier; requireVerified?: boolean; gracePastDue?: boolean };
-export type SparkRegisterResult = { success: true; pendingVerification: boolean; alreadyVerified: boolean };
+export type SparkRegisterResult = {
+  success: true;
+  pendingVerification: boolean;
+  alreadyVerified: boolean;
+};
 
 // ─── Fetch (shared) ────────────────────────────────────────────────────────
-const j = <T,>(p: Promise<Response>): Promise<T> =>
+const j = <T>(p: Promise<Response>): Promise<T> =>
   p.then((r) => (r.ok ? (r.json() as Promise<T>) : Promise.reject(r.status)));
 // biome-ignore format: compact
 const jGet = <T,>(path: string, fallback: T): Promise<T> => fetch(`${BASE}${path}`).then((r) => r.ok ? r.json() : fallback).catch(() => fallback);
@@ -52,7 +60,8 @@ const urlOf = (path: string, params: Record<string, string | undefined> = {}) =>
   return u.toString();
 };
 const eq = encodeURIComponent;
-const ranksOf = (d: SparkStatus): Record<string, number> => Object.fromEntries(d.tiers.map((t) => [t.tier, t.rank]));
+const ranksOf = (d: SparkStatus): Record<string, number> =>
+  Object.fromEntries(d.tiers.map((t) => [t.tier, t.rank]));
 
 // ─── Status ────────────────────────────────────────────────────────────────
 // biome-ignore format: compact
@@ -98,7 +107,8 @@ export const hasReachedLimit = (d: SparkStatus, key: string, count: number, fall
 export const getLimitOrUnlimited = (d: SparkStatus, key: string): number | null => { const v = getLimit(d, key, 0); return v === -1 ? null : v; };
 export const isUnlimited = (d: SparkStatus, key: string) => getLimit(d, key, 0) === -1;
 export const isPayg = (d: SparkStatus) => d.subscription?.is_payg ?? false;
-export const getUnitPrice = (d: SparkStatus, key: string): number | null => d.plan?.unit_prices?.[key] ?? null;
+export const getUnitPrice = (d: SparkStatus, key: string): number | null =>
+  d.plan?.unit_prices?.[key] ?? null;
 // biome-ignore format: compact
 export const resolveEffectiveLimits = (appLimits: Partial<Record<string, number>>, tierLimits: Record<string, number>): Record<string, number> => Object.fromEntries(Object.keys(tierLimits).map((k) => [k, appLimits[k] ?? tierLimits[k]]));
 export const nextTier = (d: SparkStatus): Tier | null => {
@@ -135,7 +145,9 @@ export const validateCoupon = async (code: string, priceId?: string): Promise<Sp
 export type SparkCheckoutOpts = { priceId: string; email: string; couponCode?: string; ref?: string; successUrl?: string; cancelUrl?: string; returnUrl?: string };
 export const checkout = async (opts: SparkCheckoutOpts): Promise<string> => {
   const d = await jPost<{ checkout_url?: string; error?: string }>('/api/checkout/create-public', {
-    app_id: APP_ID, price_id: opts.priceId, customer_email: opts.email,
+    app_id: APP_ID,
+    price_id: opts.priceId,
+    customer_email: opts.email,
     ...(opts.couponCode && { coupon_code: opts.couponCode }),
     ...(opts.ref && { ref: opts.ref }),
     ...(opts.successUrl && { success_url: opts.successUrl }),
