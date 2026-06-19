@@ -1,3 +1,9 @@
+export interface AppLink {
+  label: string;
+  url: string;
+  type: 'website' | 'chrome' | 'npm' | 'github';
+}
+
 export interface SparkApp {
   id: string;
   name: string;
@@ -5,7 +11,7 @@ export interface SparkApp {
   description: string;
   icon: string;
   tags: string[];
-  links?: { label: string; url: string }[];
+  links: AppLink[];
 }
 
 export const sparkApps: SparkApp[] = [
@@ -16,6 +22,7 @@ export const sparkApps: SparkApp[] = [
     description: 'The full-stack starter that sparks your next project.',
     icon: '/imgs/apps/sparkstack.png',
     tags: ['Next.js', 'Full-Stack', 'Starter'],
+    links: [{ label: 'Website', url: 'https://sparkstack.dev', type: 'website' }],
   },
   {
     id: 'sellular',
@@ -24,6 +31,7 @@ export const sparkApps: SparkApp[] = [
     description: 'AI-powered SEO, directory listings, and discoverability tools for SaaS.',
     icon: '/imgs/apps/sellular.png',
     tags: ['SEO', 'AI', 'Marketing'],
+    links: [{ label: 'Website', url: 'https://sellular.online', type: 'website' }],
   },
   {
     id: 'bottled',
@@ -32,6 +40,7 @@ export const sparkApps: SparkApp[] = [
     description: 'Send messages in bottles across the digital ocean. Pro email on your domain.',
     icon: '/imgs/apps/bottled.png',
     tags: ['Email', 'Domain', 'Communication'],
+    links: [{ label: 'Website', url: 'https://bottled.email', type: 'website' }],
   },
   {
     id: 'vidlet',
@@ -41,8 +50,8 @@ export const sparkApps: SparkApp[] = [
     icon: '/imgs/apps/vidlet-web.png',
     tags: ['Video', 'Web', 'Desktop'],
     links: [
-      { label: 'Web', url: 'https://vidlet.co' },
-      { label: 'npm', url: 'https://www.npmjs.com/package/@spark-apps/vidlet' },
+      { label: 'Website', url: 'https://vidlet.app', type: 'website' },
+      { label: 'npm', url: 'https://www.npmjs.com/package/@spark-apps/vidlet', type: 'npm' },
     ],
   },
   {
@@ -52,6 +61,7 @@ export const sparkApps: SparkApp[] = [
     description: 'AI content discovery and multi-platform publishing for social media.',
     icon: '/imgs/apps/viralcat.png',
     tags: ['Social Media', 'AI', 'Analytics'],
+    links: [],
   },
   {
     id: 'quickpeek',
@@ -60,6 +70,9 @@ export const sparkApps: SparkApp[] = [
     description: 'Auto-generate demo videos for your web app with AI.',
     icon: '/imgs/apps/quickpeek.png',
     tags: ['AI', 'Video', 'Demo'],
+    links: [
+      { label: 'npm', url: 'https://www.npmjs.com/package/@spark-apps/quickpeek', type: 'npm' },
+    ],
   },
   {
     id: 'botornot',
@@ -68,6 +81,14 @@ export const sparkApps: SparkApp[] = [
     description: 'AI content detection. Chrome extension and PWA.',
     icon: '/imgs/apps/botornot.png',
     tags: ['AI', 'Chrome Extension', 'Detection'],
+    links: [
+      { label: 'Website', url: 'https://botornot.art', type: 'website' },
+      {
+        label: 'Chrome',
+        url: 'https://chromewebstore.google.com/detail/bot-or-not/njohmblkingfikcgcbfcnjmciibhlmci',
+        type: 'chrome',
+      },
+    ],
   },
   {
     id: 'textpert',
@@ -76,6 +97,7 @@ export const sparkApps: SparkApp[] = [
     description: 'Polish your text or generate savage replies. Chrome extension.',
     icon: '/imgs/apps/textpert.png',
     tags: ['AI', 'Chrome Extension', 'Tools'],
+    links: [],
   },
   {
     id: 'spark-ai',
@@ -84,6 +106,7 @@ export const sparkApps: SparkApp[] = [
     description: 'AI chat widget with voice, live chat, and ticketing.',
     icon: '/imgs/apps/spark-ai.png',
     tags: ['AI', 'Chat', 'Widget'],
+    links: [{ label: 'Website', url: 'https://sparkbrain.app', type: 'website' }],
   },
   {
     id: 'spark-stripe',
@@ -92,6 +115,7 @@ export const sparkApps: SparkApp[] = [
     description: 'Universal Stripe payment backend. Deploy once, add payments to any app.',
     icon: '/imgs/apps/spark-stripe.png',
     tags: ['Payments', 'Stripe', 'Backend'],
+    links: [{ label: 'Website', url: 'https://sparkstripe.com', type: 'website' }],
   },
   {
     id: 'klean',
@@ -100,5 +124,6 @@ export const sparkApps: SparkApp[] = [
     description: 'CLI to analyze, clean, and refactor any project.',
     icon: '/imgs/apps/klean.png',
     tags: ['CLI', 'DevTools', 'Cleanup'],
+    links: [{ label: 'npm', url: 'https://www.npmjs.com/package/klean', type: 'npm' }],
   },
 ];

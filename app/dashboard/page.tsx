@@ -3,11 +3,12 @@
 import PageLoader from '@/app/_components/feedback/PageLoader';
 import { useRotatingTagline } from '@/app/_components/hooks/useRotatingTagline';
 import { OnBoarding, resetOnboarding } from '@/app/_components/onboarding/OnBoarding';
-import { ShareModal } from '@/app/_components/social/ShareModal';
+import SocialShareButton from '@/app/_components/social-share/SocialShareButton';
+import { SHARE_CONFIG } from '@/app/_components/social-share/share-config';
 import { SITE_NAME } from '@/lib/config/site';
 import { TOAST_CONFIG } from '@/lib/config/toast';
 import { AnimatePresence, motion } from 'framer-motion';
-import { BarChart3, ChevronDown, HelpCircle, LogOut, Settings, Share2 } from 'lucide-react';
+import { BarChart3, ChevronDown, HelpCircle, LogOut, Settings } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
 import { useEffect, useRef, useState } from 'react';
 import { Toaster } from 'sonner';
@@ -22,7 +23,6 @@ export default function DashboardPage() {
   const [mounted, setMounted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [view, setView] = useState<View>('home');
-  const [showShare, setShowShare] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const { tagline, index: taglineIndex } = useRotatingTagline();
 
@@ -131,18 +131,11 @@ export default function DashboardPage() {
                 </div>
                 <div className="flex items-center gap-1">
                   {/* Share */}
-                  <button
-                    type="button"
-                    onClick={() => setShowShare(true)}
+                  <SocialShareButton
+                    size={16}
                     className={`p-1.5 rounded-lg hover:bg-white/[0.04] transition-colors ${styles.iconPopTrigger}`}
-                    title="Share"
-                    suppressHydrationWarning
-                  >
-                    <Share2
-                      suppressHydrationWarning
-                      className={`w-4 h-4 text-gray-400 ${styles.iconPop}`}
-                    />
-                  </button>
+                    {...SHARE_CONFIG}
+                  />
 
                   {/* Avatar menu */}
                   <div id="onborda-user-menu" className="relative" ref={menuRef}>
@@ -273,8 +266,6 @@ export default function DashboardPage() {
             </main>
           </div>
         </div>
-
-        <ShareModal isOpen={showShare} onClose={() => setShowShare(false)} />
       </div>
     </OnBoarding>
   );
