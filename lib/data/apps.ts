@@ -76,6 +76,14 @@ export const sparkApps: SparkApp[] = [
     tags: ['Payments', 'Stripe', 'Backend'],
   },
   {
+    id: 'textpert',
+    name: 'TextPert',
+    description:
+      'Autocorrect on steroids. Polish your text or generate savage replies. Chrome extension.',
+    icon: '/imgs/apps/textpert.png',
+    tags: ['AI', 'Chrome Extension', 'Tools'],
+  },
+  {
     id: 'klean',
     name: 'KLean',
     description: 'CLI to analyze, clean, and refactor any project.',

@@ -85,11 +85,13 @@ function TeamMemberCard({ member, index }: { member: TeamMember; index: number }
 
       {/* Quote */}
       <div className="relative h-12 flex items-center justify-center px-4 mb-3">
-        <span className="text-gray-400 text-sm italic before:content-['\u201C'] before:text-blue-400/50 before:text-lg before:mr-0.5 after:content-['\u201D'] after:text-blue-400/50 after:text-lg after:ml-0.5">
+        <span className="text-gray-400 text-sm italic">
+          <span className="text-blue-400/50 text-lg mr-0.5">&ldquo;</span>
           {quote}
           {isTyping && (
             <span className="inline-block w-[2px] h-[14px] bg-blue-400 ml-0.5 align-middle animate-pulse" />
           )}
+          <span className="text-blue-400/50 text-lg ml-0.5">&rdquo;</span>
         </span>
       </div>
 
