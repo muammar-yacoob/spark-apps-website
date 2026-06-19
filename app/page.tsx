@@ -4,10 +4,65 @@ import { BgShootingStars } from '@/app/_components/bg-anims/BgShootingStars';
 import { ShareModal } from '@/app/_components/social/ShareModal';
 import { SITE_NAME } from '@/lib/config/site';
 import { sparkApps } from '@/lib/data/apps';
-import { Share2 } from 'lucide-react';
+import {
+  BarChart3,
+  Box,
+  Brain,
+  Code,
+  CreditCard,
+  ExternalLink,
+  Globe,
+  Layers,
+  Mail,
+  MessageSquare,
+  Monitor,
+  Puzzle,
+  Rocket,
+  Search,
+  Server,
+  Share2,
+  Shield,
+  Terminal,
+  Video,
+  Wrench,
+  Zap,
+} from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+
+const tagConfig: Record<string, { color: string; icon: React.ElementType }> = {
+  AI: { color: 'text-purple-400 bg-purple-400/10 border-purple-400/20', icon: Brain },
+  Video: { color: 'text-rose-400 bg-rose-400/10 border-rose-400/20', icon: Video },
+  Web: { color: 'text-blue-400 bg-blue-400/10 border-blue-400/20', icon: Globe },
+  Desktop: { color: 'text-slate-400 bg-slate-400/10 border-slate-400/20', icon: Monitor },
+  Tools: { color: 'text-amber-400 bg-amber-400/10 border-amber-400/20', icon: Wrench },
+  SEO: { color: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20', icon: Search },
+  Marketing: { color: 'text-pink-400 bg-pink-400/10 border-pink-400/20', icon: Zap },
+  Starter: { color: 'text-cyan-400 bg-cyan-400/10 border-cyan-400/20', icon: Rocket },
+  'Full-Stack': { color: 'text-indigo-400 bg-indigo-400/10 border-indigo-400/20', icon: Layers },
+  Email: { color: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20', icon: Mail },
+  Communication: { color: 'text-teal-400 bg-teal-400/10 border-teal-400/20', icon: Mail },
+  'Social Media': { color: 'text-pink-400 bg-pink-400/10 border-pink-400/20', icon: Share2 },
+  Analytics: { color: 'text-orange-400 bg-orange-400/10 border-orange-400/20', icon: BarChart3 },
+  Demo: { color: 'text-violet-400 bg-violet-400/10 border-violet-400/20', icon: Video },
+  'Chrome Extension': {
+    color: 'text-green-400 bg-green-400/10 border-green-400/20',
+    icon: Puzzle,
+  },
+  Detection: { color: 'text-red-400 bg-red-400/10 border-red-400/20', icon: Shield },
+  Chat: { color: 'text-sky-400 bg-sky-400/10 border-sky-400/20', icon: MessageSquare },
+  Widget: { color: 'text-gray-400 bg-gray-400/10 border-gray-400/20', icon: Box },
+  Payments: { color: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20', icon: CreditCard },
+  Stripe: { color: 'text-purple-400 bg-purple-400/10 border-purple-400/20', icon: Zap },
+  Backend: { color: 'text-slate-400 bg-slate-400/10 border-slate-400/20', icon: Server },
+  CLI: { color: 'text-green-400 bg-green-400/10 border-green-400/20', icon: Terminal },
+  DevTools: { color: 'text-amber-400 bg-amber-400/10 border-amber-400/20', icon: Code },
+  Cleanup: { color: 'text-red-400 bg-red-400/10 border-red-400/20', icon: Wrench },
+  'Next.js': { color: 'text-white bg-white/10 border-white/20', icon: Layers },
+};
+
+const fallbackTag = { color: 'text-gray-400 bg-gray-400/10 border-gray-400/20', icon: Box };
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
@@ -66,18 +121,19 @@ export default function Home() {
       {/* Apps Grid */}
       {mounted && (
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-20 sm:pb-28 relative z-[1] w-full">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {sparkApps.map((app, i) => (
               <div
                 key={app.id}
-                className="group relative rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 transition-all duration-300 hover:border-blue-400/25 hover:bg-white/[0.05] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(104,176,245,0.08)] animate-fade-in-up"
+                className="group relative rounded-xl border border-white/[0.06] bg-white/[0.02] pt-8 pb-4 px-5 transition-all duration-300 hover:border-blue-400/25 hover:bg-white/[0.05] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(104,176,245,0.08)] animate-fade-in-up flex flex-col"
                 style={{
                   animationDelay: `${i * 60}ms`,
                   animationFillMode: 'both',
                 }}
               >
-                <div className="flex items-start gap-3.5">
-                  <div className="flex-shrink-0 transition-transform duration-300 group-hover:scale-110">
+                {/* Lifted Icon */}
+                <div className="absolute -top-5 left-5 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5">
+                  <div className="rounded-xl border border-white/[0.1] bg-gray-900 shadow-lg p-1">
                     <Image
                       src={app.icon}
                       alt={app.name}
@@ -86,25 +142,50 @@ export default function Home() {
                       className="rounded-lg object-cover"
                     />
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <h3 className="text-sm font-semibold text-white mb-1 group-hover:text-blue-300 transition-colors duration-200">
-                      {app.name}
-                    </h3>
-                    <p className="text-xs text-gray-400 leading-relaxed line-clamp-2">
-                      {app.description}
-                    </p>
+                </div>
+
+                {/* Name & Description - left aligned */}
+                <h3 className="text-sm font-semibold text-white mb-1 group-hover:text-blue-300 transition-colors duration-200">
+                  {app.name}
+                </h3>
+                <p className="text-xs text-gray-400 leading-relaxed line-clamp-2 mb-3">
+                  {app.description}
+                </p>
+
+                {/* Tags - centered */}
+                <div className="flex flex-wrap justify-center gap-1.5 mt-auto">
+                  {app.tags.map((tag) => {
+                    const cfg = tagConfig[tag] ?? fallbackTag;
+                    const TagIcon = cfg.icon;
+                    return (
+                      <span
+                        key={tag}
+                        className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-medium border rounded-md transition-all duration-200 group-hover:scale-105 ${cfg.color}`}
+                      >
+                        <TagIcon className="w-2.5 h-2.5" />
+                        {tag}
+                      </span>
+                    );
+                  })}
+                </div>
+
+                {/* Links */}
+                {app.links && (
+                  <div className="flex items-center justify-center gap-3 mt-3 pt-3 border-t border-white/[0.06]">
+                    {app.links.map((link) => (
+                      <a
+                        key={link.label}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-[11px] text-gray-500 hover:text-blue-400 transition-colors"
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                        {link.label}
+                      </a>
+                    ))}
                   </div>
-                </div>
-                <div className="flex flex-wrap gap-1.5 mt-3.5">
-                  {app.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2 py-0.5 text-[10px] font-medium text-gray-500 bg-white/[0.04] border border-white/[0.06] rounded-md transition-colors duration-200 group-hover:text-blue-400/70 group-hover:border-blue-400/15"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+                )}
               </div>
             ))}
           </div>

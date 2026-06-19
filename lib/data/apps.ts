@@ -4,6 +4,7 @@ export interface SparkApp {
   description: string;
   icon: string;
   tags: string[];
+  links?: { label: string; url: string }[];
 }
 
 export const sparkApps: SparkApp[] = [
@@ -32,15 +33,12 @@ export const sparkApps: SparkApp[] = [
     id: 'vidlet',
     name: 'VidLet',
     description: 'Auto-captions, compression, voice cleanup, GIF conversion and more.',
-    icon: '/imgs/apps/vidlet.png',
-    tags: ['Video', 'Desktop', 'Tools'],
-  },
-  {
-    id: 'vidlet-web',
-    name: 'VidLet Web',
-    description: 'Professional video tools in your browser. No installs needed.',
     icon: '/imgs/apps/vidlet-web.png',
-    tags: ['Video', 'Web', 'Tools'],
+    tags: ['Video', 'Web', 'Desktop'],
+    links: [
+      { label: 'Web', url: 'https://vidlet.co' },
+      { label: 'npm', url: 'https://www.npmjs.com/package/@spark-apps/vidlet' },
+    ],
   },
   {
     id: 'viralcat',
