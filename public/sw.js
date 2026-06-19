@@ -2,7 +2,11 @@ const CACHE_NAME = 'spark-stack-v1';
 const CORE_ASSETS = ['/', '/manifest.json'];
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE_ASSETS)));
+  e.waitUntil(
+    caches
+      .open(CACHE_NAME)
+      .then((cache) => Promise.allSettled(CORE_ASSETS.map((url) => cache.add(url).catch(() => {}))))
+  );
   self.skipWaiting();
 });
 

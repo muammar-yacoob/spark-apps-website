@@ -169,21 +169,21 @@ export default function Home() {
                 </div>
 
                 {/* Description */}
-                <p className="text-xs text-gray-400 leading-relaxed line-clamp-2 mb-3 pl-[48px]">
+                <p className="text-xs text-gray-400 leading-relaxed line-clamp-2 mb-3">
                   {app.description}
                 </p>
 
                 {/* Tags */}
-                <div className="flex flex-wrap gap-1.5 mt-auto pl-[48px]">
+                <div className="flex gap-1.5 mt-auto overflow-hidden">
                   {app.tags.map((tag) => {
                     const cfg = tagConfig[tag] ?? fallbackTag;
                     const TagIcon = cfg.icon;
                     return (
                       <span
                         key={tag}
-                        className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-medium border rounded-md transition-all duration-200 group-hover:scale-105 ${cfg.color}`}
+                        className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-medium border rounded-md whitespace-nowrap transition-all duration-200 group-hover:scale-105 ${cfg.color}`}
                       >
-                        <TagIcon className="w-2.5 h-2.5" />
+                        <TagIcon className="w-2.5 h-2.5 flex-shrink-0" />
                         {tag}
                       </span>
                     );
