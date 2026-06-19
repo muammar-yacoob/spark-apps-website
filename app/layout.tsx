@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     },
   },
   other: {
-    'apple-mobile-web-app-capable': 'yes',
+    'mobile-web-app-capable': 'yes',
     'apple-mobile-web-app-status-bar-style': 'black-translucent',
     'apple-mobile-web-app-title': SITE_NAME,
   },

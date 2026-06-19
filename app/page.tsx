@@ -42,6 +42,7 @@ const tagConfig: Record<string, { color: string; icon: React.ElementType }> = {
   Starter: { color: 'text-cyan-400 bg-cyan-400/10 border-cyan-400/20', icon: Rocket },
   'Full-Stack': { color: 'text-indigo-400 bg-indigo-400/10 border-indigo-400/20', icon: Layers },
   Email: { color: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20', icon: Mail },
+  Domain: { color: 'text-teal-400 bg-teal-400/10 border-teal-400/20', icon: Globe },
   Communication: { color: 'text-teal-400 bg-teal-400/10 border-teal-400/20', icon: Mail },
   'Social Media': { color: 'text-pink-400 bg-pink-400/10 border-pink-400/20', icon: Share2 },
   Analytics: { color: 'text-orange-400 bg-orange-400/10 border-orange-400/20', icon: BarChart3 },
@@ -121,39 +122,59 @@ export default function Home() {
       {/* Apps Grid */}
       {mounted && (
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-20 sm:pb-28 relative z-[1] w-full">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {sparkApps.map((app, i) => (
               <div
                 key={app.id}
-                className="group relative rounded-xl border border-white/[0.06] bg-white/[0.02] pt-8 pb-4 px-5 transition-all duration-300 hover:border-blue-400/25 hover:bg-white/[0.05] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(104,176,245,0.08)] animate-fade-in-up flex flex-col"
+                className="group relative rounded-xl border border-white/[0.06] bg-white/[0.02] p-4 transition-all duration-300 hover:border-blue-400/25 hover:bg-white/[0.05] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(104,176,245,0.08)] animate-fade-in-up flex flex-col"
                 style={{
                   animationDelay: `${i * 60}ms`,
                   animationFillMode: 'both',
                 }}
               >
-                {/* Lifted Icon */}
-                <div className="absolute -top-5 left-5 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5">
-                  <div className="rounded-xl border border-white/[0.1] bg-gray-900 shadow-lg p-1">
+                {/* Header: icon + name + tagline */}
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="flex-shrink-0 transition-transform duration-300 group-hover:scale-110">
                     <Image
                       src={app.icon}
                       alt={app.name}
-                      width={40}
-                      height={40}
+                      width={36}
+                      height={36}
                       className="rounded-lg object-cover"
                     />
                   </div>
+                  <div className="min-w-0">
+                    <h3 className="text-sm font-semibold text-white group-hover:text-blue-300 transition-colors duration-200 leading-tight">
+                      {app.name}
+                    </h3>
+                    <p className="text-[11px] text-gray-500 leading-tight">{app.tagline}</p>
+                  </div>
+                  {/* Links inline at top-right */}
+                  {app.links && (
+                    <div className="flex items-center gap-1.5 ml-auto flex-shrink-0">
+                      {app.links.map((link) => (
+                        <a
+                          key={link.label}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title={link.label}
+                          className="p-1 rounded hover:bg-white/[0.06] transition-colors"
+                        >
+                          <ExternalLink className="w-3 h-3 text-gray-600 hover:text-blue-400 transition-colors" />
+                        </a>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
-                {/* Name & Description - left aligned */}
-                <h3 className="text-sm font-semibold text-white mb-1 group-hover:text-blue-300 transition-colors duration-200">
-                  {app.name}
-                </h3>
-                <p className="text-xs text-gray-400 leading-relaxed line-clamp-2 mb-3">
+                {/* Description */}
+                <p className="text-xs text-gray-400 leading-relaxed line-clamp-2 mb-3 pl-[48px]">
                   {app.description}
                 </p>
 
-                {/* Tags - centered */}
-                <div className="flex flex-wrap justify-center gap-1.5 mt-auto">
+                {/* Tags */}
+                <div className="flex flex-wrap gap-1.5 mt-auto pl-[48px]">
                   {app.tags.map((tag) => {
                     const cfg = tagConfig[tag] ?? fallbackTag;
                     const TagIcon = cfg.icon;
@@ -168,24 +189,6 @@ export default function Home() {
                     );
                   })}
                 </div>
-
-                {/* Links */}
-                {app.links && (
-                  <div className="flex items-center justify-center gap-3 mt-3 pt-3 border-t border-white/[0.06]">
-                    {app.links.map((link) => (
-                      <a
-                        key={link.label}
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-[11px] text-gray-500 hover:text-blue-400 transition-colors"
-                      >
-                        <ExternalLink className="w-3 h-3" />
-                        {link.label}
-                      </a>
-                    ))}
-                  </div>
-                )}
               </div>
             ))}
           </div>
