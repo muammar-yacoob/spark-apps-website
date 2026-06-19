@@ -1,8 +1,8 @@
 'use client';
 
-import { BgBokeh } from '@/app/_components/bg-anims/BgBokeh';
+import { BgShootingStars } from '@/app/_components/bg-anims/BgShootingStars';
 import { LegalPageFooter } from '@/app/_components/layout/LegalPageFooter';
-import { SITE_NAME, THEME_COLOR } from '@/lib/config/site';
+import { SITE_NAME } from '@/lib/config/site';
 import { ArrowLeft, Check } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -38,7 +38,7 @@ export function CareersPageClient() {
 
   return (
     <div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col">
-      <BgBokeh primaryColor={THEME_COLOR} speed={3} />
+      <BgShootingStars />
 
       {/* Nav */}
       <nav className="border-b border-white/[0.06] bg-gray-900/40 backdrop-blur-sm sticky top-0 z-10">

@@ -2,10 +2,8 @@ export interface SparkApp {
   id: string;
   name: string;
   description: string;
-  icon: string | null;
+  icon: string;
   tags: string[];
-  url?: string;
-  repo?: string;
 }
 
 export const sparkApps: SparkApp[] = [
@@ -34,7 +32,7 @@ export const sparkApps: SparkApp[] = [
     id: 'vidlet',
     name: 'VidLet',
     description: 'Auto-captions, compression, voice cleanup, GIF conversion and more.',
-    icon: null,
+    icon: '/imgs/apps/vidlet.png',
     tags: ['Video', 'Desktop', 'Tools'],
   },
   {
@@ -55,14 +53,14 @@ export const sparkApps: SparkApp[] = [
     id: 'quickpeek',
     name: 'QuickPeek',
     description: 'Auto-generate demo videos for your web app with AI.',
-    icon: null,
+    icon: '/imgs/apps/quickpeek.png',
     tags: ['AI', 'Video', 'Demo'],
   },
   {
     id: 'botornot',
     name: 'BotOrNot',
     description: 'AI content detection. Chrome extension and PWA.',
-    icon: null,
+    icon: '/imgs/apps/botornot.png',
     tags: ['AI', 'Chrome Extension', 'Detection'],
   },
   {
@@ -83,7 +81,7 @@ export const sparkApps: SparkApp[] = [
     id: 'klean',
     name: 'KLean',
     description: 'CLI to analyze, clean, and refactor any project.',
-    icon: null,
+    icon: '/imgs/apps/klean.png',
     tags: ['CLI', 'DevTools', 'Cleanup'],
   },
 ];
