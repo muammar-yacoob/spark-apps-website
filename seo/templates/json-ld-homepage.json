@@ -1,0 +1,71 @@
+{
+  "_comment": "IMPORTANT: Never include literal </script> in JSON string values - it closes the script tag. Use \\u003C for < and \\u003E for > when embedding HTML in text fields.",
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "{Product Name}",
+      "url": "https://{domain}",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web",
+      "description": "{Product description}",
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Free",
+          "price": "0",
+          "priceCurrency": "USD",
+          "description": "{Free tier limits}"
+        },
+        {
+          "@type": "Offer",
+          "name": "{Paid Tier}",
+          "price": "{monthly_price}",
+          "priceCurrency": "USD",
+          "billingIncrement": "P1M",
+          "description": "{Paid tier limits}"
+        }
+      ],
+      "featureList": ["{Feature 1}", "{Feature 2}", "{Feature 3}"],
+      "screenshot": "https://{domain}/api/og",
+      "softwareHelp": {
+        "@type": "WebPage",
+        "url": "https://{domain}/docs"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://{domain}/#webpage",
+      "url": "https://{domain}",
+      "name": "{Page Title}",
+      "datePublished": "{YYYY-MM-DD}",
+      "dateModified": "{YYYY-MM-DD}",
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": ["{CSS selectors for key content sections}"]
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "{Brand Name}",
+      "url": "https://{domain}",
+      "logo": "https://{domain}/favicon.png",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "{support_email}",
+        "contactType": "customer support",
+        "url": "https://{domain}/support"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "name": "{Brand Name}",
+      "url": "https://{domain}",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://{domain}/docs?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+  ]
+}

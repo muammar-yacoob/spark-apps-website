@@ -1,0 +1,258 @@
+lib/og/ - Portable OG Image Package
+====================================
+
+Drop this directory into any Next.js App Router project to get dynamic,
+auto-rotating Open Graph + Twitter Card images with mascots, taglines,
+feature badges, and a branded card layout.
+
+
+Directory Structure
+-------------------
+
+  lib/og/
+  ├── DEPLOYMENT.txt              This file
+  ├── index.ts                    Barrel export (public API)
+  ├── config.ts                   Project-specific config (edit this)
+  ├── utils/                      Portable utilities (no project imports)
+  │   ├── colors.ts               Color math (luminance, contrast, darken)
+  │   ├── fonts.ts                Google Fonts CDN fetcher + cache
+  │   ├── images.ts               sharp-based image helpers + ogAsset()
+  │   └── platform-dimensions.ts  Social platform size constants
+  └── res/                        Resources (fonts, images, badges)
+      ├── badges/                 AI/beta badge PNGs
+      ├── fonts/                  TTF files for OG card text
+      └── mascots/                Mascot images (auto-discovered)
+
+
+Quick Start (Porting to a New Project)
+--------------------------------------
+
+1. Copy lib/og/ into the target project's lib/ directory.
+
+2. Install npm dependencies:
+
+     npm install sharp
+
+   sharp is the only runtime dependency. The OG card is rendered via
+   next/og's ImageResponse (which uses Satori internally). No separate
+   satori, resvg, or imagemagick install is needed.
+
+3. Edit lib/og/config.ts - this is the ONLY file with project-specific
+   imports. Three external references are allowed:
+   - Site config import (name, domain) from the project's site.ts
+   - The taglines JSON import
+   - The favicon path (ogConfig.favicon)
+   All other values (features, fonts, cta, socialProof) are hardcoded
+   in config.ts. Update them directly.
+
+4. Add your resources to res/:
+   - res/fonts/       - TTF files for heading, body, brand text
+   - res/mascots/     - PNG/JPG mascot images (auto-discovered)
+   - res/badges/      - Optional badge overlay PNGs
+
+5. Create app/opengraph-image.tsx importing from '@/lib/og' (or your
+   path alias). See the existing one for the full render function.
+
+6. Create app/twitter-image.tsx. IMPORTANT: Do NOT re-export route
+   config fields (runtime, dynamic, size, etc.) from opengraph-image.
+   Next.js cannot statically analyze re-exported config -- it silently
+   falls back to defaults, which can put the function on Edge runtime
+   where sharp is unavailable.
+
+   Bad (silently broken on Vercel):
+
+     export { default, runtime, dynamic, alt, size, contentType }
+       from './opengraph-image';
+
+   Good (declare config inline, only re-export the render function):
+
+     export { default } from './opengraph-image';
+     export const runtime = 'nodejs';
+     export const dynamic = 'force-dynamic';
+     export const alt = 'My App';
+     export const size = { width: 1200, height: 630 };
+     export const contentType = 'image/png';
+
+7. Add outputFileTracingIncludes to next.config.ts for EVERY image
+   route (both opengraph-image AND twitter-image). Each route runs as
+   a separate serverless function on Vercel and needs its own tracing:
+
+     outputFileTracingIncludes: {
+       '/opengraph-image': ['./lib/og/res/**/*', './app/favicon.png'],
+       '/twitter-image':   ['./lib/og/res/**/*', './app/favicon.png'],
+     }
+
+
+Vercel Deployment Pitfalls
+--------------------------
+
+1. PUBLIC/ FILES ARE NOT ON THE FUNCTION FILESYSTEM
+   Vercel serves public/ via CDN. Serverless functions cannot read them
+   with fs/sharp. All resources must live in a non-public dir (res/).
+
+   Bad:  join(process.cwd(), 'public', 'favicon.png')
+   Good: join(process.cwd(), 'lib', 'og', 'res', 'favicon.png')
+
+2. import.meta.url BREAKS AFTER BUNDLING
+   webpack/turbopack rewrites import.meta.url to the bundled output
+   location. Asset dirs resolved via dirname(fileURLToPath(...)) will
+   point to the wrong place in production.
+
+   Bad:  const dir = dirname(fileURLToPath(import.meta.url))
+   Good: const dir = join(process.cwd(), 'lib', 'og', 'res')
+
+   process.cwd() is stable on Vercel and matches outputFileTracingIncludes.
+
+3. outputFileTracingIncludes IS REQUIRED
+   Next.js traces imports automatically, but sharp/fs reads are invisible
+   to the tracer. Declare every resource glob the function touches:
+
+     outputFileTracingIncludes: {
+       '/opengraph-image': ['./lib/og/res/**/*'],
+     }
+
+   Paths are relative to project root. Glob patterns work.
+
+4. TWITTER-IMAGE NEEDS ITS OWN TRACING ENTRY
+   Even though twitter-image.tsx re-exports the same render function as
+   opengraph-image.tsx, Vercel bundles each route into a separate
+   serverless function. Without its own outputFileTracingIncludes entry,
+   the twitter-image function ships without fonts/mascots/badges and
+   crashes at runtime.
+
+5. DO NOT RE-EXPORT ROUTE CONFIG FROM TWITTER-IMAGE
+   Next.js statically analyzes exports like runtime, dynamic, size at
+   build time. Re-exporting them from another file produces this warning:
+
+     "Next.js can't recognize the exported 'runtime' field in
+      '/twitter-image', it may be re-exported from another file.
+      The default config will be used instead."
+
+   Without runtime = 'nodejs', the function runs on Edge where sharp
+   is unavailable. Always declare route config inline. Only re-export
+   the default render function.
+
+6. readdirSync FOR DYNAMIC RESOURCE DISCOVERY
+   If you discover mascots/images at startup via readdirSync, the files
+   must also be traced. The readdir call itself won't fail (catch returns
+   []), but the subsequent sharp(path) calls will crash silently.
+
+7. TWITTER/X NEEDS ITS OWN IMAGE FILE
+   Next.js only generates twitter:image meta when app/twitter-image.tsx
+   exists. Without it, Twitter shows a text-only card even if your OG
+   image works fine everywhere else.
+
+8. TWITTER CACHES CARDS AGGRESSIVELY
+   After deploying a fix, previously shared URLs may still show the old
+   card. Twitter caches by URL and ignores Cache-Control. To force a
+   refresh, append a query param (e.g. ?v=2) when re-sharing, or wait.
+
+9. force-dynamic + EDGE CACHING CONFLICT
+   export const dynamic = 'force-dynamic' makes the function run on every
+   request, but Vercel's edge/CDN may still cache the response. If you
+   want truly dynamic OG images (rotating mascots, daily taglines), ensure
+   your response headers don't set long Cache-Control.
+
+10. FONT FILES MUST BE TRACED TOO
+    Custom fonts loaded via readFile() (for ImageResponse) are invisible
+    to the bundler. Include them in outputFileTracingIncludes alongside
+    image resources. Missing fonts won't crash the function - they'll
+    silently fall back to a default, producing mismatched text on prod.
+
+11. SHARP CANNOT READ .ICO FILES
+    sharp does not support the ICO format. If you need to process a
+    favicon with sharp (color extraction, shadow rendering), convert it
+    to PNG first and keep the PNG alongside the ICO in app/. Reference
+    the .png in ogConfig.favicon, not the .ico.
+
+12. FAVICON LIVES IN app/, NOT res/
+    Next.js App Router serves the favicon from app/favicon.ico. The OG
+    pipeline reads it via fs/sharp for color extraction and shadow
+    rendering. Since it lives outside res/, it must be traced separately:
+
+      outputFileTracingIncludes: {
+        '/opengraph-image': ['./lib/og/res/**/*', './app/favicon.png'],
+      }
+
+13. IMPORT PATH ALIAS IS @/ NOT @
+    Next.js projects using the @/ path alias must import from '@/lib/og',
+    not '@lib/og'. The latter silently resolves to node_modules or fails
+    with "Module not found" at compile time.
+
+14. BADGE PATHS ARE RELATIVE TO res/
+    ogConfig.badge must include the subdirectory prefix. If the file is
+    res/badges/tax-badge.png, set badge to 'badges/tax-badge.png', not
+    just 'tax-badge.png'. The value is passed directly to ogAsset().
+
+15. DEAD CODE WITH UNINSTALLED DEPS BREAKS THE BUILD
+    If lib/og/ contains files that import packages not in package.json
+    (e.g. @imagemagick/magick-wasm, @resvg/resvg-js), the build fails
+    at type-check even if no live code imports those files. TypeScript
+    checks ALL files in the project, not just reachable ones. Remove
+    unused files or install the deps. The OG card pipeline only needs
+    sharp -- next/og bundles Satori and Resvg internally.
+
+
+Customising config.ts
+---------------------
+
+TAGLINES
+  Loaded from a JSON file imported in config.ts. Structure:
+    { "taglines": ["Your tagline here, second half after comma"] }
+  Each tagline is split at the first ", " into two lines on the card.
+  Keep each half under ~35 characters to avoid overflow.
+
+FEATURE BADGES
+  Defined in ogConfig.features:
+    features: [
+      { label: 'AI Chat',   icon: 'chat',   color: '#818cf8' },
+      { label: 'Voice Chat', icon: 'mic',    color: '#6ee7b7' },
+    ]
+  - label: text on the badge pill (keep under ~15 chars)
+  - icon:  key into ICON_PATHS (Lucide-style SVG, 24x24 viewBox)
+  - color: hex color for the pill
+  The card renders up to 8 badges. Fewer is fine.
+
+OTHER CONFIG
+  name        - app name shown top-left (imported from site config)
+  url         - domain shown below the name (imported from site config)
+  favicon     - PNG filename in app/ (must be .png, not .ico -- sharp
+                cannot read ICO). Loaded via appAsset(), not ogAsset().
+                Must be separately traced in outputFileTracingIncludes.
+  badge       - optional badge path relative to res/ (include subdir,
+                e.g. 'badges/tax-badge.png')
+  cta         - call-to-action button text
+  socialProof - small text below the CTA
+  mascots     - auto-discovered from res/mascots/
+  fonts       - heading/body/brand .ttf filenames in res/fonts/.
+                brand can reuse the heading font if no separate brand
+                typeface is needed.
+
+
+OG Meta Title (in layout.tsx, not config.ts)
+---------------------------------------------
+The og:title and twitter:title are set in app/layout.tsx metadata, not
+in the OG image pipeline. Keep them between 50-60 characters for best
+display across social platforms and search results. The card image
+already shows the app name/branding, so use the full character budget
+for the value proposition instead of repeating the app name.
+
+
+Portability Checklist
+---------------------
+- [ ] lib/og/ copied into target project
+- [ ] npm deps installed (sharp only -- next/og bundles Satori + Resvg)
+- [ ] No unused files importing uninstalled packages (breaks type-check)
+- [ ] config.ts updated (site config, taglines, favicon are the only external refs)
+- [ ] Imports use '@/lib/og' (not '@lib/og')
+- [ ] Favicon is PNG (not ICO) -- sharp cannot read ICO
+- [ ] Favicon PNG traced in outputFileTracingIncludes alongside res/
+- [ ] Resources placed in res/ (fonts, mascots, badges)
+- [ ] Badge path in config includes subdir (e.g. 'badges/foo.png')
+- [ ] Resource paths use process.cwd(), not import.meta.url
+- [ ] next.config.ts has outputFileTracingIncludes for EVERY OG route
+- [ ] Both opengraph-image.tsx AND twitter-image.tsx exist in app/
+- [ ] twitter-image.tsx declares route config inline (no re-exports)
+- [ ] outputFileTracingIncludes covers both opengraph-image AND twitter-image
+- [ ] runtime is set to 'nodejs' (sharp needs Node, not edge)
+- [ ] Tested with `next build && next start` (closer to prod than dev)

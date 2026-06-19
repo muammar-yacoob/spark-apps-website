@@ -1,0 +1,7 @@
+{# Place at: public/.well-known/security.txt}
+{# Reference: https://securitytxt.org/ (RFC 9116)}
+Contact: mailto:{support_email}
+Expires: {one year from now, ISO 8601 format, e.g. 2027-06-04T00:00:00.000Z}
+Preferred-Languages: en
+Canonical: https://{domain}/.well-known/security.txt
+Policy: https://{domain}/terms

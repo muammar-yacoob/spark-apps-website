@@ -1,0 +1,325 @@
+@import "tailwindcss";
+
+/* Onborda tour: force above sticky headers, prevent overflow clipping */
+[data-name="onborda-overlay"] {
+  position: fixed !important;
+  z-index: 999 !important;
+}
+[data-name="onborda-pointer"],
+[data-name="onborda-card"] {
+  overflow: visible !important;
+}
+[data-name="onborda-card"] {
+  z-index: 1000 !important;
+}
+
+/* Default to the arrow cursor + no text-selection on UI chrome.
+   Editable and copyable surfaces below opt back in. */
+body {
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Text-entry surfaces keep the native I-beam + full selection. */
+input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not(
+    [type="radio"]
+  ):not([type="file"]):not([type="range"]):not([type="color"]),
+textarea,
+[contenteditable="true"],
+[contenteditable=""] {
+  cursor: text;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* Code / secret / copyable monospace fields */
+code,
+pre,
+.select-text,
+[data-selectable="true"] {
+  cursor: text;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+button,
+a,
+label,
+select,
+summary,
+[role="button"],
+input[type="checkbox"],
+input[type="radio"],
+input[type="submit"],
+input[type="reset"],
+input[type="file"] {
+  cursor: pointer;
+}
+
+/* ── Tailwind gray scale overrides: shift each step brighter for dark bg readability ── */
+@theme {
+  --color-gray-400: #d1d5db;
+  --color-gray-500: #c0c6d1;
+  --color-gray-600: #9ca3af;
+}
+
+/* ── Design tokens ── */
+:root {
+  /* Brand */
+  --color-brand: #68b0f5;
+  --color-brand-muted: rgba(104, 176, 245, 0.33);
+
+  /* Surface (dark theme) */
+  --color-surface-base: #030712;
+  --color-surface-raised: #0c0c0f;
+  --color-surface-overlay: rgba(0, 0, 0, 0.7);
+
+  /* Text */
+  --color-text: #ffffff;
+  --color-text-secondary: #d1d5db;
+  --color-text-muted: #d1d5db;
+  --color-text-faint: #c0c6d1;
+
+  /* Border */
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-hover: rgba(255, 255, 255, 0.14);
+  --color-border-active: rgba(255, 255, 255, 0.22);
+
+  /* Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.625rem;
+  --radius-xl: 0.875rem;
+
+  /* Shadow */
+  --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+em {
+  font-style: italic;
+  color: var(--color-brand);
+}
+strong {
+  font-weight: 700;
+  color: var(--color-brand);
+}
+
+/* Enforce dark mode color scheme to prevent extensions from altering it */
+html {
+  color-scheme: dark !important;
+}
+
+html,
+body {
+  background-color: rgb(3, 7, 18) !important;
+  color: rgb(255, 255, 255) !important;
+  accent-color: var(--color-brand);
+}
+
+/* Global page scrollbar in brand color, thin and subtle */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-brand) 33%, transparent);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--color-brand) 67%, transparent);
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+html {
+  scrollbar-color: color-mix(in srgb, var(--color-brand) 33%, transparent) transparent;
+  scrollbar-width: thin;
+}
+
+/* Animations */
+@keyframes blob {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+}
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes scale-in {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes pulse-gentle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+.animate-blob {
+  animation: blob 7s infinite;
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out;
+}
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out;
+}
+.animate-scale-in {
+  animation: scale-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.animate-pulse-gentle {
+  animation: pulse-gentle 2s ease-in-out infinite;
+}
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-4px);
+  }
+  40%,
+  80% {
+    transform: translateX(4px);
+  }
+}
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
+}
+@keyframes ping-slow {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+.animation-delay-200 {
+  animation-delay: 0.2s;
+  animation-fill-mode: both;
+}
+.animation-delay-400 {
+  animation-delay: 0.4s;
+  animation-fill-mode: both;
+}
+.animation-delay-600 {
+  animation-delay: 0.6s;
+  animation-fill-mode: both;
+}
+.animation-delay-800 {
+  animation-delay: 0.8s;
+  animation-fill-mode: both;
+}
+.animation-delay-1000 {
+  animation-delay: 1s;
+  animation-fill-mode: both;
+}
+.animation-delay-1200 {
+  animation-delay: 1.2s;
+  animation-fill-mode: both;
+}
+
+/* Sonner toast box scale animation (overrides the default slide) */
+@keyframes toast-box-in {
+  from {
+    opacity: 0;
+    transform: scale(0.88) translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes toast-box-out {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.88) translateY(-8px);
+  }
+}
+
+[data-sonner-toast][data-state="open"] {
+  animation: toast-box-in 300ms cubic-bezier(0.16, 1, 0.3, 1) both !important;
+}
+
+[data-sonner-toast][data-removed="true"] {
+  animation: toast-box-out 200ms cubic-bezier(0.4, 0, 1, 1) both !important;
+}
+
+/* Login button with periodic diagonal shimmer sweep */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shimmer::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -130%;
+  width: 60%;
+  height: 200%;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    transparent 40%,
+    rgba(255, 255, 255, 0.14) 50%,
+    transparent 60%,
+    transparent 100%
+  );
+  animation: btn-shimmer-sweep 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes btn-shimmer-sweep {
+  0% {
+    transform: translateX(0);
+  }
+  35% {
+    transform: translateX(500%);
+  }
+  100% {
+    transform: translateX(500%);
+  }
+}

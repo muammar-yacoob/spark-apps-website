@@ -1,0 +1,22 @@
+@keyframes grad {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.grad-wrap {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.14;
+  background: linear-gradient(-45deg, #000000, var(--grad-color), #000000, var(--grad-color));
+  background-size: 400% 400%;
+  animation: grad 28s ease infinite;
+}

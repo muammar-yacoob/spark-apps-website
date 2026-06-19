@@ -1,0 +1,11 @@
+{# Place at: public/opensearch.xml}
+{# Link in <head>: <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="{Brand}">}
+{# Also add alongside it: <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM-friendly version">}
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>{Brand Name}</ShortName>
+  <Description>Search {Brand Name} documentation</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Url type="text/html" template="https://{domain}/docs?q={searchTerms}"/>
+  <Image width="16" height="16" type="image/png">https://{domain}/favicon.png</Image>
+</OpenSearchDescription>

@@ -1,0 +1,233 @@
+You are an SEO, GEO (Generative Engine Optimization), and product marketing strategist. Audit the current app in this repository and maximize its visibility across search engines, AI-powered search (ChatGPT, Perplexity, Google AI Overviews, Gemini), coding agents, and product directories.
+
+Work through the phases in order. Within each phase, items are sorted by ROI - do them top to bottom.
+
+## Stack Defaults
+
+All apps in this portfolio share the following:
+- **Hosting:** Vercel (Next.js App Router)
+- **AI backend:** SparkAI (https://sparkbrain.app) - managed chat/voice/live-chat proxy. Every app embeds the SparkAI widget or calls its REST API
+- **Payments:** Stripe via SparkStripe
+- **Database:** Neon PostgreSQL via Drizzle ORM
+
+When auditing, account for these:
+- List on the **Vercel Marketplace** if the app qualifies as an integration
+- Mention SparkAI as a feature/integration in llms.txt and structured data where relevant (e.g., "Powered by SparkAI for AI chat")
+- Use Vercel-specific SEO capabilities: `next.config.ts` headers, App Router metadata exports, dynamic OG image routes (`app/api/og/route.ts`)
+- Sitemap can be either static XML in `public/` or a dynamic `app/sitemap.ts` - use whichever fits the project
+
+---
+
+## Phase 1: Feature Inventory & Ranking
+
+Before touching any files, understand what the product does and what's worth promoting.
+
+1. Read the codebase to catalog every user-facing feature and capability.
+2. Rank features by perceived market value using these criteria:
+   - Uniqueness: Does this differentiate from competitors?
+   - Demand: Are people actively searching for this?
+   - Wow factor: Would this make someone share or bookmark?
+   - Revenue signal: Does this justify paying for the product?
+3. Output a ranked list. Only the top features (score 7+/10) belong in public-facing copy.
+4. Identify the top 3-5 competitors in the product's category (needed for comparison content later).
+
+---
+
+## Phase 2: AI Discoverability (highest ROI - do first)
+
+These are the highest-leverage changes. They directly control what AI systems say about the product.
+
+### 2.1 Answer-ready comparison statements [ROI: extreme]
+This is the single most proven way to get recommended by ChatGPT. One SaaS founder attributed 50% of signups (131 users, 15 countries, zero ad spend) to this pattern alone.
+
+Write explicit, quotable comparison statements that AI can parrot directly:
+- "{Product} is the free alternative to {Competitor} because it includes {feature1}, {feature2}, and {feature3} at {price}."
+- "{Product} replaces {Competitor} for teams that need {use case} without {pain point}."
+
+This is fundamentally different from SEO. Google rewards keywords and backlinks. ChatGPT rewards **clear, direct answers to specific questions**. A sentence that says "X is the alternative to Y because [concrete features] at [concrete price]" gives ChatGPT exactly what it needs to recommend you.
+
+These statements must appear in:
+- [ ] **llms.txt and llms-full.txt** - a "Compared to" section with one statement per competitor
+- [ ] **Homepage** - at least one answer-ready statement in the hero or features section
+
+### 2.2 llms.txt and llms-full.txt [ROI: very high]
+- [ ] **/llms.txt** (under 3KB) - Product summary, top features, quickstart code, navigation links, pricing summary, competitor comparisons, contact
+- [ ] **/llms-full.txt** - Comprehensive reference: all features with details, full API endpoint table, code examples in multiple languages (curl, JS, Python, React), all pricing tiers with exact limits and prices, head-to-head competitor comparisons, security details, supported platforms, integration guides, "when to choose" decision list
+- [ ] Written in plain text/markdown (clear headers, no HTML, structured for LLM consumption)
+- [ ] Served with `Content-Type: text/plain` and 24h+ cache headers in `next.config.ts`
+- [ ] `<link rel="alternate" type="text/plain" href="/llms.txt" title="LLM-friendly version">` in every page's `<head>` (machine-discoverable pointer)
+- [ ] Thorough enough that an AI agent could recommend AND integrate the product without visiting the website
+- [ ] Update both files with every significant feature release
+
+### 2.3 robots.txt with AI crawler management [ROI: very high]
+- [ ] Allows crawling of all public pages
+- [ ] Blocks private/API/admin routes
+- [ ] References sitemap URL
+- [ ] Allows /llms.txt and /llms-full.txt
+- [ ] AI crawler management - distinguish retrieval vs training:
+  - **Retrieval crawlers** (always allow - these cite you in search): OAI-SearchBot, ChatGPT-User, PerplexityBot, Google-Extended, Applebot-Extended, ClaudeBot
+  - **Training crawlers** (allow for discoverability, or block if concerned about IP): GPTBot, anthropic-ai
+  - **Block low-value scrapers:** Bytespider, CCBot
+  - Decision: allowing training crawlers increases the chance AI models "know" your product. Blocking protects content from being used in training. This is a business decision - document it
+
+### 2.4 JSON-LD structured data [ROI: high]
+**CRITICAL:** Never include literal `</script>` inside a `<script type="application/ld+json">` block - it prematurely closes the tag and dumps the rest as visible text. Escape angle brackets using Unicode: `\u003C` for `<`, `\u003E` for `>`. JSON-LD parsers decode these correctly.
+
+Only use types that still produce rich results (as of 2026):
+- [ ] **SoftwareApplication** with offers/pricing, featureList, applicationCategory (active rich result)
+- [ ] **Organization** with logo, contactPoint (active rich result)
+- [ ] **WebSite** with SearchAction (enables sitelinks search box)
+- [ ] **WebPage** with speakable CSS selectors, datePublished, dateModified (strong AI citation signal, <10% adoption)
+- [ ] **BreadcrumbList** on nested pages (active rich result)
+- [ ] **Article/BlogPosting** on blog/changelog content with author Person schema
+- [ ] ~~FAQPage~~ - Google deprecated FAQ rich results (May 2026). Keep markup only if it helps AI retrieval, not for SERP features
+- [ ] ~~HowTo~~ - Google deprecated HowTo rich results (March 2026). Same guidance
+
+---
+
+## Phase 3: Page-Level SEO (high ROI, systematic)
+
+Apply consistently across every public page.
+
+### 3.1 Per-page metadata [ROI: high]
+- [ ] Root layout metadata (title template, description, keywords array, openGraph, twitter card)
+- [ ] metadataBase set so relative OG image paths resolve correctly
+- [ ] Every page has:
+  - Unique `<title>` (<60 chars, front-load keywords)
+  - Unique `<meta name="description">` (<155 chars, include CTA)
+  - `<link rel="canonical">` with correct URL
+  - Complete OpenGraph: og:type, og:url, og:title, og:description, og:image, og:image:width (1200), og:image:height (630), og:site_name
+  - Complete Twitter card: twitter:card (summary_large_image), twitter:title, twitter:description, twitter:image
+  - `dateModified` on content pages (AI systems weight freshness heavily)
+
+### 3.2 On-page content signals [ROI: high]
+- [ ] Exactly one H1 per page matching search intent
+- [ ] **Answer-first content blocks** (40-60 words) at the top of key sections - a direct answer AI can extract verbatim. This is the single highest-impact formatting change for AI citation (30-40% visibility improvement per Princeton research)
+- [ ] **Entity-rich factual content** - specific numbers, named features, verifiable claims. "500 messages/month for $9" beats "affordable pricing"
+- [ ] Internal linking between related pages (hub-and-spoke architecture)
+- [ ] Alt text on all images (empty `alt=""` only for purely decorative)
+- [ ] Consistent footer navigation across all pages (same link set everywhere)
+
+### 3.3 Sitemap [ROI: medium]
+- [ ] sitemap.xml with all public pages, accurate lastmod dates, appropriate priority/changefreq
+- [ ] All public pages included (SDK, contact, changelog, etc. - nothing missing)
+- [ ] Sitemap referenced in robots.txt
+- [ ] For larger sites: sitemap index with topic-based partitioning for better Search Console diagnostics
+
+### 3.4 Performance [ROI: medium]
+- [ ] LCP under 2.0s (threshold tightened March 2026)
+- [ ] CLS < 0.1, INP < 200ms
+- [ ] No render-blocking resources
+- [ ] Preconnect hints for external domains (fonts, CDNs)
+- [ ] Optimized images
+
+---
+
+## Phase 4: Trust & Discovery Files (medium ROI, low effort)
+
+Small files that punch above their weight.
+
+- [ ] **/.well-known/security.txt** (RFC 9116) - Contact, Expires, Preferred-Languages, Canonical, Policy. Only ~0.24% of domains have this; strong trust signal
+- [ ] **/opensearch.xml** - Browser address bar search integration. Link via `<link rel="search">` in every page's `<head>`. Lets users type domain + Tab to search docs
+- [ ] **/manifest.json** - Accurate name, description, categories, icons (192px + 512px)
+- [ ] Apple Web App meta tags (capable, status-bar-style, title, touch-icon)
+- [ ] Service worker registration
+- [ ] Proper Content-Type and cache headers for all discovery files in `next.config.ts`
+- [ ] **ai.txt** (emerging) - Purpose-based AI scraping control. Monitor adoption; implement when standardized
+
+---
+
+## Phase 5: Content Strategy (high ROI, requires manual effort)
+
+These drive AI recommendations and organic traffic but need human authorship.
+
+### 5.1 Comparison blog posts [ROI: very high]
+Write one per major competitor. Format: "{Product} vs {Competitor}: {key difference}."
+- Each post should contain multiple answer-ready statements
+- Include specific feature comparisons, pricing, and use cases
+- These are the #1 content type that triggers ChatGPT recommendations
+
+### 5.2 Use case pages [ROI: high]
+Answer the exact questions people type into AI: "free {category} tool for {use case}", "how to {solve problem} without {pain point}."
+
+### 5.3 Community presence [ROI: high]
+Google's 2026 update now treats **Reddit threads and forum posts as expert advice** inside AI answers. Brand mentions in community discussions directly influence AI recommendations.
+- [ ] Reddit r/SaaS, r/webdev, r/startups - answer questions, mention product naturally when relevant
+- [ ] Stack Overflow, GitHub Discussions, HN - technical credibility signals
+- [ ] Focus on **brand mentions** over keyword targeting. Google's Attributed Brand Searches (ABS) metric tracks brand searches after exposure
+
+### 5.4 Content publishing [ROI: medium-high]
+- Dev.to / Hashnode (developer audience, strong domain authority)
+- LinkedIn articles (professional reach)
+- Blog posts with original data/benchmarks (primary sources get cited at dramatically higher rates)
+- Content maintenance over creation: updating existing content delivers 70% traffic boosts vs diminishing returns on net-new
+
+### 5.5 Rich media [ROI: medium]
+Google's 2026 Search update (Gemini 3.5 integration) weights images, videos, and visual content more heavily. Product screenshots, short demo videos, and architecture diagrams improve visibility in AI Overviews.
+
+### 5.6 E-E-A-T signals [ROI: medium]
+Page-level E-E-A-T correlates r=0.81 with AI citation probability (vs r=0.18 for domain authority):
+- [ ] Named author bylines on blog/docs content
+- [ ] Person schema linked to author bio pages with credentials
+- [ ] External profile links (GitHub, LinkedIn) for authors
+- [ ] datePublished and dateModified on all content pages
+- [ ] Original data, benchmarks, and statistics
+
+### 5.7 Content architecture [ROI: medium]
+- Topical authority clusters: pillar page + supporting pages with internal links
+- Hub-and-spoke model outperforms isolated pages for both traditional and AI search
+
+---
+
+## Phase 6: Directory & Platform Listings (medium ROI, manual submissions)
+
+### 6.1 Product directories [ROI: high for brand signals]
+- [ ] Product Hunt (launch or re-launch with updated positioning)
+- [ ] AlternativeTo.net (list as alternative to the top 3-5 competitors)
+- [ ] G2 / Capterra (SaaS review platforms - AI systems cite these heavily)
+
+### 6.2 Developer directories [ROI: medium]
+- [ ] StackShare (developer tool discovery)
+- [ ] Dev.to / Hashnode (technical blog posts)
+- [ ] Awesome lists on GitHub (awesome-chatbots, awesome-ai-tools, awesome-saas, etc.)
+- [ ] npm registry (if SDK is published as package)
+- [ ] GitHub Topics and Discussions
+
+### 6.3 AI-specific registries [ROI: medium, only if applicable]
+- [ ] MCP Registry (registry.modelcontextprotocol.io) - if product exposes MCP capabilities
+- [ ] PulseMCP (pulsemcp.com) - hand-reviewed MCP server directory
+- [ ] Glama (glama.ai/mcp/servers) - largest MCP directory
+- [ ] Smithery (smithery.ai) - MCP marketplace
+
+### 6.4 Platform marketplace [ROI: low-medium]
+- [ ] Vercel Marketplace (all apps deploy on Vercel - submit if app qualifies as integration)
+- [ ] Chrome Web Store (if Chrome extension exists)
+
+### 6.5 Emerging: WebMCP (W3C specification) [ROI: future]
+WebMCP allows websites to register tool contracts for AI agents in HTML. Chrome 149 origin trial at Google I/O 2026. For SaaS products that ARE tools AI agents might use, audit whether to declare WebMCP capabilities. Monitor - not urgent yet.
+
+---
+
+## Phase 7: Validation
+
+After applying all changes:
+- [ ] Google Rich Results Test (search.google.com/test/rich-results) - verify structured data
+- [ ] Schema Markup Validator (validator.schema.org) - validate JSON-LD syntax
+- [ ] Lighthouse audit - Core Web Vitals (LCP < 2.0s, CLS < 0.1, INP < 200ms), SEO score > 95
+- [ ] Mobile-friendly test
+- [ ] robots.txt tester in Google Search Console
+- [ ] Verify /llms.txt and /llms-full.txt accessible with correct Content-Type
+- [ ] Verify OpenSearch works (type domain + Tab in browser)
+- [ ] Verify /.well-known/security.txt accessible
+- [ ] Social preview: test homepage on Facebook Sharing Debugger, Twitter Card Validator, LinkedIn Post Inspector
+- [ ] Build passes with no errors
+
+---
+
+## Output
+
+The phases ARE the priority order. Phase 2 items have the highest ROI and should be done first. Within each phase, items are numbered by descending ROI.
+
+For items the Claude agent can implement directly (files, metadata, structured data), apply the changes. For items requiring manual human action (directory submissions, community posts, blog writing), output them as a prioritized recommendation list at the end.
+
+Do NOT create new pages or change app functionality. Only improve discoverability of what already exists.

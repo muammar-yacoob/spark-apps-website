@@ -1,0 +1,43 @@
+# {Product Name}
+
+> {One-line value proposition. What it does, for whom.}
+
+{Product Name} is a {category} that {core function}. {How it works in one sentence}. {Key differentiator}.
+
+- Website: {url}
+- Docs: {docs_url}
+- Pricing: {pricing_url}
+- Support: {support_url}
+- Full AI reference: {url}/llms-full.txt
+
+## Core Features
+
+- {Feature 1 - most important/unique}
+- {Feature 2}
+- {Feature 3}
+- {Feature 4}
+- {Feature 5}
+- {Feature 6 - up to 10-12 features max}
+
+## Quick Start
+
+### {Simplest integration method}
+```{language}
+{3-5 lines of code to get started}
+```
+
+### {Alternative method (e.g., REST API)}
+```
+{curl or fetch example}
+```
+
+## Pricing
+
+- Free: {limits}
+- {Tier 2} (${price}/mo): {limits}
+- {Tier 3} (${price}/mo): {limits}
+- {Tier 4} (${price}/mo): {limits}
+
+## Contact
+
+{support email}

@@ -1,0 +1,33 @@
+@keyframes bb {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.85;
+  }
+  85% {
+    opacity: 0.25;
+  }
+  100% {
+    transform: translateY(-110vh) scale(0.2);
+    opacity: 0;
+  }
+}
+
+.bb-wrap {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+  contain: layout style;
+}
+
+.bb {
+  position: absolute;
+  bottom: -60px;
+  border-radius: 50%;
+  opacity: 0;
+  animation: bb linear infinite;
+}

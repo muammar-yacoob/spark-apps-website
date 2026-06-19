@@ -1,0 +1,92 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+desktop.ini
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+.env
+.env.vercel
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+/drizzle
+/demo
+.wrangler
+
+# cli-setup - sensitive credentials
+cli-setup/product-setup/.env
+cli-setup/product-setup/.env.local
+cli-setup/product-setup/product-config.json
+# Keep examples
+!cli-setup/product-setup/product-config.example.json
+
+# Development directories
+/.next.bak
+/.taskmaster
+/.claude
+/.cursor
+/.playwright-mcp
+.vscode/*
+!.vscode/settings.json
+.idea/
+
+# Testing and temporary files
+test-*.md
+test-*.sh
+test-*.js
+CLEANUP_COMPLETE.md
+RESALE_READY.md
+
+# Internal documentation (remove before sale)
+CHANGELOG.md
+.mcp.json
+CLAUDE.md
+.klean.json
+
+# Owner-only CI/CD (sync workflow runs on origin, not distributed to customers)
+.github/workflows/sync-boilerplate.yml
+.releaserc.json
+
+# Owner-only assets (not distributed with repo)
+/promo/
+*.tar.gz
+*.zip
+
+# Owner-only scripts: seeders with owner-specific Stripe IDs and DB state.
+scripts/db/reseed-sample-data.ts
+
+# Animation & avatar assets  used on owner's backend only, attribution unclear
+/public/animations/
+/public/testimonials/avatars/
+
+# npm lock (project uses bun)
+package-lock.json

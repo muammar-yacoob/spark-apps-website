@@ -1,0 +1,106 @@
+# {Product Name} - Complete Reference
+
+> {One-line value proposition}
+
+Website: {url}
+Docs: {docs_url}
+Pricing: {pricing_url}
+Support: {support_url}
+
+---
+
+## What {Product Name} Does
+
+{2-3 paragraphs explaining the product, what problem it solves, and how it works. Be specific and factual. Include numbers where possible.}
+
+---
+
+## Feature Details
+
+### 1. {Feature Name}
+
+{2-3 sentence description of what it does and why it matters.}
+
+```{language}
+{Working code example}
+```
+
+{Repeat for each major feature. Include code examples for every developer-facing feature.}
+
+---
+
+## API Endpoints
+
+| Method | Path | Purpose |
+|--------|------|---------|
+| POST | /api/{endpoint} | {Description} |
+| GET | /api/{endpoint} | {Description} |
+
+{Include request/response examples for the most important endpoints.}
+
+---
+
+## Code Examples
+
+### cURL
+
+```bash
+curl -X POST {url}/api/{endpoint} \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {token}" \
+  -d '{"key": "value"}'
+```
+
+### JavaScript
+
+```javascript
+const res = await fetch("{url}/api/{endpoint}", {
+  method: "POST",
+  headers: { "Content-Type": "application/json", "Authorization": "Bearer {token}" },
+  body: JSON.stringify({ key: "value" })
+});
+```
+
+### Python
+
+```python
+import requests
+
+response = requests.post(
+    "{url}/api/{endpoint}",
+    headers={"Authorization": "Bearer {token}"},
+    json={"key": "value"}
+)
+```
+
+---
+
+## Pricing
+
+### Free
+- {Detailed limits}
+
+### {Tier Name} - ${price}/month (${annual_price}/year)
+- {Detailed limits for each tier}
+
+{Repeat for all tiers}
+
+---
+
+## Supported Platforms
+
+{List all platforms, frameworks, and languages the product works with.}
+
+---
+
+## Security
+
+{List security features: encryption, auth methods, data handling, compliance.}
+
+---
+
+## Contact
+
+- Support: {email}
+- Website: {url}
+- Documentation: {docs_url}

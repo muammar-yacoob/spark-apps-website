@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Welcome to Your Dashboard",
+    "content": "This is your control center. Let's walk through the key areas so you can get started.",
+    "selector": "#onborda-overview",
+    "side": "right",
+    "showControls": true,
+    "pointerPadding": 6,
+    "pointerRadius": 10
+  },
+  {
+    "title": "Navigation",
+    "content": "Switch between the overview and settings from here. The overview shows your database stats at a glance.",
+    "selector": "#onborda-sidebar",
+    "side": "right",
+    "showControls": true,
+    "pointerPadding": 8,
+    "pointerRadius": 12
+  },
+  {
+    "title": "Settings",
+    "content": "Customize your app's branding, appearance, and notification preferences from the settings panel.",
+    "selector": "#onborda-settings",
+    "side": "right",
+    "showControls": true,
+    "pointerPadding": 6,
+    "pointerRadius": 10
+  },
+  {
+    "title": "Account Menu",
+    "content": "Access your profile, share the app, replay this tour, or sign out from this menu.",
+    "selector": "#onborda-user-menu",
+    "side": "bottom",
+    "showControls": true,
+    "pointerPadding": 8,
+    "pointerRadius": 14
+  }
+]

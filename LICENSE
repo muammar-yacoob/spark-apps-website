@@ -1,0 +1,127 @@
+Spark-Stripe Commercial Source Licence
+
+Copyright (c) 2024-2026 Spark Games Ltd. All rights reserved.
+GitHub: https://github.com/muammar-yacoob
+
+This software and associated source code ("Software") are the proprietary and
+confidential property of Spark Games Ltd ("Licensor"). Access to the Software
+is granted solely to individuals or entities that have purchased a valid
+licence directly from Spark Games Ltd ("Licensee", "you").
+
+────────────────────────────────────────────────────────────────────────────────
+
+1. GRANT OF LICENCE
+
+Subject to full compliance with this Licence, Licensor grants you a limited,
+personal, non-exclusive, non-transferable, non-sublicensable licence to:
+
+  (a) use, copy, and modify the Software solely to build and operate your own
+      software products or services;
+
+  (b) deploy the Software, or modified versions of it, to servers or
+      environments that you own or control for your own commercial purposes.
+
+2. PERMITTED USES
+
+  (a) You may use the Software as the backend for one or more of your own
+      products or client projects.
+
+  (b) You may make modifications to the Software for your own use.
+
+  (c) You may retain a private copy of the Software (including modifications)
+      for your own internal reference and development purposes.
+
+3. RESTRICTIONS
+
+You may NOT, without prior written consent from Licensor:
+
+  (a) sell, resell, rent, lease, lend, sublicense, or otherwise transfer the
+      Software or any substantial portion of its source code to any third
+      party, whether for payment or free of charge;
+
+  (b) distribute, publish, or make the Software publicly available in source
+      or compiled form, including via open-source repositories, code-sharing
+      platforms, or similar services;
+
+  (c) use the Software, or any derivative of it, to create a boilerplate,
+      starter kit, template, SaaS product, or similar offering that competes
+      with or replicates the purpose of the Software and is itself offered for
+      sale or redistribution;
+
+  (d) grant access to your copy of the Software to any individual or entity
+      that has not independently purchased a licence from Licensor;
+
+  (e) share your GitHub repository access or any credentials granting access
+      to the Software with any third party;
+
+  (f) remove, obscure, or alter any copyright, trademark, or proprietary
+      notices contained within the Software.
+
+4. INTELLECTUAL PROPERTY
+
+The Software is protected by copyright law and international intellectual
+property treaties. Licensor retains all rights, title, and interest in and to
+the Software, including all intellectual property rights therein. This Licence
+does not transfer any ownership rights to you. Any modifications you make to
+the Software remain subject to this Licence and do not confer any ownership
+or intellectual property rights upon you.
+
+5. CONFIDENTIALITY
+
+The Software constitutes confidential information of Licensor. You agree to
+take reasonable steps to protect the Software from unauthorised disclosure or
+use, and to use the Software only as permitted under this Licence.
+
+6. DISCLAIMER OF WARRANTIES
+
+THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. LICENSOR DOES NOT
+WARRANT THAT THE SOFTWARE WILL BE ERROR-FREE, SECURE, OR UNINTERRUPTED, OR
+THAT DEFECTS WILL BE CORRECTED.
+
+7. LIMITATION OF LIABILITY
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW:
+
+  (a) IN NO EVENT SHALL LICENSOR BE LIABLE FOR ANY INDIRECT, INCIDENTAL,
+      SPECIAL, EXEMPLARY, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING LOSS
+      OF PROFITS, REVENUE, DATA, GOODWILL, OR BUSINESS OPPORTUNITIES, ARISING
+      OUT OF OR IN CONNECTION WITH THIS LICENCE OR THE USE OF THE SOFTWARE,
+      EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+  (b) LICENSOR'S TOTAL AGGREGATE LIABILITY TO YOU FOR ALL CLAIMS ARISING
+      UNDER OR IN CONNECTION WITH THIS LICENCE SHALL NOT EXCEED THE TOTAL
+      AMOUNT PAID BY YOU FOR THE LICENCE.
+
+8. TERMINATION
+
+  (a) This Licence is effective from the date of purchase and continues until
+      terminated.
+
+  (b) Licensor may terminate this Licence immediately and without notice if
+      you breach any of its terms.
+
+  (c) Upon termination, you must immediately cease all use of the Software,
+      destroy all copies in your possession or control, and, if applicable,
+      contact Licensor to have your GitHub repository access revoked.
+
+  (d) Clauses 4, 5, 6, 7, and 9 survive termination of this Licence.
+
+9. GOVERNING LAW AND JURISDICTION
+
+This Licence shall be governed by and construed exclusively in accordance with
+the laws of England and Wales. Each party irrevocably submits to the exclusive
+jurisdiction of the courts of England and Wales to settle any dispute arising
+out of or in connection with this Licence.
+
+10. ENTIRE AGREEMENT
+
+This Licence constitutes the entire agreement between you and Licensor with
+respect to the Software and supersedes all prior representations, agreements,
+or understandings, whether oral or written.
+
+────────────────────────────────────────────────────────────────────────────────
+
+Spark Games Ltd
+https://github.com/muammar-yacoob

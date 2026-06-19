@@ -1,0 +1,54 @@
+# Default rules
+User-agent: *
+Allow: /
+{# List all public pages explicitly}
+Allow: /docs
+Allow: /pricing
+Allow: /blog
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+{# Block private routes}
+Disallow: /api/
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /.git/
+
+# --- AI Retrieval Crawlers (search/citation) - always allow ---
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+# --- AI Training Crawlers ---
+# Allow: increases chance AI models "know" your product
+# Disallow: protects content from training data usage
+# This is a business decision - choose one per crawler
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# --- Block low-value scrapers ---
+User-agent: Bytespider
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+Sitemap: https://{domain}/sitemap.xml

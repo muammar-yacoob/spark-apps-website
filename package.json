@@ -1,0 +1,57 @@
+{
+  "name": "spark-apps-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Productivity Apps for Vibe Coders",
+  "author": "Muammar Yacoob",
+  "homepage": "https://sparkstack.dev",
+  "repository": "https://github.com/muammar-yacoob/SparkStack",
+  "license": "SEE LICENSE IN LICENSE",
+  "scripts": {
+    "dev": "bunx next dev --turbopack",
+    "build": "npx next build",
+    "start": "bunx next start",
+    "check": "biome check .",
+    "format": "biome format --write .",
+    "lint": "biome lint .",
+    "type-check": "tsc --noEmit",
+    "setup": "bun install",
+    "deploy:check": "bun check && bun type-check && bun build",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
+    "@tanstack/react-query": "^5.101.0",
+    "canvas-confetti": "^1.9.4",
+    "framer-motion": "^12.40.0",
+    "lottie-react": "^2.4.1",
+    "lucide-react": "^0.577.0",
+    "next": "15.5.19",
+    "next-auth": "^5.0.0-beta.31",
+    "onborda": "^1.2.5",
+    "react": "^19.2.7",
+    "react-colorful": "^5.7.0",
+    "react-day-picker": "^9.14.0",
+    "react-dom": "^19.2.7",
+    "sharp": "^0.34.5",
+    "sonner": "^2.0.7"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@tailwindcss/postcss": "^4.3.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@types/canvas-confetti": "^1.9.0",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.19.19",
+    "@types/react": "^19.2.16",
+    "@types/react-dom": "^19.2.3",
+    "dotenv": "^17.4.2",
+    "jest": "^29.7.0",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

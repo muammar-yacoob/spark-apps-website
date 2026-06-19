@@ -1,0 +1,90 @@
+/* Trigger - underline variant */
+.input {
+  width: 100%;
+  background: transparent;
+  font-size: 0.75rem;
+  color: #fff;
+  border: none;
+  border-bottom: 1px solid rgb(255 255 255 / 0.1);
+  outline: none;
+  padding-bottom: 0.125rem;
+  transition: border-color 150ms;
+}
+
+/* ── react-day-picker dark theme ── */
+.calendarPopover {
+  background: #0d0d12;
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: 1.125rem;
+  box-shadow: 0 8px 32px rgb(0 0 0 / 0.6);
+  padding: 6px 8px 10px;
+}
+
+.darkCalendar {
+  --rdp-accent-color: var(--color-brand);
+  --rdp-accent-background-color: rgb(104 176 245 / 0.12);
+  --rdp-today-color: var(--color-brand);
+  --rdp-day-height: 30px;
+  --rdp-day-width: 30px;
+  --rdp-day_button-height: 28px;
+  --rdp-day_button-width: 28px;
+  --rdp-nav_button-height: 1.5rem;
+  --rdp-nav_button-width: 1.5rem;
+  --rdp-nav-height: 2rem;
+  --rdp-weekday-opacity: 0.35;
+  --rdp-outside-opacity: 0.25;
+  color: rgb(209 213 219);
+  font-size: 0.75rem;
+}
+
+.darkCalendar :global(.rdp-month_caption) {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgb(243 244 246);
+}
+
+.darkCalendar :global(.rdp-chevron) {
+  fill: rgb(107 114 128);
+}
+
+.darkCalendar :global(.rdp-button_previous:hover .rdp-chevron),
+.darkCalendar :global(.rdp-button_next:hover .rdp-chevron) {
+  fill: rgb(243 244 246);
+}
+
+.darkCalendar :global(.rdp-day_button:hover:not(:disabled)) {
+  background: rgb(255 255 255 / 0.06);
+}
+
+.darkCalendar :global(.rdp-selected .rdp-day_button) {
+  background: var(--color-brand);
+  color: rgb(3 7 18);
+  border-color: var(--color-brand);
+}
+
+.darkCalendar :global(.rdp-today:not(.rdp-selected) .rdp-day_button) {
+  color: var(--color-brand);
+  font-weight: 700;
+}
+
+/* Month/year dropdowns inside the dark calendar */
+.calendarDropdown {
+  background: #1a1a24;
+  color: rgb(209 213 219);
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 4px;
+  cursor: pointer;
+  outline: none;
+}
+
+.calendarDropdown:focus {
+  border-color: rgb(104 176 245 / 0.5);
+}
+
+.calendarDropdown option {
+  background: #1a1a24;
+  color: rgb(209 213 219);
+}

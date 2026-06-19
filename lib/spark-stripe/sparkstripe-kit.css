@@ -1,0 +1,238 @@
+/* sparkstripe-kit.css
+   Shared styles for SparkStripe downloadable components.
+   Place this file alongside any SparkStripe-*.tsx files you use. */
+
+/* ── Badge ──────────────────────────────────────────────────────────────── */
+
+.ss-wrap {
+  position: relative;
+  display: inline-flex;
+  color-scheme: dark;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.ss-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+  text-decoration: none;
+  background: var(--ss-bg);
+  color: var(--ss-fg);
+  border: 1px solid var(--ss-border);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+  -webkit-font-smoothing: antialiased;
+}
+
+.ss-sep {
+  width: 1px;
+  height: 9px;
+  background: currentColor;
+  opacity: 0.2;
+  flex-shrink: 0;
+}
+
+.ss-upgrade {
+  color: inherit;
+  text-decoration: none;
+  opacity: 0.78;
+  font-weight: 500;
+}
+
+.ss-discount {
+  color: #fde047;
+  opacity: 1;
+  font-weight: 600;
+  text-shadow: 0 0 6px rgba(253, 224, 71, 0.35);
+}
+
+.ss-crown {
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+  color: #fcd34d;
+  fill: currentColor;
+  filter: drop-shadow(0 0 3px rgba(252, 211, 77, 0.35));
+}
+
+/* ── Promo glow ─────────────────────────────────────────────────────────── */
+
+.ss-badge[data-promo] {
+  border-color: rgba(234, 179, 8, 0.5);
+  /* animation-fill-mode: backwards + a 500ms delay prevent a remount from
+     re-triggering a half-played ripple on top of the previous one. Without
+     it, React rerenders that briefly swap the data-promo attribute (e.g.
+     auth-state-driven status refresh) would stutter-pulse on the visible
+     frame. With backwards, a fresh mount sits at 0% for 500ms, absorbing
+     the rerender window before the cycle starts. */
+  animation: ss-promo-pulse 30s ease-out 500ms infinite backwards;
+  cursor: pointer;
+}
+
+/* One crisp ripple at the start of each 30s cycle, then idle.
+   Short duty cycle keeps it a subtle attention cue rather than
+   a constant distraction on long-lived pages. */
+@keyframes ss-promo-pulse {
+  0%       { box-shadow: 0 0 0 0   rgba(234, 179, 8, 0.65); }
+  4%       { box-shadow: 0 0 0 12px rgba(234, 179, 8, 0); }
+  5%, 100% { box-shadow: 0 0 0 0   rgba(234, 179, 8, 0); }
+}
+
+/* ── Tip animation ──────────────────────────────────────────────────────── */
+
+/* Tip renders below the badge, so its transform origin is top center --
+   the scale-in feels like it's dropping from the badge itself. */
+[data-ss-enter] {
+  transform-origin: top center;
+  animation: ss-in 140ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+[data-ss-exit] {
+  transform-origin: top center;
+  animation: ss-out 220ms ease-in both;
+}
+@keyframes ss-in {
+  from { opacity: 0; transform: translateX(-50%) scale(0.85); }
+  to   { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+@keyframes ss-out {
+  from { opacity: 1; transform: translateX(-50%) scale(1); }
+  to   { opacity: 0; transform: translateX(-50%) scale(0.85); }
+}
+
+/* ── Promo tip (portaled to <body> as position:fixed) ────────────────────── */
+
+/* The JSX renders this span via createPortal with top/left set inline from
+   the badge's bounding rect, so the class only carries visuals + the
+   horizontal centering transform. position:fixed + the astronomically high
+   z-index lets the tip escape any ancestor overflow or stacking context in
+   the host app without needing an explicit container. */
+.ss-promo-tip {
+  position: fixed;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #1c1917;
+  border: 1px solid rgba(234, 179, 8, 0.3);
+  border-radius: 8px;
+  padding: 5px 10px;
+  white-space: nowrap;
+  font-size: 11px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  pointer-events: auto;
+  z-index: 2147483647;
+}
+
+.ss-promo-tip::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-bottom-color: rgba(234, 179, 8, 0.3);
+}
+
+/* ── Sale toast (still anchored to .ss-wrap) ─────────────────────────────── */
+
+.ss-toast {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 8px;
+  white-space: nowrap;
+  font-size: 11px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+.ss-toast::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+}
+
+.ss-promo-tip-code {
+  font-family: monospace;
+  font-weight: 700;
+  color: #fbbf24;
+  background: rgba(234, 179, 8, 0.1);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+.ss-promo-tip-desc { color: #9ca3af; }
+
+.ss-promo-tip-x {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0 2px;
+  font-size: 10px;
+  line-height: 1;
+}
+
+.ss-promo-tip-x:hover { color: #d1d5db; }
+
+.ss-toast {
+  bottom: calc(100% + 10px);
+  background: #052e16;
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  padding: 6px 12px;
+  font-weight: 500;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.ss-toast::after { border-top-color: #052e16; }
+
+/* ── Gate wall ──────────────────────────────────────────────────────────── */
+
+.spark-gate-wall {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px 24px;
+  border-radius: 12px;
+  background: #0c0c0f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: system-ui, -apple-system, sans-serif;
+  color-scheme: dark;
+}
+
+.spark-gate-msg {
+  margin: 0;
+  font-size: 13px;
+  color: #71717a;
+  text-align: center;
+}
+
+.spark-gate-cta {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 16px;
+  border-radius: 8px;
+  background: #6366f1;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.spark-gate-cta:hover { background: #4f46e5; }
