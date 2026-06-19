@@ -111,7 +111,7 @@ export default function Home() {
       <section className="relative overflow-hidden">
         <div className="max-w-3xl mx-auto px-6 py-16 sm:py-24 text-center relative z-[1]">
           <h1 className="text-3xl sm:text-5xl font-bold tracking-tight bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent animate-fade-in-up">
-            Productivity Apps for Vibe Coders
+            Productivity Tools for Creators
           </h1>
           <p className="mt-4 sm:mt-6 text-base sm:text-lg text-gray-400 leading-relaxed max-w-xl mx-auto animate-fade-in animation-delay-200">
             Tools, starters, and utilities built to help you ship faster.
