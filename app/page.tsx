@@ -136,6 +136,9 @@ export default function Home() {
             <span className="text-sm font-semibold text-white leading-tight">{SITE_NAME}</span>
           </div>
           <div className="flex items-center gap-4 sm:gap-6 text-sm text-gray-400">
+            <Link href="/about" className="hidden sm:inline hover:text-white transition-colors">
+              About
+            </Link>
             <Link href="/team" className="hidden sm:inline hover:text-white transition-colors">
               Team
             </Link>
@@ -241,6 +244,10 @@ export default function Home() {
         <footer className="border-t border-gray-800 py-6">
           <div className="max-w-5xl mx-auto px-6">
             <div className="flex items-center justify-center gap-6 text-sm text-gray-500">
+              <Link href="/about" className="hover:text-gray-400 transition-colors">
+                About
+              </Link>
+              <span>·</span>
               <Link href="/team" className="hover:text-gray-400 transition-colors">
                 Team
               </Link>
