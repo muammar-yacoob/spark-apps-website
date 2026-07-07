@@ -115,7 +115,16 @@ export const sparkApps: SparkApp[] = [
     description: 'Universal Stripe payment backend. Deploy once, add payments to any app.',
     icon: '/imgs/apps/spark-stripe.png',
     tags: ['Payments', 'Stripe', 'Backend'],
-    links: [{ label: 'Website', url: 'https://sparkstripe.com', type: 'website' }],
+    links: [{ label: 'Website', url: 'https://sparkpay.dev', type: 'website' }],
+  },
+  {
+    id: 'pitchplease',
+    name: 'Pitch Please',
+    tagline: 'Dark Mode, Everywhere',
+    description: 'One click and any page goes pitch black. Dark mode for every website, with attitude.',
+    icon: '/imgs/apps/pitchplease.png',
+    tags: ['Chrome Extension', 'Dark Mode', 'Tools'],
+    links: [{ label: 'Website', url: 'https://getpitchplease.com', type: 'website' }],
   },
   {
     id: 'klean',
