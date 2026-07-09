@@ -121,10 +121,14 @@ export const sparkApps: SparkApp[] = [
     id: 'pitchplease',
     name: 'Pitch Please',
     tagline: 'Dark Mode, Everywhere',
-    description: 'One click and any page goes pitch black. Dark mode for every website, with attitude.',
+    description:
+      'One click and any page goes pitch black. Dark mode for every website, with attitude.',
     icon: '/imgs/apps/pitchplease.png',
     tags: ['Chrome Extension', 'Dark Mode', 'Tools'],
-    links: [{ label: 'Website', url: 'https://getpitchplease.com', type: 'website' }],
+    links: [
+      { label: 'Website', url: 'https://getpitchplease.com', type: 'website' },
+      { label: 'Privacy', url: '/apps/pitchplease/privacy', type: 'website' },
+    ],
   },
   {
     id: 'klean',
