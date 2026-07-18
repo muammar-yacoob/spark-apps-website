@@ -54,8 +54,8 @@ export const viewport: Viewport = {
   themeColor: THEME_COLOR,
 };
 
-const IS_PROD = process.env.NODE_ENV === 'production';
-const CHAT_WIDGET_URL = process.env.NEXT_PUBLIC_CHAT_WIDGET_URL;
+// SparkBrain chat widget. In local dev, set NEXT_PUBLIC_CHAT_API_KEY to authenticate.
+const CHAT_API_KEY = process.env.NEXT_PUBLIC_CHAT_API_KEY;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -73,7 +73,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <JsonLd />
         <ServiceWorkerRegistrar />
         <NavigationLoader>{children}</NavigationLoader>
-        {IS_PROD && CHAT_WIDGET_URL && <script src={CHAT_WIDGET_URL} />}
+        {/* SparkBrain chat widget */}
+        <script
+          src="https://sparkbrain.app/chat.js"
+          data-domain="spark-apps.co"
+          {...(CHAT_API_KEY ? { 'data-api-key': CHAT_API_KEY } : {})}
+        />
       </body>
     </html>
   );
