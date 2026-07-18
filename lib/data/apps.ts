@@ -22,7 +22,8 @@ export const sparkApps: SparkApp[] = [
     description: 'The full-stack starter that sparks your next project.',
     icon: '/imgs/apps/sparkstack.png',
     tags: ['Next.js', 'Full-Stack', 'Starter'],
-    links: [{ label: 'Website', url: 'https://sparkstack.dev', type: 'website' }],
+    // sparkstack.dev is dead (NXDOMAIN) and the repo is private — no live destination yet.
+    links: [],
   },
   {
     id: 'sellular',
@@ -61,7 +62,7 @@ export const sparkApps: SparkApp[] = [
     description: 'AI content discovery and multi-platform publishing for social media.',
     icon: '/imgs/apps/viralcat.png',
     tags: ['Social Media', 'AI', 'Analytics'],
-    links: [],
+    links: [{ label: 'Website', url: 'https://viral-cat.com', type: 'website' }],
   },
   {
     id: 'quickpeek',
@@ -82,7 +83,8 @@ export const sparkApps: SparkApp[] = [
     icon: '/imgs/apps/botornot.png',
     tags: ['AI', 'Chrome Extension', 'Detection'],
     links: [
-      { label: 'Website', url: 'https://botornot.art', type: 'website' },
+      // botornot.art is dead (NXDOMAIN); use the live Vercel production URL.
+      { label: 'Website', url: 'https://bot-or-not-spark-apps.vercel.app', type: 'website' },
       {
         label: 'Chrome',
         url: 'https://chromewebstore.google.com/detail/bot-or-not/njohmblkingfikcgcbfcnjmciibhlmci',
@@ -97,7 +99,13 @@ export const sparkApps: SparkApp[] = [
     description: 'Polish your text or generate savage replies. Chrome extension.',
     icon: '/imgs/apps/textpert.png',
     tags: ['AI', 'Chrome Extension', 'Tools'],
-    links: [],
+    links: [
+      {
+        label: 'Chrome',
+        url: 'https://chromewebstore.google.com/detail/ogfhfgojcfmgjnalejpbomllbkehmmch',
+        type: 'chrome',
+      },
+    ],
   },
   {
     id: 'spark-ai',
@@ -126,7 +134,8 @@ export const sparkApps: SparkApp[] = [
     icon: '/imgs/apps/pitchplease.png',
     tags: ['Chrome Extension', 'Dark Mode', 'Tools'],
     links: [
-      { label: 'Website', url: 'https://getpitchplease.com', type: 'website' },
+      // getpitchplease.com is dead (NXDOMAIN); use the live Vercel production URL.
+      { label: 'Website', url: 'https://pitchplease-ten.vercel.app', type: 'website' },
       { label: 'Privacy', url: '/apps/pitchplease/privacy', type: 'website' },
     ],
   },
