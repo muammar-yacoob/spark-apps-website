@@ -22,7 +22,16 @@ export const sparkApps: SparkApp[] = [
     description: 'The full-stack starter that sparks your next project.',
     icon: '/imgs/apps/sparkstack.png',
     tags: ['Next.js', 'Full-Stack', 'Starter'],
-    // sparkstack.dev is dead (NXDOMAIN) and the repo is private — no live destination yet.
+    links: [{ label: 'Website', url: 'https://sparkstack.dev', type: 'website' }],
+  },
+  {
+    id: 'expo-template',
+    name: 'Expo Template',
+    tagline: 'Mobile App Starter',
+    description:
+      'Clean, versatile Expo starter with subscriptions, onboarding, and theming baked in.',
+    icon: '/imgs/apps/expo-template.png',
+    tags: ['Expo', 'React Native', 'Mobile'],
     links: [],
   },
   {
