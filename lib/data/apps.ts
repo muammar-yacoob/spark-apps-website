@@ -25,14 +25,14 @@ export const sparkApps: SparkApp[] = [
     links: [{ label: 'Website', url: 'https://sparkstack.dev', type: 'website' }],
   },
   {
-    id: 'expo-template',
-    name: 'Expo Template',
+    id: 'sparkmobile',
+    name: 'SparkMobile',
     tagline: 'Mobile App Starter',
     description:
       'Clean, versatile Expo starter with subscriptions, onboarding, and theming baked in.',
-    icon: '/imgs/apps/expo-template.png',
+    icon: '/imgs/apps/sparkmobile.png',
     tags: ['Expo', 'React Native', 'Mobile'],
-    links: [],
+    links: [{ label: 'Website', url: 'https://sparkmobile.dev', type: 'website' }],
   },
   {
     id: 'sellular',
@@ -156,5 +156,46 @@ export const sparkApps: SparkApp[] = [
     icon: '/imgs/apps/klean.png',
     tags: ['CLI', 'DevTools', 'Cleanup'],
     links: [{ label: 'npm', url: 'https://www.npmjs.com/package/klean', type: 'npm' }],
+  },
+  {
+    id: 'still-applying',
+    name: 'Still Applying',
+    tagline: 'ATS Resume Builder',
+    description:
+      'AI-assisted resume builder with shareable links and a Chrome extension that autofills job applications.',
+    icon: '/imgs/apps/still-applying.png',
+    tags: ['AI', 'Resume', 'Job Search'],
+    links: [{ label: 'Website', url: 'https://stillapplying.com', type: 'website' }],
+  },
+  {
+    id: 'flexcel',
+    name: 'Flexcel',
+    tagline: 'AI Excel Add-in',
+    description: 'Natural language chat, formula assistance, and data analysis inside Excel.',
+    icon: '/imgs/apps/flexcel.png',
+    tags: ['AI', 'Excel', 'Add-in'],
+    links: [{ label: 'Website', url: 'https://flexcel-five.vercel.app', type: 'website' }],
+  },
+  {
+    id: 'fullhouse',
+    name: 'FullHouse',
+    tagline: 'Timing is Everything',
+    description: 'Know when the quietest time to be in a place is.',
+    icon: '/imgs/apps/fullhouse.png',
+    tags: ['Mobile', 'Places', 'AI'],
+    links: [{ label: 'Website', url: 'https://spark-fullhouse.vercel.app', type: 'website' }],
+  },
+  {
+    id: 'piclet',
+    name: 'PicLet',
+    tagline: 'Image Tools Toolkit',
+    description:
+      'Right-click image tools for content creators. Crop, remove backgrounds, and more. CLI, GUI, and web.',
+    icon: '/imgs/apps/piclet.png',
+    tags: ['Image', 'CLI', 'Web'],
+    links: [
+      { label: 'Website', url: 'https://piclet.app', type: 'website' },
+      { label: 'npm', url: 'https://www.npmjs.com/package/@spark-apps/piclet', type: 'npm' },
+    ],
   },
 ];
