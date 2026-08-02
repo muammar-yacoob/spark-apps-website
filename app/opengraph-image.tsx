@@ -47,6 +47,34 @@ function autoFontSize(line1: string, line2: string, hasMascot: boolean) {
 }
 
 
+/**
+ * The pills, in one row if they fit and two balanced rows if they do not.
+ *
+ * A single row was laid out with no wrapping, so once the feature list grew
+ * past the card the end pills were simply sliced off at both edges.
+ *
+ * Satori has no text metrics, so the width is estimated the way `autoFontSize`
+ * above already estimates the headline. Overshooting is the safe direction:
+ * a needless second row costs whitespace, a missed one costs a sliced pill.
+ */
+const PILL_GAP = 6;
+/** Icon, its gap, and the horizontal padding either side of the label. */
+const PILL_CHROME = 16 + PILL_GAP + 14 * 2;
+/** Average glyph width of the label font at 14px bold. */
+const PILL_CHAR_W = 7.6;
+
+function pillRows<T extends { label: string }>(features: readonly T[]): T[][] {
+  const available = size.width - PADDING;
+  const total =
+    features.reduce((sum, f) => sum + f.label.length * PILL_CHAR_W + PILL_CHROME, 0) +
+    PILL_GAP * Math.max(0, features.length - 1);
+  if (total <= available) return [[...features]];
+  // Half to each line, the larger half on top so the block reads as a
+  // deliberate stack rather than a row that ran out of room.
+  const half = Math.ceil(features.length / 2);
+  return [features.slice(0, half), features.slice(half)];
+}
+
 /** Resolve a path relative to app/. */
 function appAsset(relativePath: string) {
   return join(process.cwd(), 'app', relativePath);
@@ -197,44 +225,53 @@ export default async function Image() {
 
       {/* Bottom: feature pills + domain */}
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 12 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          {OG.features.map(({ label, icon, color }) => {
-            const pillBg = color;
-            const ptc = 'white';
-            return (
-              <div
-                key={label}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  backgroundColor: pillBg,
-                  padding: '6px 14px',
-                  borderRadius: 99,
-                  fontSize: 14,
-                  fontWeight: 700,
-                  fontFamily: hFont,
-                  color: ptc,
-                }}
-              >
-                <svg
-                  width={16}
-                  height={16}
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke={ptc}
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  {(ICON_PATHS[icon] ?? []).map((d, i) => (
-                    <path key={`${icon}-${i}`} d={d} />
-                  ))}
-                </svg>
-                <span style={{ lineHeight: 1 }}>{label}</span>
-              </div>
-            );
-          })}
+        <div
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: PILL_GAP }}
+        >
+          {pillRows(OG.features).map((row) => (
+            <div
+              key={row.map((f) => f.label).join('|')}
+              style={{ display: 'flex', alignItems: 'center', gap: PILL_GAP }}
+            >
+              {row.map(({ label, icon, color }) => {
+                const pillBg = color;
+                const ptc = 'white';
+                return (
+                  <div
+                    key={label}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      backgroundColor: pillBg,
+                      padding: '6px 14px',
+                      borderRadius: 99,
+                      fontSize: 14,
+                      fontWeight: 700,
+                      fontFamily: hFont,
+                      color: ptc,
+                    }}
+                  >
+                    <svg
+                      width={16}
+                      height={16}
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke={ptc}
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      {(ICON_PATHS[icon] ?? []).map((d, i) => (
+                        <path key={`${icon}-${i}`} d={d} />
+                      ))}
+                    </svg>
+                    <span style={{ lineHeight: 1 }}>{label}</span>
+                  </div>
+                );
+              })}
+            </div>
+          ))}
         </div>
       </div>
     </div>
