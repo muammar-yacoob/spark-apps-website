@@ -45,7 +45,7 @@ export function DonutChart({
           dominantBaseline="central"
           className="fill-white text-sm font-bold"
         >
-          {value}
+          {value.toLocaleString('en-US')}
         </text>
       </svg>
       <span className="text-[11px] text-gray-500">{label}</span>
@@ -68,7 +68,7 @@ export function MiniBarChart({
           title={d.label}
           content={
             <p className="text-[11px] text-gray-400">
-              <span className="text-white font-semibold">{d.value}</span> rows
+              <span className="text-white font-semibold">{d.value.toLocaleString('en-US')}</span> rows
             </p>
           }
         >

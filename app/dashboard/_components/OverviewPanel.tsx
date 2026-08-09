@@ -120,12 +120,12 @@ export function OverviewPanel({
             </StatCard>
             <StatCard icon={Table2} color="text-blue-400" label="Tables" delay={80}>
               <span key={tables.length} className={styles.numFlip}>
-                {tables.length}
+                {tables.length.toLocaleString('en-US')}
               </span>
             </StatCard>
             <StatCard icon={Columns3} color="text-violet-400" label="Columns" delay={160}>
               <span key={totalCols} className={styles.numFlip}>
-                {totalCols}
+                {totalCols.toLocaleString('en-US')}
               </span>
             </StatCard>
             <StatCard icon={Rows3} color="text-amber-400" label="Rows" delay={240}>
@@ -190,8 +190,10 @@ export function OverviewPanel({
                       title={t.name}
                       content={
                         <p className="text-[11px] text-gray-400">
-                          <span className="text-white font-semibold">{t.rows}</span> of {totalRows}{' '}
-                          rows
+                          <span className="text-white font-semibold">
+                            {t.rows.toLocaleString('en-US')}
+                          </span>{' '}
+                          of {totalRows.toLocaleString('en-US')} rows
                         </p>
                       }
                     >
