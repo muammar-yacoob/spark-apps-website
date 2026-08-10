@@ -1,13 +1,13 @@
 'use client';
 
-import logoAnim from '@/app/_animations/loader-cat.json';
 import confetti from 'canvas-confetti';
-import { Onborda, OnbordaProvider, useOnborda } from 'onborda';
 import type { CardComponentProps, Step } from 'onborda';
+import { Onborda, OnbordaProvider, useOnborda } from 'onborda';
 import { type ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
-import { TourCard } from './TourCard';
+import logoAnim from '@/app/_animations/loader-cat.json';
 import rawSteps from './steps.json';
+import { TourCard } from './TourCard';
 
 const STORAGE_KEY = 'sparkstack:onboarding-done';
 const TOURS = [{ tour: 'dashboard', steps: rawSteps as Step[] }];

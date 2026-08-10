@@ -1,14 +1,14 @@
 'use client';
 
-import { BgShootingStars } from '@/app/_components/bg-anims/BgShootingStars';
-import { LegalPageFooter } from '@/app/_components/layout/LegalPageFooter';
-import { SITE_NAME } from '@/lib/config/site';
-import { teamMembers } from '@/lib/data/team';
-import type { TeamMember } from '@/lib/data/team';
 import { ArrowLeft, Check } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { BgShootingStars } from '@/app/_components/bg-anims/BgShootingStars';
+import { LegalPageFooter } from '@/app/_components/layout/LegalPageFooter';
+import { SITE_NAME } from '@/lib/config/site';
+import type { TeamMember } from '@/lib/data/team';
+import { teamMembers } from '@/lib/data/team';
 
 function TeamMemberCard({ member, index }: { member: TeamMember; index: number }) {
   const [quote, setQuote] = useState('Hover to see a quote...');
@@ -53,6 +53,7 @@ function TeamMemberCard({ member, index }: { member: TeamMember; index: number }
   }, []);
 
   return (
+    // biome-ignore lint/a11y/noStaticElementInteractions: hover-only quote reveal is a decorative flourish, not the only way to read the card's content.
     <div
       className="group relative rounded-2xl border border-white/[0.08] bg-white/[0.03] p-6 text-center transition-all duration-300 hover:border-blue-400/30 hover:bg-white/[0.06] hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(104,176,245,0.1)] animate-fade-in-up"
       style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'both' }}
@@ -174,6 +175,7 @@ export function TeamPageClient() {
               <ArrowLeft className="w-4 h-4" />
             </Link>
             <Link href="/" className="flex items-center gap-2">
+              {/* biome-ignore lint/performance/noImgElement: static favicon fallback rendered at a fixed small size; not worth a next/image wrapper. */}
               <img src="/favicon.ico" alt="" width={22} height={22} className="rounded" />
               <span className="text-sm font-semibold text-white">{SITE_NAME}</span>
             </Link>

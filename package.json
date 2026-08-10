@@ -17,7 +17,8 @@
     "type-check": "tsc --noEmit",
     "setup": "bun install",
     "deploy:check": "bun check && bun type-check && bun build",
-    "test": "jest"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
@@ -37,20 +38,20 @@
     "sonner": "^2.0.7"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
+    "@biomejs/biome": "^2",
     "@tailwindcss/postcss": "^4.3.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@types/canvas-confetti": "^1.9.0",
-    "@types/jest": "^29.5.14",
     "@types/node": "^22.19.19",
     "@types/react": "^19.2.16",
     "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.5",
     "dotenv": "^17.4.2",
-    "jest": "^29.7.0",
-    "jest-environment-jsdom": "^30.4.1",
+    "happy-dom": "^20.11.2",
     "postcss": "^8.5.15",
     "tailwindcss": "^4.3.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10"
   },
   "engines": {
     "node": ">=18.0.0"

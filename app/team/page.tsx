@@ -1,5 +1,5 @@
-import { SITE_NAME } from '@/lib/config/site';
 import type { Metadata } from 'next';
+import { SITE_NAME } from '@/lib/config/site';
 import { TeamPageClient } from './TeamPageClient';
 
 export const metadata: Metadata = {

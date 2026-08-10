@@ -1,12 +1,12 @@
 'use client';
 
+import { Bell, LayoutDashboard, Palette } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
 import { ColorPicker } from '@/app/_components/ui/ColorPicker';
 import { DateInput } from '@/app/_components/ui/DateInput';
 import { StatusBadge } from '@/app/_components/ui/StatusBadge';
 import { SITE_NAME } from '@/lib/config/site';
-import { Bell, LayoutDashboard, Palette } from 'lucide-react';
-import { useState } from 'react';
-import { toast } from 'sonner';
 import styles from '../dashboard.module.css';
 
 export function SettingsView() {

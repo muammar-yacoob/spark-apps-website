@@ -1,8 +1,7 @@
-export {};
-require('../../app/robots');
+import { describe, expect, it } from 'vitest';
 
 describe('module', () => {
-  it('should work', () => {
-    // TODO: add assertions
+  it('should work', async () => {
+    await expect(import('../../app/robots')).resolves.toBeDefined();
   });
 });

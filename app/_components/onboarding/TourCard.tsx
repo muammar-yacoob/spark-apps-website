@@ -38,8 +38,12 @@ function PeekLottie({
   data,
   delay = 800,
   pause = 5000,
-}: // biome-ignore lint/suspicious/noExplicitAny: Lottie JSON shape varies
-{ data: any; delay?: number; pause?: number }) {
+}: {
+  // biome-ignore lint/suspicious/noExplicitAny: Lottie JSON shape varies
+  data: any;
+  delay?: number;
+  pause?: number;
+}) {
   const [visible, setVisible] = useState(false);
   const [cycle, setCycle] = useState(0);
   const [playing, setPlaying] = useState(true);
@@ -154,6 +158,7 @@ export function TourCard({
       <div className="flex items-center justify-between mb-1.5">
         <div className="flex items-center gap-2">
           {iconSrc && (
+            // biome-ignore lint/performance/noImgElement: iconSrc is a per-tour-step prop (demo-app icon or data URL), not a static asset next/image can optimize.
             <img src={iconSrc} alt="" width={22} height={22} className="rounded-sm shrink-0" />
           )}
           <h3 className="text-sm font-semibold text-white">{title}</h3>

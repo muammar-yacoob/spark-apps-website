@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 /**
@@ -171,6 +171,7 @@ export function Tooltip({
   };
 
   return (
+    // biome-ignore lint/a11y/noStaticElementInteractions: hover-only trigger for a supplementary tooltip; wrapped content keeps its own focus/keyboard behaviour.
     <div ref={wrapRef} className={className} onMouseEnter={onEnter} onMouseLeave={handleLeave}>
       {children}
       {mounted &&

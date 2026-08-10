@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { LottiePlayer } from './LottiePlayer';
 import contactAnimationDefault from './animations/contact.json';
 import emailSentAnimationDefault from './animations/email-sent.json';
+import { LottiePlayer } from './LottiePlayer';
 
 export interface ContactFormConfig {
   /** POST endpoint for the form (default: '/api/contact') */
@@ -121,6 +121,7 @@ export function ContactForm({
           href={homeUrl}
           className="inline-flex items-center gap-3 hover:opacity-80 transition-opacity"
         >
+          {/* biome-ignore lint/performance/noImgElement: appIcon is a runtime prop (arbitrary path or data URL from demo config), not a static asset next/image can optimize. */}
           {appIcon && <img src={appIcon} alt="" className="h-9 w-9 rounded-lg" />}
           {appName && (
             <div>

@@ -1,7 +1,7 @@
 'use client';
 
-import type { DbStats } from '@/app/dashboard/_components/types';
 import { useQuery } from '@tanstack/react-query';
+import type { DbStats } from '@/app/dashboard/_components/types';
 import { queryKeys } from '../_lib/query-keys';
 
 export function useDashboardStats({ enabled }: { enabled: boolean }) {

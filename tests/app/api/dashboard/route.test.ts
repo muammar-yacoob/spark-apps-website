@@ -1,8 +1,10 @@
-export {};
-const { GET } = require('../../../../app/api/dashboard/route');
+/**
+ * @vitest-environment node
+ */
+import { describe, expect, it } from 'vitest';
 
 describe('GET', () => {
-  it('should work', () => {
-    // TODO: add assertions for GET
+  it('should work', async () => {
+    await expect(import('../../../../app/api/dashboard/route')).resolves.toBeDefined();
   });
 });

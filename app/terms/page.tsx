@@ -1,7 +1,7 @@
+import type { Metadata } from 'next';
 import { LegalLastUpdated, LegalPageFooter } from '@/app/_components/layout/LegalPageFooter';
 import { SupportEmailLink } from '@/app/_components/layout/SupportEmailLink';
 import { SITE_NAME } from '@/lib/config/site';
-import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Terms of Service',

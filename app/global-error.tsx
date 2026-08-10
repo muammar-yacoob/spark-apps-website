@@ -27,7 +27,7 @@ export default function GlobalError({
             padding: '24px',
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
+          {/* biome-ignore lint/performance/noImgElement: the global error boundary must render without depending on Next's image optimization pipeline, which may be what's failing. */}
           <img
             src="/imgs/500.png"
             alt="Server error"

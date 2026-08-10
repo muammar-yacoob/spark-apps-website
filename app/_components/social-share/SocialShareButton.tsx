@@ -141,7 +141,7 @@ function ShareModal({
   }, [cfg.appUrl]);
 
   const handlePlatformClick = useCallback(
-    (key: string, url: string) => {
+    (url: string) => {
       if (!url) return;
       window.open(url, '_blank', 'noopener,noreferrer,width=600,height=400');
       onClose();
@@ -174,7 +174,7 @@ function ShareModal({
             {/* Header */}
             <div className="flex items-center justify-between mb-1.5">
               <div className="flex items-end gap-1.5">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
+                {/* biome-ignore lint/performance/noImgElement: cfg.appIcon is a runtime config value (arbitrary path or data URL per deployed app), not a static asset next/image can optimize. */}
                 <img
                   src={cfg.appIcon}
                   alt=""
@@ -205,7 +205,7 @@ function ShareModal({
                 <motion.button
                   key={key}
                   type="button"
-                  onClick={() => handlePlatformClick(key, links[key])}
+                  onClick={() => handlePlatformClick(links[key])}
                   className="flex flex-col items-center gap-0.5 py-1 px-0.5 rounded-md border border-transparent bg-white/[0.03] text-[8px] font-medium cursor-pointer"
                   style={{ color }}
                   initial={{ opacity: 0, y: 8 }}

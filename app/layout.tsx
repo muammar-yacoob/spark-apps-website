@@ -1,9 +1,9 @@
+import type { Metadata, Viewport } from 'next';
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL, THEME_COLOR } from '@/lib/config/site';
 import { seoConfig } from '@/lib/seo/config';
-import type { Metadata, Viewport } from 'next';
 import './globals.css';
-import { ServiceWorkerRegistrar } from './_components/ServiceWorkerRegistrar';
 import { NavigationLoader } from './_components/feedback/NavigationLoader';
+import { ServiceWorkerRegistrar } from './_components/ServiceWorkerRegistrar';
 import { JsonLd } from './_components/seo/JsonLd';
 
 export const metadata: Metadata = {

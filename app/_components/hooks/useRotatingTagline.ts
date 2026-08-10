@@ -1,5 +1,5 @@
-import { TAGLINES } from '@/lib/config/taglines';
 import { useEffect, useState } from 'react';
+import { TAGLINES } from '@/lib/config/taglines';
 
 /** Cycles through TAGLINES at the given interval (ms). */
 export function useRotatingTagline(interval = 3000) {

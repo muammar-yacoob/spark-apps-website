@@ -1,9 +1,9 @@
 'use client';
 
-import { StatusBadge } from '@/app/_components/ui/StatusBadge';
-import { Tooltip } from '@/app/_components/ui/Tooltip';
 import { BarChart3, ChevronDown, Columns3, Database, HardDrive, Rows3, Table2 } from 'lucide-react';
 import { useState } from 'react';
+import { StatusBadge } from '@/app/_components/ui/StatusBadge';
+import { Tooltip } from '@/app/_components/ui/Tooltip';
 import styles from '../dashboard.module.css';
 import { DonutChart, MiniBarChart } from './Charts';
 import type { ColumnInfo, DbStats, TableInfo } from './types';

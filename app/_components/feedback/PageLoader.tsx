@@ -1,10 +1,10 @@
 'use client';
 
+import { AnimatePresence, motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import animationData from '@/app/_animations/loader-cat.json';
 import { useRotatingTagline } from '@/app/_components/hooks/useRotatingTagline';
 import { SITE_NAME } from '@/lib/config/site';
-import { AnimatePresence, motion } from 'framer-motion';
-import dynamic from 'next/dynamic';
 
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
@@ -16,6 +16,7 @@ export default function PageLoader() {
       <div className="flex flex-col items-center gap-8">
         {/* Brand mark */}
         <div className="flex items-center gap-2">
+          {/* biome-ignore lint/performance/noImgElement: this *is* the pre-hydration loading screen; it must not depend on Next's image optimization pipeline to paint. */}
           <img src="/favicon.ico" alt="" width={22} height={22} className="rounded-sm" />
           <span className="text-white font-semibold text-sm tracking-wide">{SITE_NAME}</span>
         </div>

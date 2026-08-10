@@ -1,10 +1,10 @@
 'use client';
 
-import animationData from '@/app/_animations/error-something-wrong.json';
-import Loader from '@/app/_components/feedback/Loader';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
+import animationData from '@/app/_animations/error-something-wrong.json';
+import Loader from '@/app/_components/feedback/Loader';
 
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 

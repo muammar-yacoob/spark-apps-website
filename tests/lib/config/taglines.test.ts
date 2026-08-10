@@ -1,8 +1,7 @@
-export {};
-const { TAGLINES } = require('../../../lib/config/taglines');
+import { describe, expect, it } from 'vitest';
 
 describe('TAGLINES', () => {
-  it('should work', () => {
-    // TODO: add assertions for TAGLINES
+  it('should work', async () => {
+    await expect(import('../../../lib/config/taglines')).resolves.toBeDefined();
   });
 });

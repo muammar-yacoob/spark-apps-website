@@ -10,7 +10,12 @@ export function DonutChart({
   max,
   label,
   color,
-}: { value: number; max: number; label: string; color: string }) {
+}: {
+  value: number;
+  max: number;
+  label: string;
+  color: string;
+}) {
   const r = 36;
   const circ = 2 * Math.PI * r;
   const filled = max > 0 ? (value / max) * circ : 0;
@@ -57,7 +62,9 @@ export function DonutChart({
 
 export function MiniBarChart({
   data,
-}: { data: { label: string; value: number; color: string }[] }) {
+}: {
+  data: { label: string; value: number; color: string }[];
+}) {
   const max = Math.max(...data.map((d) => d.value), 1);
 
   return (
@@ -68,7 +75,8 @@ export function MiniBarChart({
           title={d.label}
           content={
             <p className="text-[11px] text-gray-400">
-              <span className="text-white font-semibold">{d.value.toLocaleString('en-US')}</span> rows
+              <span className="text-white font-semibold">{d.value.toLocaleString('en-US')}</span>{' '}
+              rows
             </p>
           }
         >

@@ -1,8 +1,8 @@
 'use client';
 
-import animationData from '@/app/_animations/error-space.json';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import animationData from '@/app/_animations/error-space.json';
 
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 

@@ -1,5 +1,10 @@
 'use client';
 
+import { AnimatePresence, motion } from 'framer-motion';
+import { BarChart3, ChevronDown, HelpCircle, LogOut, Settings } from 'lucide-react';
+import { signOut, useSession } from 'next-auth/react';
+import { useEffect, useRef, useState } from 'react';
+import { Toaster } from 'sonner';
 import PageLoader from '@/app/_components/feedback/PageLoader';
 import { useRotatingTagline } from '@/app/_components/hooks/useRotatingTagline';
 import { OnBoarding, resetOnboarding } from '@/app/_components/onboarding/OnBoarding';
@@ -7,11 +12,6 @@ import SocialShareButton from '@/app/_components/social-share/SocialShareButton'
 import { SHARE_CONFIG } from '@/app/_components/social-share/share-config';
 import { SITE_NAME } from '@/lib/config/site';
 import { TOAST_CONFIG } from '@/lib/config/toast';
-import { AnimatePresence, motion } from 'framer-motion';
-import { BarChart3, ChevronDown, HelpCircle, LogOut, Settings } from 'lucide-react';
-import { signOut, useSession } from 'next-auth/react';
-import { useEffect, useRef, useState } from 'react';
-import { Toaster } from 'sonner';
 import { OverviewPanel } from './_components/OverviewPanel';
 import { SettingsView } from './_components/SettingsView';
 import type { View } from './_components/types';
@@ -110,6 +110,7 @@ export default function DashboardPage() {
             <header className="border-b border-white/[0.06] bg-gray-900/40 backdrop-blur-sm sticky top-0 z-10">
               <div className="px-4 sm:px-6 h-14 flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
+                  {/* biome-ignore lint/performance/noImgElement: static favicon fallback rendered at a fixed small size; not worth a next/image wrapper. */}
                   <img src="/favicon.ico" alt="" width={22} height={22} className="rounded" />
                   <div>
                     <h1 className="text-sm font-semibold text-white leading-tight">{SITE_NAME}</h1>
@@ -146,6 +147,7 @@ export default function DashboardPage() {
                       suppressHydrationWarning
                     >
                       {session?.user?.image ? (
+                        // biome-ignore lint/performance/noImgElement: OAuth avatar URL from an arbitrary provider host; next/image would need every provider host in remotePatterns.
                         <img
                           src={session.user.image}
                           alt=""

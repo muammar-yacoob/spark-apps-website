@@ -75,6 +75,7 @@ export function DateInput({
     variant === 'pill' ? (
       <>
         {/* biome-ignore lint/a11y/useKeyWithClickEvents: keyboard navigation handled by DayPicker inside the portal */}
+        {/* biome-ignore lint/a11y/noStaticElementInteractions: same trigger; DayPicker inside the portal owns keyboard interaction */}
         <div
           id={id}
           ref={triggerRef}
@@ -90,6 +91,7 @@ export function DateInput({
     ) : (
       <>
         {/* biome-ignore lint/a11y/useKeyWithClickEvents: keyboard navigation handled by DayPicker inside the portal */}
+        {/* biome-ignore lint/a11y/noStaticElementInteractions: same trigger; DayPicker inside the portal owns keyboard interaction */}
         <div
           id={id}
           ref={triggerRef}

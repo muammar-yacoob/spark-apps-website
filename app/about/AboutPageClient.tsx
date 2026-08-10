@@ -1,11 +1,11 @@
 'use client';
 
-import { BgShootingStars } from '@/app/_components/bg-anims/BgShootingStars';
-import { LegalPageFooter } from '@/app/_components/layout/LegalPageFooter';
-import { SITE_NAME } from '@/lib/config/site';
 import { ArrowLeft, Boxes, Loader2, Mail, PlayCircle, Users } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { BgShootingStars } from '@/app/_components/bg-anims/BgShootingStars';
+import { LegalPageFooter } from '@/app/_components/layout/LegalPageFooter';
+import { SITE_NAME } from '@/lib/config/site';
 
 const PORTFOLIO_URL = 'https://muammar-yacoob.github.io/InteractivePortfolio3D/';
 const PORTFOLIO_REPO = 'https://github.com/muammar-yacoob/InteractivePortfolio3D#setup';
@@ -81,6 +81,7 @@ export function AboutPageClient() {
               <ArrowLeft className="w-4 h-4" />
             </Link>
             <Link href="/" className="flex items-center gap-2">
+              {/* biome-ignore lint/performance/noImgElement: static favicon fallback rendered at a fixed small size; not worth a next/image wrapper. */}
               <img src="/favicon.ico" alt="" width={22} height={22} className="rounded" />
               <span className="text-sm font-semibold text-white">{SITE_NAME}</span>
             </Link>
