@@ -102,6 +102,17 @@ export const sparkApps: SparkApp[] = [
     ],
   },
   {
+    id: 'screenful',
+    name: 'Screenful',
+    tagline: 'Full-Page Screenshots',
+    description:
+      'The whole scrollable page in one keystroke. No account, no watermark, no upload. Chrome extension.',
+    icon: '/imgs/apps/screenful.png',
+    tags: ['Chrome Extension', 'Screenshots', 'Privacy'],
+    // Not on the Chrome Web Store yet; the privacy page is the store-submission target.
+    links: [{ label: 'Privacy', url: '/apps/screenful/privacy', type: 'website' }],
+  },
+  {
     id: 'textpert',
     name: 'TextPert',
     tagline: 'Autocorrect on Steroids',
@@ -196,6 +207,28 @@ export const sparkApps: SparkApp[] = [
     links: [
       { label: 'Website', url: 'https://piclet.app', type: 'website' },
       { label: 'npm', url: 'https://www.npmjs.com/package/@spark-apps/piclet', type: 'npm' },
+    ],
+  },
+  {
+    id: 'tax-ducks',
+    name: 'Tax Ducks',
+    tagline: 'Micro-Entity Accounts',
+    description:
+      'Statutory accounts engine for micro-entities. Raw figures in, validated balance sheet out.',
+    icon: '/imgs/apps/tax-ducks.png',
+    tags: ['Accounting', 'SaaS', 'Finance'],
+    links: [{ label: 'Website', url: 'https://taxducks.com', type: 'website' }],
+  },
+  {
+    id: 'safesound',
+    name: 'Safe & Sound',
+    tagline: 'Personal Safety App',
+    description: 'Personal safety companion for iOS and Android, built with Expo.',
+    icon: '/imgs/apps/safesound.png',
+    tags: ['Mobile', 'Expo', 'Safety'],
+    // No public listing yet; point at the repo until the stores approve it.
+    links: [
+      { label: 'GitHub', url: 'https://github.com/muammar-yacoob/safesound', type: 'github' },
     ],
   },
 ];
