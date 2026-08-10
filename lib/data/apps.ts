@@ -1,7 +1,12 @@
 export interface AppLink {
   label: string;
   url: string;
-  type: 'website' | 'chrome' | 'npm' | 'github';
+  /**
+   * 'website' is the app's own branded domain and becomes its homepage.
+   * 'app' is a bare deployment URL (a *.vercel.app) — reachable, but not a
+   * homepage, so the app's page here stays canonical.
+   */
+  type: 'website' | 'app' | 'chrome' | 'npm' | 'github';
 }
 
 /**
@@ -111,8 +116,8 @@ export const sparkApps: SparkApp[] = [
     icon: '/imgs/apps/botornot.png',
     tags: ['AI', 'Chrome Extension', 'Detection'],
     links: [
-      // botornot.art is dead (NXDOMAIN); use the live Vercel production URL.
-      { label: 'Website', url: 'https://bot-or-not-spark-apps.vercel.app', type: 'website' },
+      // botornot.art is dead (NXDOMAIN); the live deployment is the Vercel URL.
+      { label: 'Open app', url: 'https://bot-or-not-spark-apps.vercel.app', type: 'app' },
       {
         label: 'Chrome',
         url: 'https://chromewebstore.google.com/detail/bot-or-not/njohmblkingfikcgcbfcnjmciibhlmci',
@@ -173,8 +178,8 @@ export const sparkApps: SparkApp[] = [
     icon: '/imgs/apps/pitchplease.png',
     tags: ['Chrome Extension', 'Dark Mode', 'Tools'],
     links: [
-      // getpitchplease.com is dead (NXDOMAIN); use the live Vercel production URL.
-      { label: 'Website', url: 'https://pitchplease-ten.vercel.app', type: 'website' },
+      // getpitchplease.com is dead (NXDOMAIN); the live deployment is the Vercel URL.
+      { label: 'Open app', url: 'https://pitchplease-ten.vercel.app', type: 'app' },
       { label: 'Privacy', url: '/apps/pitchplease/privacy', type: 'website' },
     ],
   },
@@ -204,7 +209,7 @@ export const sparkApps: SparkApp[] = [
     description: 'Natural language chat, formula assistance, and data analysis inside Excel.',
     icon: '/imgs/apps/flexcel.png',
     tags: ['AI', 'Excel', 'Add-in'],
-    links: [{ label: 'Website', url: 'https://flexcel-five.vercel.app', type: 'website' }],
+    links: [{ label: 'Open app', url: 'https://flexcel-five.vercel.app', type: 'app' }],
   },
   {
     id: 'fullhouse',
@@ -213,7 +218,7 @@ export const sparkApps: SparkApp[] = [
     description: 'Know when the quietest time to be in a place is.',
     icon: '/imgs/apps/fullhouse.png',
     tags: ['Mobile', 'Places', 'AI'],
-    links: [{ label: 'Website', url: 'https://spark-fullhouse.vercel.app', type: 'website' }],
+    links: [{ label: 'Open app', url: 'https://spark-fullhouse.vercel.app', type: 'app' }],
     mobile: {
       screenshot: '/imgs/app-shots/fullhouse.png',
       alt: 'FullHouse showing how busy a place is through the day',
@@ -235,14 +240,14 @@ export const sparkApps: SparkApp[] = [
     ],
   },
   {
-    id: 'tax-ducks',
-    name: 'Tax Ducks',
+    id: 'ducktax',
+    name: 'Duck Tax',
     tagline: 'Micro-Entity Accounts',
     description:
       'Statutory accounts engine for micro-entities. Raw figures in, validated balance sheet out.',
-    icon: '/imgs/apps/tax-ducks.png',
+    icon: '/imgs/apps/ducktax.png',
     tags: ['Accounting', 'SaaS', 'Finance'],
-    links: [{ label: 'Website', url: 'https://taxducks.com', type: 'website' }],
+    links: [{ label: 'Website', url: 'https://ducktax.com', type: 'website' }],
   },
   {
     id: 'safesound',
@@ -263,3 +268,27 @@ export const sparkApps: SparkApp[] = [
     },
   },
 ];
+
+/**
+ * The app's own site, if it has one. Relative links (a privacy page hosted
+ * here) don't count — this answers "does it live somewhere else?".
+ */
+export function externalHomepage(app: SparkApp): AppLink | undefined {
+  return app.links.find((l) => l.type === 'website' && /^https?:\/\//.test(l.url));
+}
+
+/**
+ * Where an app lives: its own site if it has one, else its page on this site.
+ *
+ * Several apps ship without a domain (a CLI on npm, an extension awaiting the
+ * store). `/apps/<id>` is their homepage — real enough for a store listing, a
+ * README badge, or a sitemap entry — and stays a valid fallback after a domain
+ * shows up.
+ */
+export function appHomepage(app: SparkApp): string {
+  return externalHomepage(app)?.url ?? `/apps/${app.id}`;
+}
+
+export function getApp(id: string): SparkApp | undefined {
+  return sparkApps.find((app) => app.id === id);
+}
