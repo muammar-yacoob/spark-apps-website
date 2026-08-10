@@ -4,6 +4,7 @@ import { Chrome, ExternalLink, Globe, Package } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { MobileShowcase } from '@/app/_components/apps/MobileShowcase';
 import { BgParticles } from '@/app/_components/bg-anims/BgParticles';
 import { BgShootingStars } from '@/app/_components/bg-anims/BgShootingStars';
 import SocialShareButton from '@/app/_components/social-share/SocialShareButton';
@@ -158,7 +159,9 @@ export default function Home() {
                           {app.links.slice(0, 2).map((link) => {
                             const Icon = linkIcons[link.type] ?? ExternalLink;
                             return (
-                              <span key={link.type}>
+                              // Keyed on the url, not the type: an app can have
+                              // two 'website' links (site + privacy page).
+                              <span key={link.url}>
                                 <Icon className="w-3 h-3 text-gray-600" />
                               </span>
                             );
@@ -219,6 +222,8 @@ export default function Home() {
             </div>
           </section>
         )}
+
+        <MobileShowcase />
 
         {/* Footer */}
         <footer className="border-t border-gray-800 py-6">

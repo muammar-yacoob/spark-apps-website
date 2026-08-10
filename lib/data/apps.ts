@@ -4,6 +4,23 @@ export interface AppLink {
   type: 'website' | 'chrome' | 'npm' | 'github';
 }
 
+/**
+ * A narrow-screen screenshot of the app's own dashboard, shown inside a phone
+ * frame on the landing page (see app/_components/ui/PhoneSnapshot.tsx).
+ *
+ * Only set this for apps that actually run on a phone — a PWA or a store app.
+ * Capture at 2x the frame size (536x1080), crop off the browser chrome and the
+ * device status bar, and drop the PNG at /public/imgs/app-shots/<id>.png.
+ */
+export interface AppMobileShot {
+  screenshot: string;
+  /** Describe what the screen shows; this is content, not decoration. */
+  alt: string;
+  /** Tints the bezel so the frame matches the app's brand. */
+  accent?: string;
+  caption?: string;
+}
+
 export interface SparkApp {
   id: string;
   name: string;
@@ -12,6 +29,8 @@ export interface SparkApp {
   icon: string;
   tags: string[];
   links: AppLink[];
+  /** Present only for apps with a phone UI worth showing. */
+  mobile?: AppMobileShot;
 }
 
 export const sparkApps: SparkApp[] = [
@@ -195,6 +214,12 @@ export const sparkApps: SparkApp[] = [
     icon: '/imgs/apps/fullhouse.png',
     tags: ['Mobile', 'Places', 'AI'],
     links: [{ label: 'Website', url: 'https://spark-fullhouse.vercel.app', type: 'website' }],
+    mobile: {
+      screenshot: '/imgs/app-shots/fullhouse.png',
+      alt: 'FullHouse showing how busy a place is through the day',
+      accent: '#f59e0b',
+      caption: 'Busiest hours, at a glance',
+    },
   },
   {
     id: 'piclet',
@@ -230,5 +255,11 @@ export const sparkApps: SparkApp[] = [
     links: [
       { label: 'GitHub', url: 'https://github.com/muammar-yacoob/safesound', type: 'github' },
     ],
+    mobile: {
+      screenshot: '/imgs/app-shots/safesound.png',
+      alt: 'Safe & Sound showing active check-ins and trusted contacts',
+      accent: '#10b981',
+      caption: 'Check in, or someone gets told',
+    },
   },
 ];
