@@ -90,3 +90,4 @@ scripts/db/reseed-sample-data.ts
 
 # npm lock (project uses bun)
 package-lock.json
+.env*
