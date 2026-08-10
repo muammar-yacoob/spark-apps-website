@@ -1,13 +1,13 @@
 'use client';
 
-// Shooting stars; at most two are concurrent, with one spawned every three seconds.
+// Shooting stars; only one is in flight at a time, spawned every twelve seconds.
 // To remove this effect, delete this file, remove the export from index.ts,
 // and remove <BgShootingStars /> from PricingPageContent.
 import { useEffect, useRef, useState } from 'react';
 import './BgShootingStars.css';
 
-const INTERVAL = 3000;
-const MAX = 2;
+const INTERVAL = 12000;
+const MAX = 1;
 
 type Star = { id: number; top: string; right: string; dur: string };
 
@@ -31,7 +31,6 @@ export function BgShootingStars() {
         ]);
       }
     };
-    spawn(); // fire immediately on mount, then repeat
     const id = setInterval(spawn, INTERVAL);
     return () => clearInterval(id);
   }, []);

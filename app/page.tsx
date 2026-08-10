@@ -4,6 +4,7 @@ import { Chrome, ExternalLink, Globe, Package } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { BgParticles } from '@/app/_components/bg-anims/BgParticles';
 import { BgShootingStars } from '@/app/_components/bg-anims/BgShootingStars';
 import SocialShareButton from '@/app/_components/social-share/SocialShareButton';
 import { SHARE_CONFIG } from '@/app/_components/social-share/share-config';
@@ -77,6 +78,7 @@ export default function Home() {
 
   return (
     <div className="h-screen bg-gray-950 text-gray-100 flex flex-col overflow-hidden">
+      <BgParticles />
       <BgShootingStars />
 
       {/* Nav */}

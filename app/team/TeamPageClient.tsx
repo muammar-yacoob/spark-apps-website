@@ -4,6 +4,7 @@ import { ArrowLeft, Check } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { BgParticles } from '@/app/_components/bg-anims/BgParticles';
 import { BgShootingStars } from '@/app/_components/bg-anims/BgShootingStars';
 import { LegalPageFooter } from '@/app/_components/layout/LegalPageFooter';
 import { SITE_NAME } from '@/lib/config/site';
@@ -162,6 +163,7 @@ export function TeamPageClient() {
 
   return (
     <div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col">
+      <BgParticles />
       <BgShootingStars />
 
       {/* Nav with back button */}

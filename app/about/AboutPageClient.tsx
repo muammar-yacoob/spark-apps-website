@@ -3,6 +3,7 @@
 import { ArrowLeft, Boxes, Loader2, Mail, PlayCircle, Users } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { BgParticles } from '@/app/_components/bg-anims/BgParticles';
 import { BgShootingStars } from '@/app/_components/bg-anims/BgShootingStars';
 import { LegalPageFooter } from '@/app/_components/layout/LegalPageFooter';
 import { SITE_NAME } from '@/lib/config/site';
@@ -68,6 +69,7 @@ export function AboutPageClient() {
 
   return (
     <div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col">
+      <BgParticles />
       <BgShootingStars />
 
       {/* Nav with back button */}
