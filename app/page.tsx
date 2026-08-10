@@ -1,6 +1,6 @@
 'use client';
 
-import { Chrome, ExternalLink, Globe, Package } from 'lucide-react';
+import { Chrome, ExternalLink, Globe, Package, Rocket } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -12,20 +12,22 @@ import { SHARE_CONFIG } from '@/app/_components/social-share/share-config';
 import { Tooltip } from '@/app/_components/ui/Tooltip';
 import { SITE_NAME } from '@/lib/config/site';
 import type { SparkApp } from '@/lib/data/apps';
-import { sparkApps } from '@/lib/data/apps';
+import { appHomepage, externalHomepage, sparkApps } from '@/lib/data/apps';
 import { fallbackTag, tagConfig } from '@/lib/data/tags';
 
 const linkIcons: Record<string, React.ElementType> = {
   website: Globe,
+  app: Rocket,
   chrome: Chrome,
   npm: Package,
   github: ExternalLink,
 };
 
-/** The link a card navigates to when clicked (website → chrome → npm → first). */
+/** The link whose URL the tooltip shows (site → deployment → store → npm → first). */
 function primaryLink(app: SparkApp) {
   return (
-    app.links.find((l) => l.type === 'website') ??
+    externalHomepage(app) ??
+    app.links.find((l) => l.type === 'app') ??
     app.links.find((l) => l.type === 'chrome') ??
     app.links.find((l) => l.type === 'npm') ??
     app.links[0]
@@ -127,7 +129,10 @@ export default function Home() {
           <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10">
             <div className="flex flex-wrap justify-center gap-3">
               {sparkApps.map((app, i) => {
-                const primary = primaryLink(app);
+                // Its own site if it has one, else its page here — an app with
+                // nothing but an npm or store listing still lands somewhere.
+                const href = appHomepage(app);
+                const isExternal = href.startsWith('http');
                 const cardClass =
                   'group relative rounded-xl border border-white/[0.06] bg-white/[0.02] p-4 transition-all duration-300 hover:border-blue-400/25 hover:bg-white/[0.05] hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(104,176,245,0.1)] animate-fade-in-up flex flex-col text-left w-full h-full';
                 const style = {
@@ -201,9 +206,9 @@ export default function Home() {
                     content={<AppTooltipContent app={app} />}
                     className="flex w-full sm:w-[calc(50%-6px)] lg:w-[calc(33.333%-8px)]"
                   >
-                    {primary ? (
+                    {isExternal ? (
                       <a
-                        href={primary.url}
+                        href={href}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`${cardClass} cursor-pointer`}
@@ -212,9 +217,9 @@ export default function Home() {
                         {cardInner}
                       </a>
                     ) : (
-                      <div className={`${cardClass} cursor-default`} style={style}>
+                      <Link href={href} className={`${cardClass} cursor-pointer`} style={style}>
                         {cardInner}
-                      </div>
+                      </Link>
                     )}
                   </Tooltip>
                 );
