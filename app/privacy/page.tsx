@@ -1,4 +1,9 @@
 import type { Metadata } from 'next';
+import {
+  COMPANY_NUMBER,
+  LegalCompanyByline,
+  LegalCompanyName,
+} from '@/app/_components/layout/LegalCompany';
 import { LegalLastUpdated, LegalPageFooter } from '@/app/_components/layout/LegalPageFooter';
 import { SupportEmailLink } from '@/app/_components/layout/SupportEmailLink';
 import { SITE_NAME } from '@/lib/config/site';
@@ -14,17 +19,22 @@ export default function PrivacyPolicy() {
     <div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col">
       <div className="flex-1 py-16 px-6">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold text-white mb-8">Privacy Policy</h1>
+          <h1 className="text-4xl font-bold text-white mb-3">Privacy Policy</h1>
+          <LegalCompanyByline />
 
           <div className="space-y-8 text-gray-300">
             <section>
               <h2 className="text-2xl font-semibold text-white mb-4">Data Controller</h2>
               <p>
-                This Privacy Policy is issued by <strong>Your Company Name</strong>, a company
-                registered in England and Wales (&ldquo;we&rdquo;, &ldquo;us&rdquo;,
-                &ldquo;our&rdquo;). We are the data controller responsible for your personal
-                information processed in connection with this service. For any privacy-related
-                enquiries, please contact us using the details at the bottom of this page.
+                This Privacy Policy is issued by{' '}
+                <strong>
+                  <LegalCompanyName />
+                </strong>
+                , a company registered in England and Wales (company no. {COMPANY_NUMBER})
+                (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;). We are the data controller
+                responsible for your personal information processed in connection with this service.
+                For any privacy-related enquiries, please contact us using the details at the bottom
+                of this page.
               </p>
             </section>
 

@@ -1,4 +1,9 @@
 import type { Metadata } from 'next';
+import {
+  COMPANY_NUMBER,
+  LegalCompanyByline,
+  LegalCompanyName,
+} from '@/app/_components/layout/LegalCompany';
 import { LegalLastUpdated, LegalPageFooter } from '@/app/_components/layout/LegalPageFooter';
 import { SupportEmailLink } from '@/app/_components/layout/SupportEmailLink';
 import { SITE_NAME } from '@/lib/config/site';
@@ -14,14 +19,18 @@ export default function TermsOfService() {
     <div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col">
       <div className="flex-1 py-16 px-6">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold text-white mb-8">Terms of Service</h1>
+          <h1 className="text-4xl font-bold text-white mb-3">Terms of Service</h1>
+          <LegalCompanyByline />
 
           <div className="space-y-8 text-gray-300">
             <section>
               <h2 className="text-2xl font-semibold text-white mb-4">Acceptance of Terms</h2>
               <p className="mb-4">
                 These Terms of Service (&ldquo;Terms&rdquo;) are entered into between you and{' '}
-                <strong>Your Company Name</strong>, a company registered in England and Wales
+                <strong>
+                  <LegalCompanyName />
+                </strong>
+                , a company registered in England and Wales (company no. {COMPANY_NUMBER})
                 (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;). By accessing and using this
                 service, you accept and agree to be bound by these Terms. If you do not agree,
                 please do not use this service.
@@ -80,7 +89,7 @@ export default function TermsOfService() {
               <p className="mb-4">
                 All content, features, and functionality of this service, including but not limited
                 to the software, source code, design, text, graphics, and trade marks, are the
-                exclusive property of Your Company Name and are protected by copyright and other
+                exclusive property of <LegalCompanyName /> and are protected by copyright and other
                 intellectual property laws of England and Wales and applicable international
                 treaties. Nothing in these Terms transfers any intellectual property rights to you.
               </p>
