@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
+import { LegalCompanyByline } from '@/app/_components/layout/LegalCompany';
 import { LegalLastUpdated, LegalPageFooter } from '@/app/_components/layout/LegalPageFooter';
-import { SupportEmailLink } from '@/app/_components/layout/SupportEmailLink';
 
 export const metadata: Metadata = {
   title: 'Pitch Please — Privacy Policy',
@@ -15,7 +15,8 @@ export default function PitchPleasePrivacyPolicy() {
       <div className="flex-1 py-16 px-6">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold text-white mb-2">Pitch Please — Privacy Policy</h1>
-          <p className="text-gray-400 mb-8">Dark mode for every website, with attitude.</p>
+          <p className="text-gray-400 mb-2">Dark mode for every website, with attitude.</p>
+          <LegalCompanyByline />
 
           <div className="space-y-8 text-gray-300">
             <section>
@@ -81,7 +82,16 @@ export default function PitchPleasePrivacyPolicy() {
             <section>
               <h2 className="text-2xl font-semibold text-white mb-4">Contact Us</h2>
               <p>
-                Questions about this policy? Reach us at <SupportEmailLink />.
+                Questions about this policy? Reach us at{' '}
+                <a
+                  href="https://spark-apps.co/contact"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-blue-400 hover:text-blue-300 underline"
+                >
+                  spark-apps.co
+                </a>
+                .
               </p>
             </section>
 

@@ -5,7 +5,6 @@ import {
   LegalCompanyName,
 } from '@/app/_components/layout/LegalCompany';
 import { LegalLastUpdated, LegalPageFooter } from '@/app/_components/layout/LegalPageFooter';
-import { SupportEmailLink } from '@/app/_components/layout/SupportEmailLink';
 import { SITE_NAME } from '@/lib/config/site';
 
 export const metadata: Metadata = {
@@ -142,8 +141,11 @@ export default function TermsOfService() {
             <section>
               <h2 className="text-2xl font-semibold text-white mb-4">Contact Information</h2>
               <p>
-                For questions about these Terms of Service, please contact us at:{' '}
-                <SupportEmailLink />
+                For questions about these Terms of Service, please{' '}
+                <a href="/contact" className="text-blue-400 hover:text-blue-300 underline">
+                  contact us
+                </a>
+                .
               </p>
             </section>
 

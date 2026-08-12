@@ -152,8 +152,11 @@ export default function PrivacyPolicy() {
             <section>
               <h2 className="text-2xl font-semibold text-white mb-4">Contact Us</h2>
               <p>
-                If you have any questions about this Privacy Policy, please contact us at:{' '}
-                <SupportEmailLink />
+                If you have any questions about this Privacy Policy, please{' '}
+                <a href="/contact" className="text-blue-400 hover:text-blue-300 underline">
+                  contact us
+                </a>
+                .
               </p>
             </section>
 
