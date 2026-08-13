@@ -2,7 +2,7 @@
 
 Universal Stripe payment backend. Deploy once, add payments to any app, with no Stripe SDK required on the client side.
 
-Live demo: **[sparkstripe.com](https://sparkstripe.com)** &nbsp;|&nbsp; [YouTube Tutorial](https://youtube.com) &nbsp;|&nbsp; [Discord](https://discord.gg/vPTuKEx9Dk)
+Live demo: **[sparkstripe.com](https://sparkstripe.com)** &nbsp;|&nbsp; [YouTube Tutorial](https://youtube.com) &nbsp;|&nbsp; [Discord](https://discord.gg/dDnNNXSWJQ)
 
 ## What it does
 
