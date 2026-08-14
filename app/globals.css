@@ -323,3 +323,25 @@ html {
     transform: translateX(500%);
   }
 }
+
+/* Suppress the browser default focus outline on mouse click.
+ * Keyboard :focus-visible still renders a ring where components opt in,
+ * so this only removes the stray box that appears under the pointer. */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Kill the grey flash on tap and stray text selection on controls. */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+[role="button"],
+[role="tab"],
+[role="option"],
+label,
+summary {
+  -webkit-user-select: none;
+  user-select: none;
+}
