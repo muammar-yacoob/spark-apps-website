@@ -4,6 +4,7 @@ import { Chrome, ExternalLink, Globe, Package, Rocket } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { CrossPromo } from '@/app/_components/ads/CrossPromo';
 import { MobileShowcase } from '@/app/_components/apps/MobileShowcase';
 import { BgParticles } from '@/app/_components/bg-anims/BgParticles';
 import { BgShootingStars } from '@/app/_components/bg-anims/BgShootingStars';
@@ -229,6 +230,11 @@ export default function Home() {
         )}
 
         <MobileShowcase />
+
+        {/* Cross-promo: a compact, live slice of the Spark network, and the
+            paid-slot vehicle. Not a duplicate of the Apps Grid above -- see
+            CrossPromo.tsx for why. */}
+        <CrossPromo />
 
         {/* Footer */}
         <footer className="border-t border-gray-800 py-6">
