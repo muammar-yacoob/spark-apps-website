@@ -139,13 +139,13 @@ export const HOUSE_ADS: Ad[] = [
   },
   {
     id: 'tax-ducks',
-    name: 'Tax Ducks',
+    name: 'DuckTax',
     url: 'https://ducktax.com',
     domain: 'ducktax.com',
     tagline: 'Free UK accounts check',
     body: "Checks a UK micro-entity's accounts are ready to file, free, before Companies House flags them.",
     accent: 'text-orange-400 group-hover:text-orange-300',
-    monogram: 'TD',
+    monogram: 'DT',
   },
   {
     id: 'vidlet',
