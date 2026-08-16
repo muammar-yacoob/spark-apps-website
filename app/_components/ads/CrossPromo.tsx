@@ -56,12 +56,16 @@ export function CrossPromo() {
 }
 
 function CrossPromoInner() {
-  const { ads, slotForSale } = useNetworkAds();
+  const { ads, slotForSale, fromNetwork } = useNetworkAds();
 
+  // Only what SparkAds actually served gets counted. HOUSE_ADS is what
+  // renders when the network is unreachable, and beaconing it reports
+  // impressions for ads the network did not serve -- see useNetworkAds.
   // biome-ignore lint/correctness/useExhaustiveDependencies: keyed on the ad ids, not the array identity a refetch gives back
   useEffect(() => {
+    if (!fromNetwork) return;
     for (const ad of ads) trackAd(ad.id, 'impression');
-  }, [ads.map((ad) => ad.id).join()]);
+  }, [fromNetwork, ads.map((ad) => ad.id).join()]);
 
   const slides: Slide[] = [
     ...ads.map((ad) => ({ id: ad.id, ad })),
@@ -88,7 +92,10 @@ function CrossPromoInner() {
         intervalMs={7000}
         renderItem={(slide) =>
           slide.ad ? (
-            <AdCard ad={slide.ad} onOpen={() => trackAd(slide.id, 'click')} />
+            <AdCard
+              ad={slide.ad}
+              onOpen={fromNetwork ? () => trackAd(slide.id, 'click') : undefined}
+            />
           ) : (
             <AdSlotCard />
           )

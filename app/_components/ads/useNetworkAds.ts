@@ -31,7 +31,11 @@ interface ServeResponse {
   slot: { forSale: boolean; pricingUrl: string; from: string };
 }
 
-export function useNetworkAds(): { ads: NetworkAd[]; slotForSale: boolean } {
+export function useNetworkAds(): {
+  ads: NetworkAd[];
+  slotForSale: boolean;
+  fromNetwork: boolean;
+} {
   const { data } = useQuery<ServeResponse | null>({
     queryKey: ['network-ads'],
     queryFn: async () => {
@@ -45,9 +49,21 @@ export function useNetworkAds(): { ads: NetworkAd[]; slotForSale: boolean } {
     retry: false,
   });
 
+  const served = Boolean(data?.ads?.length);
+
   return {
-    ads: data?.ads?.length ? data.ads : HOUSE_ADS,
+    ads: served && data ? data.ads : HOUSE_ADS,
     slotForSale: data?.slot?.forSale ?? true,
+    /**
+     * Whether the list on screen actually came from SparkAds.
+     *
+     * The strip needs to know, because HOUSE_ADS is not inventory: beaconing
+     * it as an impression/click credits the network with a serve it never
+     * made, and produces failed /api/track posts whenever the network is
+     * unreachable -- which is every load while NEXT_PUBLIC_SPARK_ADS_URL is
+     * unset or unresolvable.
+     */
+    fromNetwork: served,
   };
 }
 
