@@ -1,6 +1,6 @@
 'use client';
 
-import { Chrome, ExternalLink, Globe, Package, Rocket } from 'lucide-react';
+import { Chrome, ExternalLink, Globe, Package, Rocket, Search } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -15,6 +15,8 @@ import { SITE_NAME } from '@/lib/config/site';
 import type { SparkApp } from '@/lib/data/apps';
 import { appHomepage, externalHomepage, sparkApps } from '@/lib/data/apps';
 import { fallbackTag, tagConfig } from '@/lib/data/tags';
+import { QuickSearch } from '@/lib/quick-search';
+import { QUICK_SEARCH_ITEMS } from '@/lib/quick-search-items';
 
 const linkIcons: Record<string, React.ElementType> = {
   website: Globe,
@@ -94,6 +96,23 @@ export default function Home() {
             <span className="text-sm font-semibold text-white leading-tight">{SITE_NAME}</span>
           </div>
           <div className="flex items-center gap-4 sm:gap-6 text-sm text-gray-400">
+            <QuickSearch
+              items={QUICK_SEARCH_ITEMS}
+              placeholder="Search pages and apps..."
+              trigger={(open) => (
+                <button
+                  type="button"
+                  onClick={open}
+                  aria-label="Search (Ctrl+K)"
+                  className="flex items-center gap-1.5 hover:text-white transition-colors"
+                >
+                  <Search className="w-4 h-4" />
+                  <kbd className="hidden sm:inline px-1.5 py-0.5 text-[10px] font-mono text-gray-500 border border-white/10 rounded">
+                    Ctrl K
+                  </kbd>
+                </button>
+              )}
+            />
             <Link href="/about" className="hidden sm:inline hover:text-white transition-colors">
               About
             </Link>
