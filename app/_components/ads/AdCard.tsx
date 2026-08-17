@@ -23,8 +23,23 @@ import { useAppIcon } from './useAppIcon';
 const SURFACE =
   'group relative flex h-full flex-col rounded-lg border p-3 transition-all duration-200 hover:-translate-y-0.5';
 
-export function AdCard({ ad, onOpen }: { ad: Ad & { paid?: boolean }; onOpen?: () => void }) {
-  const { data } = useAppIcon(ad.domain, ad.paid);
+export function AdCard({
+  ad,
+  onOpen,
+  fromNetwork = false,
+}: {
+  ad: Ad & { paid?: boolean };
+  onOpen?: () => void;
+  /**
+   * Whether this card came from SparkAds rather than the local fallback list.
+   * Icons must resolve wherever the ad came from: the local app-icon route only
+   * allowlists the four local house domains, so a network-served card -- paid or
+   * not -- asking here gets a 404. `ad.paid` was the old flag, which sent the
+   * network's own unpaid house ads (vidlet, sparkstack, ...) to the wrong host.
+   */
+  fromNetwork?: boolean;
+}) {
+  const { data } = useAppIcon(ad.domain, fromNetwork);
   const themeColor = data?.themeColor ?? null;
 
   return (

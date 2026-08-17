@@ -94,6 +94,7 @@ function CrossPromoInner() {
           slide.ad ? (
             <AdCard
               ad={slide.ad}
+              fromNetwork={fromNetwork}
               onOpen={fromNetwork ? () => trackAd(slide.id, 'click') : undefined}
             />
           ) : (
