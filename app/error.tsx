@@ -1,15 +1,9 @@
 'use client';
 
-import { SessionProvider, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { SessionProvider, useSession } from 'next-auth/react';
 
-function ErrorContent({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
+function ErrorContent({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   const { status } = useSession();
   const router = useRouter();
 
@@ -51,7 +45,7 @@ function ErrorContent({
   );
 }
 
-export default function Error({
+export default function ErrorPage({
   error,
   reset,
 }: {

@@ -23,6 +23,16 @@ export default function manifest(): MetadataRoute.Manifest {
         type: 'image/png',
         purpose: 'any',
       },
+      // Opaque edge to edge, on the background colour above. A maskable icon
+      // is cropped to whatever shape the launcher uses and any transparency in
+      // it gets filled in -- which is what draws that plate behind the icon.
+      // The artwork sits inside the central 80% so no shape can clip it.
+      {
+        src: '/icon-maskable.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'maskable',
+      },
     ],
   };
 }

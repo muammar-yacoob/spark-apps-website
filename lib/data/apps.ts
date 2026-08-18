@@ -218,7 +218,9 @@ export const sparkApps: SparkApp[] = [
     description: 'Know when the quietest time to be in a place is.',
     icon: '/imgs/apps/fullhouse.png',
     tags: ['Mobile', 'Places', 'AI'],
-    links: [{ label: 'Open app', url: 'https://spark-fullhouse.vercel.app', type: 'app' }],
+    // Not store-listed yet and its old preview deployment is dead (404) —
+    // no link means the tooltip reads "Coming soon" instead of a dead one.
+    links: [],
     mobile: {
       screenshot: '/imgs/app-shots/fullhouse.png',
       alt: 'FullHouse showing how busy a place is through the day',
@@ -256,16 +258,67 @@ export const sparkApps: SparkApp[] = [
     description: 'Personal safety companion for iOS and Android, built with Expo.',
     icon: '/imgs/apps/safesound.png',
     tags: ['Mobile', 'Expo', 'Safety'],
-    // No public listing yet; point at the repo until the stores approve it.
-    links: [
-      { label: 'GitHub', url: 'https://github.com/muammar-yacoob/safesound', type: 'github' },
-    ],
+    // No public listing yet, and the repo is private — no link means the
+    // tooltip reads "Coming soon" instead of a 404 GitHub page.
+    links: [],
     mobile: {
       screenshot: '/imgs/app-shots/safesound.png',
       alt: 'Safe & Sound showing active check-ins and trusted contacts',
       accent: '#10b981',
       caption: 'Check in, or someone gets told',
     },
+  },
+  {
+    id: 'chat-faker',
+    name: 'Chat Faker',
+    tagline: 'Fake WhatsApp Chats',
+    description: 'Build pixel-perfect fake WhatsApp chats and export them as images.',
+    icon: '/imgs/apps/chat-faker.png',
+    tags: ['Chat', 'Tools'],
+    // chatfaker.app is unregistered (NXDOMAIN); the live deployment is the Vercel URL.
+    links: [{ label: 'Open app', url: 'https://chat-faker.vercel.app', type: 'app' }],
+  },
+  {
+    id: 'clipboard-image-terminal',
+    name: 'Clipboard Image to Terminal',
+    tagline: 'Paste Images into Terminal',
+    description:
+      'Paste clipboard images as file paths into the VS Code terminal. Built for AI coding tools on WSL.',
+    icon: '/imgs/apps/clipboard-image-terminal.png',
+    tags: ['DevTools', 'Tools'],
+    links: [
+      {
+        label: 'npm',
+        url: 'https://www.npmjs.com/package/clipboard-image-terminal',
+        type: 'npm',
+      },
+      {
+        label: 'GitHub',
+        url: 'https://github.com/muammar-yacoob/clipboard-image-terminal',
+        type: 'github',
+      },
+    ],
+  },
+  {
+    id: 'gmail-manager-mcp',
+    name: 'Gmail Manager MCP',
+    tagline: 'Inbox & Calendar via MCP',
+    description:
+      'An MCP server for Gmail and Google Calendar: manage, organise and clean up your inbox, and run your calendar, from one server.',
+    icon: '/imgs/apps/gmail-manager-mcp.png',
+    tags: ['Email', 'Tools', 'Backend'],
+    links: [
+      {
+        label: 'npm',
+        url: 'https://www.npmjs.com/package/@spark-apps/gmail-manager-mcp',
+        type: 'npm',
+      },
+      {
+        label: 'GitHub',
+        url: 'https://github.com/muammar-yacoob/GMail-Manager-MCP',
+        type: 'github',
+      },
+    ],
   },
 ];
 

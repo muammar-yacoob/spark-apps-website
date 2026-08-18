@@ -21,7 +21,9 @@ export function ServiceWorkerRegistrar() {
       return;
     }
 
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
+    // updateViaCache 'none': the HTTP cache is allowed to hold sw.js for a day,
+    // and whoever is running a broken worker is exactly who cannot afford to wait.
+    navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).catch(() => {});
   }, []);
 
   return null;
