@@ -1,9 +1,13 @@
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL, SUPPORT_EMAIL } from '@/lib/config/site';
+import { sparkApps } from '@/lib/data/apps';
 
 /**
  * Centralized SEO configuration.
- * Update these values when forking SparkStack for a new project.
  * All SEO artifacts (llms.txt, JSON-LD, sitemap, metadata) pull from here.
+ *
+ * This site is the Spark Apps portfolio — the shop window for the apps in
+ * lib/data/apps.ts. It is not a product in itself, and nothing here should
+ * describe it as one.
  */
 export const seoConfig = {
   // ---- Identity (pulled from lib/config/site.ts) ----
@@ -12,46 +16,40 @@ export const seoConfig = {
   description: SITE_DESCRIPTION,
   supportEmail: SUPPORT_EMAIL,
 
-  // ---- Customize per project ----
-  tagline: 'The full-stack SaaS starter that sparks your next project.',
-  category: 'SaaS Starter Kit',
-  applicationCategory: 'DeveloperApplication' as const,
+  // ---- Site-specific ----
+  tagline: 'Productivity Apps for Vibe Coders',
+  category: 'Software Portfolio',
+  applicationCategory: 'UtilitiesApplication' as const,
 
   keywords: [
-    'saas starter',
-    'nextjs boilerplate',
-    'nextjs starter',
-    'saas template',
-    'next.js saas',
-    'react saas',
-    'fullstack starter',
-    'neon postgres',
-    'drizzle orm',
-    'nextauth',
-    'typescript saas',
-    'vercel template',
+    'spark apps',
+    'productivity apps',
+    'developer tools',
+    'indie software',
+    'chrome extensions',
+    'mcp servers',
+    'npm cli tools',
+    'saas starter kit',
+    'ai tools for developers',
+    'vibe coding tools',
   ],
 
-  features: [
-    'Google OAuth via NextAuth v5 with email whitelist',
-    'Neon PostgreSQL database with Drizzle ORM',
-    'Protected dashboard with session management',
-    'Dark mode UI with animated backgrounds',
-    'Contact form with rate limiting',
-    'Privacy and Terms pages (UK GDPR compliant)',
-    'Dynamic OG image generation',
-    'Service worker and PWA support',
-    'Biome for linting and formatting',
-    'Turbopack dev server for instant feedback',
-  ],
+  /**
+   * The apps themselves are the features of this site. Derived from
+   * lib/data/apps.ts so a new app never has to be added here as well.
+   */
+  get features(): string[] {
+    return sparkApps.map((app) => `${app.name} — ${app.tagline}: ${app.description}`);
+  },
 
   /** Pricing tiers shown in JSON-LD and llms.txt. */
   pricing: [
     {
-      name: 'Free',
+      name: 'Varies by app',
       price: '0',
       currency: 'USD',
-      description: 'Open-source starter kit. Clone and deploy.',
+      description:
+        'Each app sets its own pricing. Several are free or open-source; see the individual app pages.',
     },
   ],
 
@@ -61,12 +59,12 @@ export const seoConfig = {
    */
   competitors: [
     {
-      name: 'create-t3-app',
-      statement: `${SITE_NAME} is the batteries-included alternative to create-t3-app because it ships with a working dashboard, OG image generation, contact form, and legal pages out of the box.`,
+      name: 'a single-product SaaS site',
+      statement: `${SITE_NAME} is a catalogue rather than a single product: one team shipping a connected suite of developer and productivity tools, so the payment backend, AI chat widget, email sending and video tooling are built to work together instead of being bolted on from four vendors.`,
     },
     {
-      name: 'Next.js SaaS Starter',
-      statement: `${SITE_NAME} replaces generic Next.js SaaS starters for teams that need auth, database, and deployment ready in minutes without configuration.`,
+      name: 'generic app marketplaces',
+      statement: `${SITE_NAME} lists only apps built and maintained in-house, so every tool here has a named maintainer and a live support address — unlike open marketplaces where listings are abandoned without notice.`,
     },
   ],
 
@@ -86,10 +84,10 @@ export const seoConfig = {
 
   /** Links used across SEO artifacts. */
   links: {
-    repository: 'https://github.com/muammar-yacoob/SparkStack',
+    repository: '', // this site's source is private
     docs: '', // Set when docs site exists
   },
 
   /** Date the project was first published (for JSON-LD datePublished). */
-  datePublished: '2025-01-01',
+  datePublished: '2026-06-19',
 };

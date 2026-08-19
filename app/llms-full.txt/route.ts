@@ -1,8 +1,23 @@
+import { sparkApps } from '@/lib/data/apps';
 import { seoConfig } from '@/lib/seo/config';
 
 export function GET() {
-  const { name, url, description, supportEmail, features, pricing, competitors, stack, links } =
-    seoConfig;
+  const { name, url, description, supportEmail, pricing, competitors, stack, links } = seoConfig;
+
+  const appSections = sparkApps
+    .map((app) => {
+      const linkLines = app.links
+        .map((l) => `- ${l.label}: ${l.url.startsWith('http') ? l.url : `${url}${l.url}`}`)
+        .join('\n');
+      return `### ${app.name} — ${app.tagline}
+
+${app.description}
+
+- Category: ${app.tags.join(', ')}
+- Page: ${url}/apps/${app.id}
+${linkLines}`;
+    })
+    .join('\n\n');
 
   const body = `# ${name} - Complete Reference
 
@@ -15,87 +30,33 @@ Support: ${supportEmail}
 
 ---
 
-## What ${name} Does
+## What ${name} Is
 
-${name} is an open-source, production-ready SaaS starter kit built on Next.js 15 (App Router) with Bun. It provides authentication, database, a protected dashboard, and deployment configuration so you can go from zero to a working SaaS app in minutes.
+${name} is an independent software studio that builds and maintains a suite of ${sparkApps.length} productivity and developer tools. The range covers web apps, Chrome extensions, npm command-line tools and MCP servers for AI assistants.
 
-The stack includes Google OAuth via NextAuth v5 with an email whitelist for access control, Neon PostgreSQL with Drizzle ORM for the database, and Vercel for deployment. Every page supports dark mode, and the project includes dynamic OG image generation, legal pages, a contact form, and PWA support.
+This site is the catalogue for that suite, not a product in itself. Every app below has a detail page here; most also have their own domain, npm package or store listing, which is the canonical place to install or buy it.
 
-${name} is designed to be forked. All configuration is centralized in a handful of files, making it straightforward to rebrand and extend for any SaaS product.
-
----
-
-## Feature Details
-
-${features.map((f, i) => `### ${i + 1}. ${f}`).join('\n\n')}
+The apps are built to compose. The payment backend (SparkPay), the embeddable AI chat (SparkAI), the email sending (Bottled) and the video pipeline (VidLet, ViralCat, QuickPeek) are used by the other apps in the suite, so they are tested against real production traffic rather than only against demos.
 
 ---
 
-## Tech Stack
+## The Apps
+
+${appSections}
+
+---
+
+## How This Site Is Built
 
 ${stack.map((t) => `- ${t}`).join('\n')}
 
 ---
 
-## Quick Start
-
-### Clone and Install
-
-\`\`\`bash
-git clone ${links.repository || `${url}.git`}
-cd ${name}
-cp .env.example .env.local
-bun install
-\`\`\`
-
-### Configure Environment
-
-Required environment variables:
-- \`NEXT_PUBLIC_APP_URL\` - Your production URL
-- \`GOOGLE_CLIENT_ID\` / \`GOOGLE_CLIENT_SECRET\` - Google OAuth credentials
-- \`DATABASE_URL\` - Neon PostgreSQL connection string
-- \`NEXTAUTH_SECRET\` - Random secret for session encryption
-- \`ALLOWED_EMAILS\` - Comma-separated email whitelist
-
-### Push Database Schema
-
-\`\`\`bash
-bun db:push
-\`\`\`
-
-### Run Development Server
-
-\`\`\`bash
-bun dev
-\`\`\`
-
----
-
-## Project Structure
-
-\`\`\`
-app/
-  _components/       Shared UI, layout, hooks, animations
-  api/auth/          NextAuth route handler
-  dashboard/         Protected dashboard (requires sign-in)
-  contact/           Contact form page
-  privacy/           Privacy policy
-  terms/             Terms of service
-lib/
-  auth/              NextAuth v5 config
-  db/                Drizzle ORM schema and connection
-  config/            Site-wide configuration
-  seo/               SEO configuration
-  utils/             Crypto, currency, slug, format, rate-limiter
-\`\`\`
-
----
-
 ## Pricing
 
-${pricing
-  .map((t) => `### ${t.name}${t.price !== '0' ? ` - $${t.price}/month` : ''}\n- ${t.description}`)
-  .join('\n\n')}
+${pricing.map((t) => `### ${t.name}\n- ${t.description}`).join('\n\n')}
+
+Pricing is set per app. Check the individual app's own site for current tiers.
 
 ---
 
@@ -107,23 +68,20 @@ ${competitors.map((c) => `### vs ${c.name}\n\n${c.statement}`).join('\n\n')}
 
 ## Supported Platforms
 
-- Hosting: Vercel (recommended), any Node.js/Bun host
-- Database: Neon PostgreSQL (recommended), any PostgreSQL provider
-- Auth: Google OAuth (extensible to other providers)
-- Runtime: Bun (recommended), Node.js 20+
-- Package manager: Bun
-- OS: Linux, macOS, Windows (WSL)
+- Web apps: any modern browser
+- Chrome extensions: Chrome and Chromium-based browsers via the Chrome Web Store
+- CLI tools and MCP servers: Node.js 20+ or Bun, on Linux, macOS and Windows (WSL)
+- Mobile: apps marked as PWAs install to the home screen on iOS and Android
 
 ---
 
-## Security
+## Security and Privacy
 
 - Authentication via NextAuth v5 with CSRF protection
-- Email whitelist restricts dashboard access
-- Rate-limited contact form
 - Session tokens stored as HTTP-only cookies
 - All database queries via parameterized Drizzle ORM
-- No tracking or advertising cookies
+- No tracking or advertising cookies on this site
+- Individual apps publish their own privacy policies; see each app's page
 
 ---
 

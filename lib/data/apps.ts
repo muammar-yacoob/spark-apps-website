@@ -117,7 +117,9 @@ export const sparkApps: SparkApp[] = [
     tags: ['AI', 'Chrome Extension', 'Detection'],
     links: [
       // botornot.art is dead (NXDOMAIN); the live deployment is the Vercel URL.
-      { label: 'Open app', url: 'https://bot-or-not-spark-apps.vercel.app', type: 'app' },
+      // bot-or-not-spark-apps.vercel.app sits behind Vercel deployment protection
+      // and bounces the public to an SSO login, so link the open alias instead.
+      { label: 'Open app', url: 'https://bot-or-not.vercel.app', type: 'app' },
       {
         label: 'Chrome',
         url: 'https://chromewebstore.google.com/detail/bot-or-not/njohmblkingfikcgcbfcnjmciibhlmci',
