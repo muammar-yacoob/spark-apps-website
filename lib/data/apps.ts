@@ -115,11 +115,13 @@ export const sparkApps: SparkApp[] = [
     description: 'AI content detection. Chrome extension and PWA.',
     icon: '/imgs/apps/botornot.png',
     tags: ['AI', 'Chrome Extension', 'Detection'],
+    // No public "Open app" link until botornot.art is reachable again.
+    // The domain is registered and still aliased to the live production deployment,
+    // but its DNS (Cloudflare NS) points at 188.127.241.99, a host unrelated to us.
+    // Every other production alias is SSO-gated or redirects to that broken domain.
+    // Do NOT link bot-or-not.vercel.app: that is a different party's SvelteKit app,
+    // not ours -- our aliases are all *-spark-apps.vercel.app / bot-or-not-nine.
     links: [
-      // botornot.art is dead (NXDOMAIN); the live deployment is the Vercel URL.
-      // bot-or-not-spark-apps.vercel.app sits behind Vercel deployment protection
-      // and bounces the public to an SSO login, so link the open alias instead.
-      { label: 'Open app', url: 'https://bot-or-not.vercel.app', type: 'app' },
       {
         label: 'Chrome',
         url: 'https://chromewebstore.google.com/detail/bot-or-not/njohmblkingfikcgcbfcnjmciibhlmci',
