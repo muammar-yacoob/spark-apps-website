@@ -75,7 +75,7 @@ export const ogConfig = {
   url: SITE_URL.replace(/^https?:\/\//, ''),
   favicon: 'favicon.png',
   badge: 'badges/ai-badge2.png',
-  cta: 'Start Shipping Faster',
+  cta: 'Browse the Apps',
   socialProof: 'Trusted by indie devs worldwide',
   taglines: TAGLINES,
   mascots: discoverMascots(),
