@@ -90,17 +90,15 @@ export default async function Image() {
 
   const mascotPath = hasMascot ? ogAsset(mascot) : '';
   const faviconPath = appAsset(OG.favicon);
-  const badgePath = OG.badge ? ogAsset(OG.badge) : '';
 
   const brandFontPath = ogAsset('fonts', OG.fonts.brand.file);
-  const [fonts, brandFontBuf, edgeBg, ctaColor, faviconSrc, badgeSrc, transparent, mascotSrc] =
+  const [fonts, brandFontBuf, edgeBg, ctaColor, faviconSrc, transparent, mascotSrc] =
     await Promise.all([
       loadFonts(OG.fonts.heading.file, OG.fonts.body.file),
       readFile(brandFontPath),
       hasMascot ? getImageColor(mascotPath, 'edge') : Promise.resolve(''),
       getImageColor(faviconPath, 'dominant'),
       loadImageWithShadow(faviconPath, 80),
-      loadImageWithShadow(badgePath, 96),
       hasMascot ? hasTransparentBg(mascotPath) : Promise.resolve(false),
       hasMascot ? loadImageAsDataUrl(mascotPath) : Promise.resolve(''),
     ]);
@@ -113,6 +111,11 @@ export default async function Image() {
 
   // Two-tone palette: favicon accent vs whitesmoke, picked by bg brightness
   const light = luminance(bg) > 100;
+  // The badge ships in two art variants; which one reads on the card
+  // depends on the background, which is only settled here.
+  const badgeSrc = OG.badge
+    ? await loadImageWithShadow(ogAsset(light ? OG.badgeOnLight : OG.badge), 96)
+    : '';
   const veryLight = luminance(bg) > 200;
   const rawAccent = light ? darken(ctaColor, 0.55) : ctaColor;
   const accentColor = ensureContrast(rawAccent, bg);
@@ -192,9 +195,28 @@ export default async function Image() {
             </div>
           </div>
         </div>
-        {OG.badge ? (
-          <img src={badgeSrc} width={124} height={124} style={{ margin: -14 }} />
-        ) : null}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span style={{ fontSize: 16, fontWeight: 700, fontFamily: hFont, color: mutedColor }}>
+            Works with Claude
+          </span>
+          <svg
+            width={76}
+            height={76}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke={textColor}
+            strokeWidth={1.6}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            {ICON_PATHS.mcp.map((d) => (
+              <path key={d} d={d} />
+            ))}
+          </svg>
+          {OG.badge ? (
+            <img src={badgeSrc} width={124} height={124} style={{ margin: -14 }} />
+          ) : null}
+        </div>
       </div>
 
       {/* Middle: tagline + CTA + mascot */}
