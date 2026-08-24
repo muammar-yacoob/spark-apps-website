@@ -22,4 +22,3 @@ export const THEME_COLOR = '#3b82f6';
 export const SUPPORT_EMAIL =
   process.env.NEXT_PUBLIC_SUPPORT_EMAIL ||
   `hello@${SITE_URL.replace(/^https?:\/\//, '').replace(/\/$/, '')}`;
-
