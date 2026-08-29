@@ -6,7 +6,7 @@ Live demo: **[sparkstripe.com](https://sparkstripe.com)** &nbsp;|&nbsp; [YouTube
 
 ## What it does
 
-- **Hosted pricing pages** at `/spark/{app_id}`: drop-in, no frontend work
+- **Hosted pricing pages** at `/{owner_slug}/{app_slug}`: drop-in, no frontend work
 - **Subscription + one-time payments** via Stripe Checkout
 - **Multi-app**: one backend, unlimited apps, each fully isolated
 - **Subscription status API**: one REST call from any framework
@@ -23,7 +23,7 @@ Live demo: **[sparkstripe.com](https://sparkstripe.com)** &nbsp;|&nbsp; [YouTube
 
 ### How it works
 
-![Payment flow: Stripe event to SparkStripe backend to client app gating](docs/imgs/Flowchart.png)
+![Payment flow: Stripe event to SparkStripe backend to client app gating](public/imgs/flowchart.png)
 
 Stripe fires a payment event, SparkStripe processes it and updates the database, then your app checks status via polling or receives a signed webhook push. No Stripe SDK needed on the client side.
 
@@ -165,10 +165,14 @@ The simplest integration, no server required. Call the status API on demand:
 
 ```javascript
 const res = await fetch(
-  `https://sparkstripe.com/api/public/subscription/status-public?email=${email}&app_id=${APP_ID}`
+  `https://sparkpay.dev/api/public/subscription/status-public?email=${email}&app_id=${APP_ID}`
 );
 const data = await res.json();
 ```
+
+Call `sparkpay.dev` directly. `sparkstripe.com` answers with a 307 to the same
+path, but the redirect response carries no CORS headers, so browser `fetch`
+calls against it are blocked before they ever reach the API.
 
 Or use the helpers from the gating file:
 
@@ -308,8 +312,13 @@ export async function POST(req: Request) {
 
 ### Open pricing page
 
+The hosted pricing page resolves by the `owner_slug` + `app_slug` pair, which are
+their own columns on the app record and are *not* the `app_id`. They happen to
+match for most apps today, but renaming an app moves its slug and leaves the id
+alone, so a URL built from `app_id` breaks silently. Build it from the slugs:
+
 ```javascript
-window.open(`https://sparkstripe.com/spark/${APP_ID}?email=${encodeURIComponent(email)}`);
+window.open(`https://sparkpay.dev/${OWNER_SLUG}/${APP_SLUG}?email=${encodeURIComponent(email)}`);
 ```
 
 Or use the gating file helper:
@@ -447,7 +456,7 @@ QSTASH_NEXT_SIGNING_KEY=       # QStash signature verification (rotation)
 | `POST` | `/api/checkout/create-public` | Create Stripe checkout session |
 | `GET` | `/api/checkout/session?session_id=` | Get checkout session details |
 | `POST` | `/api/checkout/verify-session` | Verify session if webhook not yet processed |
-| `GET` | `/spark/{app_id}` | Hosted pricing page |
+| `GET` | `/{owner_slug}/{app_slug}` | Hosted pricing page |
 | `GET` | `/checkout/{app_id}` | Direct checkout (skip pricing page) |
 | `POST` | `/api/public/register-free` | Register free-tier user + send verification email |
 | `GET` | `/api/public/verify-email?token=` | Verify email via HMAC token |
@@ -544,7 +553,7 @@ export default async function DashboardPage() {
 
 ```javascript
 const res = await fetch(
-  `https://sparkstripe.com/api/public/subscription/status-public?email=${email}&app_id=${APP_ID}`
+  `https://sparkpay.dev/api/public/subscription/status-public?email=${email}&app_id=${APP_ID}`
 );
 const { subscription } = await res.json();
 const hasAccess = ['active', 'trialing', 'lifetime'].includes(subscription?.status);
@@ -557,7 +566,7 @@ const hasAccess = ['active', 'trialing', 'lifetime'].includes(subscription?.stat
 
 ### Page View Tracking
 
-Pricing page visits are tracked automatically with no cookies and no personal data. A fire-and-forget `POST /api/track/page-view` call is made by a tiny client component mounted on every `/spark/{app_id}` page. Requests are rate-limited to 10 per IP per 5 minutes and fail silently so they never affect visitor UX.
+Pricing page visits are tracked automatically with no cookies and no personal data. A fire-and-forget `POST /api/track/page-view` call is made by a tiny client component mounted on every `/{owner_slug}/{app_slug}` page. Requests are rate-limited to 10 per IP per 5 minutes and fail silently so they never affect visitor UX.
 
 View raw data at `GET /api/dev/analytics?days=30` (dev only, requires dashboard auth).
 
@@ -597,11 +606,11 @@ bun run db:switch <email> <app_id> <plan> # Custom email
 <summary><strong>Architecture & Tech Stack</strong></summary>
 
 ```
-sparkstripe.com
-|- /spark/my-saas          -> SaaS app pricing page
-|- /spark/my-extension     -> Chrome extension pricing page
-|- /spark/my-cli-tool      -> CLI tool pricing page
-|- /spark/my-mobile-app    -> Mobile app pricing page
+sparkpay.dev
+|- /acme/my-saas           -> SaaS app pricing page
+|- /acme/my-extension      -> Chrome extension pricing page
+|- /acme/my-cli-tool       -> CLI tool pricing page
+|- /acme/my-mobile-app     -> Mobile app pricing page
 '- /api/subscription/...   -> Status checks from all apps (public, no auth needed)
 ```
 
