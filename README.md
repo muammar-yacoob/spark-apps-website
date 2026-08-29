@@ -23,7 +23,7 @@ Live demo: **[sparkstripe.com](https://sparkstripe.com)** &nbsp;|&nbsp; [YouTube
 
 ### How it works
 
-![Payment flow: Stripe event to SparkStripe backend to client app gating](docs/imgs/Flowchart.png)
+![Payment flow: Stripe event to SparkStripe backend to client app gating](public/imgs/flowchart.png)
 
 Stripe fires a payment event, SparkStripe processes it and updates the database, then your app checks status via polling or receives a signed webhook push. No Stripe SDK needed on the client side.
 
