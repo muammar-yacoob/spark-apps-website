@@ -6,7 +6,7 @@ Live demo: **[sparkstripe.com](https://sparkstripe.com)** &nbsp;|&nbsp; [YouTube
 
 ## What it does
 
-- **Hosted pricing pages** at `/pricing/{app_id}`: drop-in, no frontend work
+- **Hosted pricing pages** at `/spark/{app_id}`: drop-in, no frontend work
 - **Subscription + one-time payments** via Stripe Checkout
 - **Multi-app**: one backend, unlimited apps, each fully isolated
 - **Subscription status API**: one REST call from any framework
@@ -309,7 +309,7 @@ export async function POST(req: Request) {
 ### Open pricing page
 
 ```javascript
-window.open(`https://sparkstripe.com/pricing/${APP_ID}?email=${encodeURIComponent(email)}`);
+window.open(`https://sparkstripe.com/spark/${APP_ID}?email=${encodeURIComponent(email)}`);
 ```
 
 Or use the gating file helper:
@@ -447,7 +447,7 @@ QSTASH_NEXT_SIGNING_KEY=       # QStash signature verification (rotation)
 | `POST` | `/api/checkout/create-public` | Create Stripe checkout session |
 | `GET` | `/api/checkout/session?session_id=` | Get checkout session details |
 | `POST` | `/api/checkout/verify-session` | Verify session if webhook not yet processed |
-| `GET` | `/pricing/{app_id}` | Hosted pricing page |
+| `GET` | `/spark/{app_id}` | Hosted pricing page |
 | `GET` | `/checkout/{app_id}` | Direct checkout (skip pricing page) |
 | `POST` | `/api/public/register-free` | Register free-tier user + send verification email |
 | `GET` | `/api/public/verify-email?token=` | Verify email via HMAC token |
@@ -557,7 +557,7 @@ const hasAccess = ['active', 'trialing', 'lifetime'].includes(subscription?.stat
 
 ### Page View Tracking
 
-Pricing page visits are tracked automatically with no cookies and no personal data. A fire-and-forget `POST /api/track/page-view` call is made by a tiny client component mounted on every `/pricing/{app_id}` page. Requests are rate-limited to 10 per IP per 5 minutes and fail silently so they never affect visitor UX.
+Pricing page visits are tracked automatically with no cookies and no personal data. A fire-and-forget `POST /api/track/page-view` call is made by a tiny client component mounted on every `/spark/{app_id}` page. Requests are rate-limited to 10 per IP per 5 minutes and fail silently so they never affect visitor UX.
 
 View raw data at `GET /api/dev/analytics?days=30` (dev only, requires dashboard auth).
 
@@ -598,10 +598,10 @@ bun run db:switch <email> <app_id> <plan> # Custom email
 
 ```
 sparkstripe.com
-|- /pricing/my-saas        -> SaaS app pricing page
-|- /pricing/my-extension   -> Chrome extension pricing page
-|- /pricing/my-cli-tool    -> CLI tool pricing page
-|- /pricing/my-mobile-app  -> Mobile app pricing page
+|- /spark/my-saas          -> SaaS app pricing page
+|- /spark/my-extension     -> Chrome extension pricing page
+|- /spark/my-cli-tool      -> CLI tool pricing page
+|- /spark/my-mobile-app    -> Mobile app pricing page
 '- /api/subscription/...   -> Status checks from all apps (public, no auth needed)
 ```
 
