@@ -18,6 +18,7 @@
       "!**/app/_animations",
       "!**/lib/og",
       "!**/app/opengraph-image.tsx",
+      "!**/app/opengraph-image/portrait/route.tsx",
       "!**/app/twitter-image.tsx",
       "!**/app/globals.css"
     ]
