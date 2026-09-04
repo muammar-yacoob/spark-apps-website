@@ -54,8 +54,15 @@ export const viewport: Viewport = {
   themeColor: THEME_COLOR,
 };
 
-// SparkBrain chat widget. In local dev, set NEXT_PUBLIC_CHAT_API_KEY to authenticate.
-const CHAT_API_KEY = process.env.NEXT_PUBLIC_CHAT_API_KEY;
+// SparkBrain chat widget key, DEV ONLY. spark-apps.co is a registered domain,
+// so production authenticates by Origin and needs no key -- and must not send
+// one: a key present takes priority over the Origin check, so a stale value
+// 403s /api/widget/init and the widget vanishes instead of falling back. It
+// would also publish a spendable key in the page source. Only localhost lacks
+// a registered Origin. NODE_ENV is inlined at build time, so this is undefined
+// in a production bundle and the data-api-key attribute below drops out.
+const CHAT_API_KEY =
+  process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_CHAT_API_KEY : undefined;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
