@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { SparkAdsCarousel } from '@/app/_components/ads/SparkAdsCarousel';
 import { MobileShowcase } from '@/app/_components/apps/MobileShowcase';
+import { EnterIfSignedIn } from '@/app/_components/auth/EnterIfSignedIn';
 import { BgParticles } from '@/app/_components/bg-anims/BgParticles';
 import { BgShootingStars } from '@/app/_components/bg-anims/BgShootingStars';
 import SocialShareButton from '@/app/_components/social-share/SocialShareButton';
@@ -84,6 +85,7 @@ export default function Home() {
 
   return (
     <div className="h-screen bg-gray-950 text-gray-100 flex flex-col overflow-hidden">
+      <EnterIfSignedIn />
       <BgParticles />
       <BgShootingStars />
 
