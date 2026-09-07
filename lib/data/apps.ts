@@ -137,8 +137,14 @@ export const sparkApps: SparkApp[] = [
       'The whole scrollable page in one keystroke. No account, no watermark, no upload. Chrome extension.',
     icon: '/imgs/apps/screenful.png',
     tags: ['Chrome Extension', 'Screenshots', 'Privacy'],
-    // Not on the Chrome Web Store yet; the privacy page is the store-submission target.
-    links: [{ label: 'Privacy', url: '/apps/screenful/privacy', type: 'website' }],
+    links: [
+      {
+        label: 'Chrome',
+        url: 'https://chromewebstore.google.com/detail/screenful/obojmldajhdcklkgkedajkmdipnncpoe',
+        type: 'chrome',
+      },
+      { label: 'Privacy', url: '/apps/screenful/privacy', type: 'website' },
+    ],
   },
   {
     id: 'textpert',
