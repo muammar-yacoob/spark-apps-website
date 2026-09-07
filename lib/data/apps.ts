@@ -187,8 +187,14 @@ export const sparkApps: SparkApp[] = [
     icon: '/imgs/apps/pitchplease.png',
     tags: ['Chrome Extension', 'Dark Mode', 'Tools'],
     links: [
-      // getpitchplease.com is dead (NXDOMAIN); the live deployment is the Vercel URL.
-      { label: 'Open app', url: 'https://pitchplease-ten.vercel.app', type: 'app' },
+      // getpitchplease.com is dead (NXDOMAIN). pitchplease-ten.vercel.app is still
+      // up, but a bare deployment URL is not a homepage and is not where installs
+      // come from, so the Chrome Web Store listing is the link we advertise.
+      {
+        label: 'Chrome',
+        url: 'https://chromewebstore.google.com/detail/pitch-please/pclmenmpcljlioccngfepokpgbgcbgjb',
+        type: 'chrome',
+      },
       { label: 'Privacy', url: '/apps/pitchplease/privacy', type: 'website' },
     ],
   },
@@ -199,7 +205,12 @@ export const sparkApps: SparkApp[] = [
     description: 'CLI to analyze, clean, and refactor any project.',
     icon: '/imgs/apps/klean.png',
     tags: ['CLI', 'DevTools', 'Cleanup'],
-    links: [{ label: 'npm', url: 'https://www.npmjs.com/package/klean', type: 'npm' }],
+    // No public link. npmjs.com/package/klean is a DIFFERENT author's package
+    // (knowbee, "A simple cache remover", 2020) and pointing at it shipped our
+    // visitors to unrelated software. Our own repo (muammar-yacoob/Cleaner) is
+    // private, so it 404s for anonymous visitors and cannot be linked either.
+    // appHomepage() falls back to /apps/klean, which stays correct.
+    links: [],
   },
   {
     id: 'still-applying',
