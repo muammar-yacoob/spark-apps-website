@@ -115,12 +115,11 @@ export const sparkApps: SparkApp[] = [
     description: 'AI content detection. Chrome extension and PWA.',
     icon: '/imgs/apps/botornot.png',
     tags: ['AI', 'Chrome Extension', 'Detection'],
-    // No public "Open app" link until botornot.art is reachable again.
-    // The domain is registered and still aliased to the live production deployment,
-    // but its DNS (Cloudflare NS) points at 188.127.241.99, a host unrelated to us.
-    // Every other production alias is SSO-gated or redirects to that broken domain.
-    // Do NOT link bot-or-not.vercel.app: that is a different party's SvelteKit app,
-    // not ours -- our aliases are all *-spark-apps.vercel.app / bot-or-not-nine.
+    // botornot.art is dead: `dig +short botornot.art` returns nothing, no A and
+    // no NS record. Do not link it. The Chrome Web Store listing below is the
+    // only verified-live destination for this app.
+    // Do NOT link bot-or-not.vercel.app either: that is a different party's
+    // SvelteKit app, not ours.
     links: [
       {
         label: 'Chrome',
@@ -137,8 +136,14 @@ export const sparkApps: SparkApp[] = [
       'The whole scrollable page in one keystroke. No account, no watermark, no upload. Chrome extension.',
     icon: '/imgs/apps/screenful.png',
     tags: ['Chrome Extension', 'Screenshots', 'Privacy'],
-    // Not on the Chrome Web Store yet; the privacy page is the store-submission target.
-    links: [{ label: 'Privacy', url: '/apps/screenful/privacy', type: 'website' }],
+    links: [
+      {
+        label: 'Chrome',
+        url: 'https://chromewebstore.google.com/detail/screenful/obojmldajhdcklkgkedajkmdipnncpoe',
+        type: 'chrome',
+      },
+      { label: 'Privacy', url: '/apps/screenful/privacy', type: 'website' },
+    ],
   },
   {
     id: 'textpert',
@@ -182,8 +187,14 @@ export const sparkApps: SparkApp[] = [
     icon: '/imgs/apps/pitchplease.png',
     tags: ['Chrome Extension', 'Dark Mode', 'Tools'],
     links: [
-      // getpitchplease.com is dead (NXDOMAIN); the live deployment is the Vercel URL.
-      { label: 'Open app', url: 'https://pitchplease-ten.vercel.app', type: 'app' },
+      // getpitchplease.com is dead (NXDOMAIN). pitchplease-ten.vercel.app is still
+      // up, but a bare deployment URL is not a homepage and is not where installs
+      // come from, so the Chrome Web Store listing is the link we advertise.
+      {
+        label: 'Chrome',
+        url: 'https://chromewebstore.google.com/detail/pitch-please/pclmenmpcljlioccngfepokpgbgcbgjb',
+        type: 'chrome',
+      },
       { label: 'Privacy', url: '/apps/pitchplease/privacy', type: 'website' },
     ],
   },
@@ -194,7 +205,12 @@ export const sparkApps: SparkApp[] = [
     description: 'CLI to analyze, clean, and refactor any project.',
     icon: '/imgs/apps/klean.png',
     tags: ['CLI', 'DevTools', 'Cleanup'],
-    links: [{ label: 'npm', url: 'https://www.npmjs.com/package/klean', type: 'npm' }],
+    // No public link. npmjs.com/package/klean is a DIFFERENT author's package
+    // (knowbee, "A simple cache remover", 2020) and pointing at it shipped our
+    // visitors to unrelated software. Our own repo (muammar-yacoob/Cleaner) is
+    // private, so it 404s for anonymous visitors and cannot be linked either.
+    // appHomepage() falls back to /apps/klean, which stays correct.
+    links: [],
   },
   {
     id: 'still-applying',
