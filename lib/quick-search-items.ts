@@ -74,6 +74,35 @@ const PAGES: QuickSearchItem[] = [
     keywords: ['legal', 'conditions', 'tos', 'agreement', 'license'],
     hint: '/terms',
   },
+  /*
+   * Three apps ship their own store-required privacy page. They are listed one
+   * by one rather than generated per app, because only these three exist and a
+   * generated row would 404 for every other app in the catalogue.
+   */
+  {
+    id: 'privacy-bumboo',
+    title: 'Bumboo Privacy Policy',
+    href: '/apps/bumboo/privacy',
+    group: 'Legal',
+    keywords: ['bumboo', 'app privacy', 'gdpr', 'data', 'store listing'],
+    hint: '/apps/bumboo/privacy',
+  },
+  {
+    id: 'privacy-pitchplease',
+    title: 'PitchPlease Privacy Policy',
+    href: '/apps/pitchplease/privacy',
+    group: 'Legal',
+    keywords: ['pitchplease', 'app privacy', 'gdpr', 'data', 'store listing'],
+    hint: '/apps/pitchplease/privacy',
+  },
+  {
+    id: 'privacy-screenful',
+    title: 'Screenful Privacy Policy',
+    href: '/apps/screenful/privacy',
+    group: 'Legal',
+    keywords: ['screenful', 'app privacy', 'gdpr', 'data', 'store listing'],
+    hint: '/apps/screenful/privacy',
+  },
 ];
 
 /** Extra aliases per app id, for vocabulary the tags and tagline miss. */

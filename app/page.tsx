@@ -105,12 +105,12 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={open}
-                  aria-label="Search (Ctrl+K)"
+                  aria-label="Search (⌘ K)"
                   className="flex items-center gap-1.5 hover:text-white transition-colors"
                 >
                   <Search className="w-4 h-4" />
                   <kbd className="hidden sm:inline px-1.5 py-0.5 text-[10px] font-mono text-gray-500 border border-white/10 rounded">
-                    Ctrl K
+                    ⌘ K
                   </kbd>
                 </button>
               )}
