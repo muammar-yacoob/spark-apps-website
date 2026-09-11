@@ -10,6 +10,8 @@
     "includes": [
       "**",
       "!**/node_modules",
+      "!**/.vercel",
+      "!**/.claude",
       "!**/.next",
       "!**/dist",
       "!**/build",
