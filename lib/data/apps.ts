@@ -115,9 +115,10 @@ export const sparkApps: SparkApp[] = [
     description: 'AI content detection. Chrome extension and PWA.',
     icon: '/imgs/apps/botornot.png',
     tags: ['AI', 'Chrome Extension', 'Detection'],
-    // botornot.art is dead: `dig +short botornot.art` returns nothing, no A and
-    // no NS record. Do not link it. The Chrome Web Store listing below is the
-    // only verified-live destination for this app.
+    // botornot.art does not serve. As of 2026-09-11 DNS does resolve (A
+    // 196.53.155.51, Cloudflare NS) but HTTPS never connects, so the domain
+    // is registered-but-dead rather than unregistered. Do not link it; the
+    // Chrome Web Store listing below is the only verified-live destination.
     // Do NOT link bot-or-not.vercel.app either: that is a different party's
     // SvelteKit app, not ours.
     links: [
