@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL, THEME_COLOR } from '@/lib/config/site';
 import { seoConfig } from '@/lib/seo/config';
 import './globals.css';
+import { CookieConsent } from '@/lib/cookie-kit/CookieConsent';
 import { NavigationLoader } from './_components/feedback/NavigationLoader';
 import { ServiceWorkerRegistrar } from './_components/ServiceWorkerRegistrar';
 import { JsonLd } from './_components/seo/JsonLd';
@@ -80,11 +81,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <JsonLd />
         <ServiceWorkerRegistrar />
         <NavigationLoader>{children}</NavigationLoader>
-        {/* SparkBrain chat widget */}
-        <script
-          src="https://sparkbrain.app/chat.js"
-          data-domain="spark-apps.co"
-          {...(CHAT_API_KEY ? { 'data-api-key': CHAT_API_KEY } : {})}
+        <CookieConsent
+          scripts={[
+            {
+              src: 'https://sparkbrain.app/chat.js',
+              attrs: {
+                'data-domain': 'spark-apps.co',
+                ...(CHAT_API_KEY ? { 'data-api-key': CHAT_API_KEY } : {}),
+              },
+            },
+          ]}
+          cookieName="spark_apps_website_consent"
+          accent="#3b82f6"
+          privacyUrl="/privacy"
+          message="Essential cookies keep this site working. Accepting also loads optional third-party services."
         />
       </body>
     </html>
