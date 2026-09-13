@@ -147,6 +147,19 @@ export const sparkApps: SparkApp[] = [
     ],
   },
   {
+    id: 'bumboo',
+    name: 'BumBoo',
+    tagline: 'Used-Vehicle History',
+    description:
+      "Reads the plate or VIN off a used-vehicle advert and shows the country's own record: MOT history, APK defects, safety recalls. Chrome extension.",
+    icon: '/imgs/apps/bumboo.png',
+    tags: ['Chrome Extension', 'Vehicles', 'Tools'],
+    // Not on the Chrome Web Store yet, and the extension's own manifest already
+    // sets homepage_url to this site — so /apps/bumboo is its homepage until a
+    // store listing exists. No link means the tooltip reads "Coming soon".
+    links: [],
+  },
+  {
     id: 'textpert',
     name: 'TextPert',
     tagline: 'Autocorrect on Steroids',
@@ -169,6 +182,16 @@ export const sparkApps: SparkApp[] = [
     icon: '/imgs/apps/spark-ai.png',
     tags: ['AI', 'Chat', 'Widget'],
     links: [{ label: 'Website', url: 'https://sparkbrain.app', type: 'website' }],
+  },
+  {
+    id: 'spark-ads',
+    name: 'SparkAds',
+    tagline: 'Ads on Every Spark Dashboard',
+    description:
+      'An hour a day on every dashboard in the Spark network. One advertiser per hourly slot.',
+    icon: '/imgs/apps/spark-ads.png',
+    tags: ['Marketing', 'Ads', 'SaaS'],
+    links: [{ label: 'Website', url: 'https://sparkads.dev', type: 'website' }],
   },
   {
     id: 'spark-stripe',
