@@ -127,6 +127,14 @@ export default function Home() {
             <Link href="/contact" className="hidden sm:inline hover:text-white transition-colors">
               Contact
             </Link>
+            {/* The Unity and game-dev back-catalogue is not listed here; it keeps
+                its own site. Linked so the two halves of the brand stay connected. */}
+            <a
+              href="https://spark-games.co.uk"
+              className="hidden md:inline hover:text-white transition-colors"
+            >
+              Games ↗
+            </a>
             <SocialShareButton size={16} {...SHARE_CONFIG} />
           </div>
         </div>
