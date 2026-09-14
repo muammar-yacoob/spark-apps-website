@@ -11,6 +11,7 @@ import { BgParticles } from '@/app/_components/bg-anims/BgParticles';
 import { BgShootingStars } from '@/app/_components/bg-anims/BgShootingStars';
 import SocialShareButton from '@/app/_components/social-share/SocialShareButton';
 import { SHARE_CONFIG } from '@/app/_components/social-share/share-config';
+import { AppMark } from '@/app/_components/ui/AppMark';
 import { Tooltip } from '@/app/_components/ui/Tooltip';
 import { SITE_NAME } from '@/lib/config/site';
 import type { SparkApp } from '@/lib/data/apps';
@@ -93,8 +94,7 @@ export default function Home() {
       <nav className="border-b border-white/[0.06] bg-gray-900/40 backdrop-blur-sm z-10 flex-shrink-0">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            {/* biome-ignore lint/performance/noImgElement: static favicon fallback rendered at a fixed small size; not worth a next/image wrapper. */}
-            <img src="/favicon.ico" alt="" width={22} height={22} className="rounded" />
+            <AppMark size={22} />
             <span className="text-sm font-semibold text-white leading-tight">{SITE_NAME}</span>
           </div>
           <div className="flex items-center gap-4 sm:gap-6 text-sm text-gray-400">
