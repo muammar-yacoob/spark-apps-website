@@ -152,7 +152,7 @@ export const sparkApps: SparkApp[] = [
     // this entry existed — the app itself was simply never added here, so the
     // store listing's own homepage link had nowhere to point.
     id: 'bumboo',
-    demoVideo: 'v2V_7RSHHMs',
+    demoVideo: 'F2nX0rPA-1M',
     name: 'BumBoo',
     tagline: 'Used-Vehicle History Checks',
     description:
@@ -220,6 +220,7 @@ export const sparkApps: SparkApp[] = [
   },
   {
     id: 'pitchplease',
+    demoVideo: 'JIDeXKxWriI',
     name: 'Pitch Please',
     tagline: 'Dark Mode, Everywhere',
     description:
