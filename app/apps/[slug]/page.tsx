@@ -16,6 +16,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { JsonLd } from '@/app/_components/seo/JsonLd';
+import { DemoVideo } from '@/app/_components/ui/DemoVideo';
 import { PhoneSnapshot } from '@/app/_components/ui/PhoneSnapshot';
 import { SITE_NAME, SITE_URL } from '@/lib/config/site';
 import type { AppLink, SparkApp } from '@/lib/data/apps';
@@ -155,6 +156,10 @@ export default async function AppPage({ params }: { params: Promise<{ slug: stri
                 );
               })}
             </div>
+          )}
+
+          {app.demoVideo && (
+            <DemoVideo videoId={app.demoVideo} appName={app.name} icon={app.icon} />
           )}
 
           {app.mobile && (

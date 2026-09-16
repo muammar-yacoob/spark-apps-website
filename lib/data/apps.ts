@@ -36,6 +36,20 @@ export interface SparkApp {
   links: AppLink[];
   /** Present only for apps with a phone UI worth showing. */
   mobile?: AppMobileShot;
+  /**
+   * YouTube video id of the app's demo Short, played in a facade on its page
+   * (see app/_components/ui/DemoVideo.tsx).
+   *
+   * The id, not a URL, because the same video is addressed three ways - the
+   * /shorts/ link a human clicks, the /embed/ URL the iframe wants, and the
+   * watch?v= form directory forms ask for - and storing one of those means
+   * parsing it back out to build the other two.
+   *
+   * One per app, even where more than one Short exists: this page is the
+   * fallback homepage, not a channel. The alternates live on the app's own
+   * landing page, which rotates them.
+   */
+  demoVideo?: string;
 }
 
 export const sparkApps: SparkApp[] = [
@@ -60,6 +74,7 @@ export const sparkApps: SparkApp[] = [
   },
   {
     id: 'sellular',
+    demoVideo: 'QMdrxa8XH1A',
     name: 'Sellular',
     tagline: 'SaaS Visibility Platform',
     description: 'AI-powered SEO, directory listings, and discoverability tools for SaaS.',
@@ -78,6 +93,7 @@ export const sparkApps: SparkApp[] = [
   },
   {
     id: 'vidlet',
+    demoVideo: 'fNU_-C6JNoU',
     name: 'VidLet',
     tagline: 'Video Toolkit',
     description: 'Auto-captions, compression, voice cleanup, GIF conversion and more.',
@@ -90,6 +106,7 @@ export const sparkApps: SparkApp[] = [
   },
   {
     id: 'viralcat',
+    demoVideo: 'l4diwvUqcJY',
     name: 'ViralCat',
     tagline: 'Social Media Automation',
     description: 'AI content discovery and multi-platform publishing for social media.',
@@ -127,6 +144,28 @@ export const sparkApps: SparkApp[] = [
         url: 'https://chromewebstore.google.com/detail/bot-or-not/njohmblkingfikcgcbfcnjmciibhlmci',
         type: 'chrome',
       },
+    ],
+  },
+  {
+    // Live on the Chrome Web Store since September 2026, and the privacy page
+    // for that listing has been served from /apps/bumboo/privacy since before
+    // this entry existed — the app itself was simply never added here, so the
+    // store listing's own homepage link had nowhere to point.
+    id: 'bumboo',
+    demoVideo: 'v2V_7RSHHMs',
+    name: 'BumBoo',
+    tagline: 'Used-Vehicle History Checks',
+    description:
+      'Reads the plate or VIN off a used-vehicle advert and shows the official record: MOT history, APK defects, safety recalls. Chrome extension.',
+    icon: '/imgs/apps/bumboo.png',
+    tags: ['Chrome Extension', 'Automotive', 'Tools'],
+    links: [
+      {
+        label: 'Chrome',
+        url: 'https://chromewebstore.google.com/detail/bumboo/npdmkhimldlbagpakbpojlgefaeogpbh',
+        type: 'chrome',
+      },
+      { label: 'Privacy', url: '/apps/bumboo/privacy', type: 'website' },
     ],
   },
   {
@@ -264,6 +303,7 @@ export const sparkApps: SparkApp[] = [
   },
   {
     id: 'ducktax',
+    demoVideo: 'SLtQN71xNh8',
     name: 'Duck Tax',
     tagline: 'Micro-Entity Accounts',
     description:
