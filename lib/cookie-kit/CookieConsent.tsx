@@ -77,12 +77,38 @@ function writeConsent(cookieName: string, value: Consent) {
   } catch {
     // Storage blocked. The cookie alone still carries the choice.
   }
+
+  window.dispatchEvent(new Event(CONSENT_EVENT));
 }
 
 /**
  * Read consent from anywhere (guards, tracking calls made outside this tree).
  * Returns false until the user actively accepts.
  */
+/** Fired on this window whenever a consent choice is stored. */
+export const CONSENT_EVENT = 'cookie-consent-change';
+
+/**
+ * Whether optional cookies are accepted, for a widget that lives outside this
+ * component's tree and cannot use the `scripts` prop.
+ *
+ * Starts false so the server render and the first client render agree, then
+ * reads the stored choice on mount. It re-reads on CONSENT_EVENT, so a widget
+ * appears the moment Accept is clicked rather than on the next page load.
+ */
+export function useCookieConsent(cookieName = DEFAULT_COOKIE): boolean {
+  const [granted, setGranted] = useState(false);
+
+  useEffect(() => {
+    const read = () => setGranted(readConsent(cookieName) === '1');
+    read();
+    window.addEventListener(CONSENT_EVENT, read);
+    return () => window.removeEventListener(CONSENT_EVENT, read);
+  }, [cookieName]);
+
+  return granted;
+}
+
 export function hasCookieConsent(cookieName = DEFAULT_COOKIE): boolean {
   return readConsent(cookieName) === '1';
 }
