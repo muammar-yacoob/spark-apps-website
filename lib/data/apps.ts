@@ -210,6 +210,16 @@ export const sparkApps: SparkApp[] = [
     links: [{ label: 'Website', url: 'https://sparkbrain.app', type: 'website' }],
   },
   {
+    id: 'spark-ads',
+    name: 'SparkAds',
+    tagline: 'Ads on Every Spark Dashboard',
+    description:
+      'An hour a day on every dashboard in the Spark network. One advertiser per hourly slot.',
+    icon: '/imgs/apps/spark-ads.png',
+    tags: ['Marketing', 'Ads', 'SaaS'],
+    links: [{ label: 'Website', url: 'https://sparkads.dev', type: 'website' }],
+  },
+  {
     id: 'spark-stripe',
     name: 'SparkPay',
     tagline: 'Universal Payment Backend',
