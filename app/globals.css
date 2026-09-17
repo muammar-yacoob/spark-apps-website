@@ -345,3 +345,52 @@ summary {
   -webkit-user-select: none;
   user-select: none;
 }
+
+/* Demo play button. One ring expanding at a constant rate rather than a
+   pulse with a hold at the end of it, so the invitation is continuous; and
+   a triangle taking a 120deg turn every 3s, in step with one pass of the
+   ring. 120deg is the triangle's own symmetry, so every stop lands it close
+   to where it started rather than pointing it down or left. */
+@keyframes play-radiate {
+	0% {
+		transform: scale(1);
+		opacity: 0.55;
+	}
+	100% {
+		transform: scale(2.1);
+		opacity: 0;
+	}
+}
+
+.animate-play-radiate {
+	animation: play-radiate 3s linear infinite;
+}
+
+@keyframes play-turn {
+	0%,
+	26.67% {
+		transform: rotate(0deg);
+	}
+	33.33%,
+	60% {
+		transform: rotate(120deg);
+	}
+	66.67%,
+	93.33% {
+		transform: rotate(240deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.animate-play-turn {
+	animation: play-turn 9s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.animate-play-radiate,
+	.animate-play-turn {
+		animation: none;
+	}
+}

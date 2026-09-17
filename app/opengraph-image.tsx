@@ -231,13 +231,12 @@ export default async function Image() {
             </span>
           )}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 12 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, backgroundColor: accentColor, padding: '12px 28px', borderRadius: 99, fontSize: 20, fontWeight: 700, fontFamily: hFont, color: 'white' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, backgroundColor: accentColor, padding: '12px 28px', borderRadius: 99, fontSize: 20, fontWeight: 700, fontFamily: hFont, color: 'white', boxShadow: '0 0 0 3px rgba(0,0,0,0.22)', textShadow: '2px 0 0 rgba(0,0,0,0.28), -2px 0 0 rgba(0,0,0,0.28), 0 2px 0 rgba(0,0,0,0.28), 0 -2px 0 rgba(0,0,0,0.28)' }}>
               {OG.cta}
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="9 18 15 12 9 6" />
               </svg>
             </div>
-            <span style={{ fontSize: 13, color: mutedColor, whiteSpace: 'nowrap' }}>{OG.socialProof}</span>
           </div>
         </div>
         {hasMascot && (

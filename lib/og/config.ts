@@ -85,7 +85,6 @@ export const ogConfig = {
   badge: 'badges/ai-badge-on-dark.png',
   badgeOnLight: 'badges/ai-badge-on-light.png',
   cta: 'Browse the Apps',
-  socialProof: 'Trusted by indie devs worldwide',
   taglines: TAGLINES,
   mascots: discoverMascots(),
   fonts: {

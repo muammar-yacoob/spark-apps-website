@@ -74,8 +74,16 @@ export function DemoVideo({
                 <Image src={icon} alt="" width={160} height={160} className="rounded-[2rem]" />
               </span>
               <span className="absolute inset-0 flex items-center justify-center">
-                <span className="flex w-16 h-16 sm:w-20 sm:h-20 items-center justify-center rounded-full bg-white/95 text-black shadow-2xl transition-transform duration-300 group-hover:scale-110">
-                  <Play className="w-6 h-6 sm:w-7 sm:h-7 translate-x-[2px]" fill="currentColor" />
+                <span className="relative flex size-12 sm:size-14 items-center justify-center">
+                  <span className="absolute inset-0 rounded-full border-2 border-white/50 animate-play-radiate" />
+                  <span className="absolute inset-0 rounded-full bg-white/30 blur-xl scale-150 transition-transform duration-700 ease-out group-hover:scale-[2.2]" />
+                  <span className="relative flex size-full items-center justify-center rounded-full border-[3px] border-black/15 bg-white/95 text-black shadow-2xl transition-all duration-300 group-hover:scale-110 group-hover:brightness-110">
+                    <span className="flex translate-x-[4.2%]">
+                      <span className="flex animate-play-turn [transform-origin:45.8%_50%]">
+                        <Play className="size-5 sm:size-6 transition-transform duration-300 group-hover:scale-125" fill="currentColor" suppressHydrationWarning />
+                      </span>
+                    </span>
+                  </span>
                 </span>
               </span>
             </button>

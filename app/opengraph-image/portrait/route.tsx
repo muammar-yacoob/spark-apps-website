@@ -337,6 +337,11 @@ export async function GET() {
                 fontWeight: 700,
                 fontFamily: hFont,
                 color: 'white',
+                // Hard, unblurred, even on every side: the accent is a near
+                // neighbour of the card background, so the CTA needs an edge
+                // to sit on rather than a soft glow.
+                boxShadow: "0 0 0 6px rgba(0,0,0,0.22)",
+                textShadow: "4px 0 0 rgba(0,0,0,0.28), -4px 0 0 rgba(0,0,0,0.28), 0 4px 0 rgba(0,0,0,0.28), 0 -4px 0 rgba(0,0,0,0.28)",
               }}
             >
               {OG.cta}
@@ -353,15 +358,6 @@ export async function GET() {
                 <polyline points="9 18 15 12 9 6" />
               </svg>
             </div>
-            <span
-              style={{
-                fontSize: 34,
-                color: textColor,
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {OG.socialProof}
-            </span>
           </div>
         </div>
 
