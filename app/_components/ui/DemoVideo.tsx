@@ -25,6 +25,11 @@ import { useState } from 'react';
  * same-origin. A YouTube outage therefore costs a click that does nothing,
  * never a broken page.
  *
+ * Each app has one cut, so `playlist` names it again rather than naming a
+ * second: that is the documented way to make `loop` work on a single video,
+ * and it is what sends the clip back to its own first frame instead of to an
+ * end screen of somebody else's videos.
+ *
  * The plain link underneath is deliberate. It is the crawlable one - an
  * iframe that only exists after a click is invisible to anything reading the
  * page - and it is the way out for anyone who would rather watch on YouTube.
@@ -57,7 +62,7 @@ export function DemoVideo({
           {playing ? (
             <iframe
               className="w-full h-full"
-              src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1`}
+              src={`https://www.youtube-nocookie.com/embed/${videoId}?playlist=${videoId}&loop=1&autoplay=1&rel=0&playsinline=1`}
               title={`${appName} demo`}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerPolicy="strict-origin-when-cross-origin"
