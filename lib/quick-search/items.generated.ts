@@ -6,6 +6,14 @@ import type { QuickSearchItem } from "./types";
 /** Every linkable page in the App Router tree, grouped by where it lives. */
 export const ROUTE_ITEMS: QuickSearchItem[] = [
 	{
+		id: "home",
+		title: "Home",
+		href: "/",
+		group: "Pages",
+		keywords: ["landing","overview","start"],
+		hint: "/",
+	},
+	{
 		id: "about",
 		title: "About",
 		href: "/about",
@@ -32,14 +40,6 @@ export const ROUTE_ITEMS: QuickSearchItem[] = [
 		href: "/dashboard",
 		group: "Pages",
 		hint: "/dashboard",
-	},
-	{
-		id: "home",
-		title: "Home",
-		href: "/",
-		group: "Pages",
-		keywords: ["landing","overview","start"],
-		hint: "/",
 	},
 	{
 		id: "privacy",

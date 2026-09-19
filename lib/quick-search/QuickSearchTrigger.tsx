@@ -42,11 +42,20 @@ const KEY_VISIBILITY = {
   lg: 'hidden lg:flex',
 } as const;
 
+/** Same literals for the button itself, for headers that drop it on phones. */
+const BUTTON_VISIBILITY = {
+  '': 'flex',
+  sm: 'hidden sm:flex',
+  md: 'hidden md:flex',
+  lg: 'hidden lg:flex',
+} as const;
+
 export function QuickSearchTrigger({
   onClick,
   className,
   label = 'Search',
   hideKeysBelow = 'sm',
+  hideBelow = '',
 }: {
   onClick: () => void;
   /** Replaces the default pill styling entirely. */
@@ -55,6 +64,8 @@ export function QuickSearchTrigger({
   label?: string;
   /** Tailwind breakpoint at which the shortcut appears; "" keeps it always. */
   hideKeysBelow?: '' | 'sm' | 'md' | 'lg';
+  /** Breakpoint below which the whole button is hidden; "" always shows it. */
+  hideBelow?: '' | 'sm' | 'md' | 'lg';
 }) {
   // currentColor at 30% keeps the outline legible on any header colour without
   // the component knowing the palette.
@@ -69,7 +80,7 @@ export function QuickSearchTrigger({
       title={`${label} (Ctrl or ⌘ K)`}
       className={
         className ??
-        'flex items-center gap-2 rounded-lg border px-3 py-1.5 opacity-70 transition-[opacity,background-color] hover:bg-[color-mix(in_srgb,currentColor_12%,transparent)] hover:opacity-100'
+        `${BUTTON_VISIBILITY[hideBelow]} items-center gap-2 rounded-lg border px-3 py-1.5 opacity-70 transition-[opacity,background-color] hover:bg-[color-mix(in_srgb,currentColor_12%,transparent)] hover:opacity-100`
       }
       style={className ? undefined : { borderColor: subtle }}
     >

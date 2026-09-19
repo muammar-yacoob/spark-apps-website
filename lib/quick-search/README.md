@@ -32,10 +32,13 @@ export function Header() {
 ```
 
 `QuickSearchTrigger` takes its colours from `currentColor`, so it inherits the
-surrounding header on a dark bar or a light one, and shows `⌘` on Mac and
-`Ctrl` everywhere else. Pass `className` to restyle it outright, or
-`hideKeysBelow` (`""` | `"sm"` | `"md"` | `"lg"`) to choose when the shortcut
-is hidden on narrow screens.
+surrounding header on a dark bar or a light one. The shortcut reads `⌘ K` on
+every platform — it is the palette's mark rather than a claim about the
+keyboard, and Ctrl+K opens it just the same, which the accessible name says.
+
+Pass `className` to restyle it outright, `hideKeysBelow` to drop the shortcut
+on narrow screens, or `hideBelow` to hide the whole button (both take `""` |
+`"sm"` | `"md"` | `"lg"`).
 
 ## Generated items
 

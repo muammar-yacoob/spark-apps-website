@@ -20,17 +20,24 @@ export function mergeQuickSearchItems(
   overrides: QuickSearchOverride[] = []
 ): QuickSearchItem[] {
   const byHref = new Map(generated.map((item) => [item.href, item]));
-  const appended: QuickSearchItem[] = [];
+  // Rows for hrefs the generator never saw, keyed so a second override for the
+  // same href refines the first rather than listing it twice.
+  const appended = new Map<string, QuickSearchItem>();
 
   for (const override of overrides) {
     const base = byHref.get(override.href);
 
     if (!base) {
-      if (!override.title) continue; // nothing to show a row for
-      appended.push({
+      const existing = appended.get(override.href);
+      // A title-less override exists to add vocabulary to a generated row; with
+      // no row to attach to there is nothing to render.
+      if (!existing && !override.title) continue;
+      appended.set(override.href, {
+        ...(existing as QuickSearchItem),
         ...(override as QuickSearchItem),
-        id: override.id ?? slugify(override.href),
-        hint: override.hint ?? override.href,
+        id: override.id ?? existing?.id ?? slugify(override.href),
+        hint: override.hint ?? existing?.hint ?? override.href,
+        keywords: dedupe([...(existing?.keywords ?? []), ...(override.keywords ?? [])]),
       });
       continue;
     }
@@ -42,7 +49,7 @@ export function mergeQuickSearchItems(
     });
   }
 
-  return [...byHref.values(), ...appended].map(stripEmptyKeywords);
+  return [...byHref.values(), ...appended.values()].map(stripEmptyKeywords);
 }
 
 function slugify(href: string) {
