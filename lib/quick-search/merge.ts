@@ -20,19 +20,21 @@ export function mergeQuickSearchItems(
   overrides: QuickSearchOverride[] = []
 ): QuickSearchItem[] {
   const byHref = new Map(generated.map((item) => [item.href, item]));
-  // Rows for hrefs the generator never saw, keyed so a second override for the
-  // same href refines the first rather than listing it twice.
+  // Rows for hrefs the generator never saw. Keyed by id where one is given:
+  // several rows legitimately share an href — in-page views and anchors have no
+  // URL of their own — and only a repeat of the same id is a duplicate.
   const appended = new Map<string, QuickSearchItem>();
 
   for (const override of overrides) {
     const base = byHref.get(override.href);
 
     if (!base) {
-      const existing = appended.get(override.href);
+      const key = override.id ?? override.href;
+      const existing = appended.get(key);
       // A title-less override exists to add vocabulary to a generated row; with
       // no row to attach to there is nothing to render.
       if (!existing && !override.title) continue;
-      appended.set(override.href, {
+      appended.set(key, {
         ...(existing as QuickSearchItem),
         ...(override as QuickSearchItem),
         id: override.id ?? existing?.id ?? slugify(override.href),

@@ -41,23 +41,7 @@ export function useQuickSearch(
       let matchedAll = true;
 
       for (let w = 0; w < words.length; w++) {
-        // Best hit across the literal word and its synonyms; the literal word
-        // is always alternatives[0] and scores at full weight.
-        let best: { score: number; ranges: Array<[number, number]> } | null = null;
-        for (const alt of expanded[w] ?? []) {
-          const weight = alt === words[w] ? 1 : SYNONYM_WEIGHT;
-          const titleHit = fuzzyMatch(alt, title);
-          if (titleHit && (!best || titleHit.score * weight > best.score)) {
-            best = { score: titleHit.score * weight, ranges: titleHit.ranges };
-          }
-          for (const k of keywords) {
-            const keywordHit = fuzzyMatch(alt, k);
-            if (keywordHit) {
-              const weighted = keywordHit.score * weight * KEYWORD_WEIGHT;
-              if (!best || weighted > best.score) best = { score: weighted, ranges: [] };
-            }
-          }
-        }
+        const best = bestHit(expanded[w] ?? [], words[w] ?? '', title, keywords);
         if (!best) {
           matchedAll = false;
           break;
@@ -71,6 +55,45 @@ export function useQuickSearch(
 
     return results.sort((a, b) => b.score - a.score).slice(0, MAX_RESULTS);
   }, [items, query, synonyms]);
+}
+
+interface Hit {
+  score: number;
+  ranges: Array<[number, number]>;
+}
+
+/**
+ * Best hit for one query word, across the word itself and its synonyms.
+ *
+ * The literal word scores at full weight; synonyms and keyword hits are
+ * discounted, so exact typing always wins. Only title hits carry ranges — a
+ * keyword match highlights nothing, because the matched text is not on screen.
+ */
+function bestHit(
+  alternatives: string[],
+  literal: string,
+  title: string,
+  keywords: string[]
+): Hit | null {
+  let best: Hit | null = null;
+
+  for (const alt of alternatives) {
+    const weight = alt === literal ? 1 : SYNONYM_WEIGHT;
+
+    const titleHit = fuzzyMatch(alt, title);
+    if (titleHit && (!best || titleHit.score * weight > best.score)) {
+      best = { score: titleHit.score * weight, ranges: titleHit.ranges };
+    }
+
+    for (const keyword of keywords) {
+      const hit = fuzzyMatch(alt, keyword);
+      if (!hit) continue;
+      const weighted = hit.score * weight * KEYWORD_WEIGHT;
+      if (!best || weighted > best.score) best = { score: weighted, ranges: [] };
+    }
+  }
+
+  return best;
 }
 
 /** Overlapping words ("gen ge") produce overlapping ranges; merge before rendering. */
