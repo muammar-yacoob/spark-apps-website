@@ -5,7 +5,5 @@
   "description": "Read-only catalogue of the Spark apps: what each one does, its stack, and where it runs.",
   "version": "1.0.0",
   "websiteUrl": "https://spark-apps.co",
-  "remotes": [
-    { "type": "streamable-http", "url": "https://spark-apps.co/api/mcp/mcp" }
-  ]
+  "remotes": [{ "type": "streamable-http", "url": "https://spark-apps.co/api/mcp/mcp" }]
 }

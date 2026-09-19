@@ -85,7 +85,11 @@ export function DemoVideo({
                   <span className="relative flex size-full items-center justify-center rounded-full border-[3px] border-black/15 bg-white/95 text-black shadow-2xl transition-all duration-300 group-hover:scale-110 group-hover:brightness-110">
                     <span className="flex translate-x-[4.2%]">
                       <span className="flex animate-play-turn [transform-origin:45.8%_50%]">
-                        <Play className="size-5 sm:size-6 transition-transform duration-300 group-hover:scale-125" fill="currentColor" suppressHydrationWarning />
+                        <Play
+                          className="size-5 sm:size-6 transition-transform duration-300 group-hover:scale-125"
+                          fill="currentColor"
+                          suppressHydrationWarning
+                        />
                       </span>
                     </span>
                   </span>
