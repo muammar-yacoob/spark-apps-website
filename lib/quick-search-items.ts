@@ -1,109 +1,92 @@
 /**
  * Registry for the Ctrl/Cmd+K quick-search palette.
  *
- * Static pages are listed by hand; the Apps group is derived from
- * lib/data/apps.ts so a new app appears in the palette the moment it is
- * added to the portfolio, with its tags and tagline as search keywords.
+ * The page rows come from ROUTE_ITEMS, which lib/quick-search/generate.mjs
+ * derives from the App Router tree, so a new page appears in the palette
+ * without anyone editing a list. OVERRIDES layers on what the file tree cannot
+ * know: that /privacy is called "Privacy Policy", that the legal pages belong
+ * together, and the vocabulary people actually type.
+ *
+ * The Apps group stays derived from lib/data/apps.ts — those rows are served by
+ * /apps/[slug], which has no file of its own for the generator to find.
  */
 
 import { sparkApps } from '@/lib/data/apps';
-import type { QuickSearchItem } from '@/lib/quick-search';
+import {
+  mergeQuickSearchItems,
+  type QuickSearchItem,
+  type QuickSearchOverride,
+  ROUTE_ITEMS,
+} from '@/lib/quick-search';
 
-const PAGES: QuickSearchItem[] = [
+/** Hand-written detail layered over the generated routes, keyed by href. */
+const OVERRIDES: QuickSearchOverride[] = [
   {
-    id: 'home',
-    title: 'Home',
     href: '/',
-    group: 'Pages',
     keywords: ['landing', 'portfolio', 'overview', 'apps', 'start'],
-    hint: '/',
   },
   {
-    id: 'about',
-    title: 'About',
     href: '/about',
-    group: 'Pages',
     keywords: ['story', 'company', 'studio', 'mission', 'who we are'],
-    hint: '/about',
   },
   {
-    id: 'team',
-    title: 'Team',
     href: '/team',
-    group: 'Pages',
     keywords: ['people', 'founders', 'developers', 'who', 'staff'],
-    hint: '/team',
   },
   {
-    id: 'careers',
-    title: 'Careers',
     href: '/careers',
-    group: 'Pages',
     keywords: ['jobs', 'hiring', 'work', 'join', 'positions', 'vacancies'],
-    hint: '/careers',
   },
   {
-    id: 'contact',
-    title: 'Contact',
     href: '/contact',
-    group: 'Pages',
     keywords: ['email', 'support', 'help', 'reach', 'message', 'feedback'],
-    hint: '/contact',
   },
   {
-    id: 'dashboard',
-    title: 'Dashboard',
     href: '/dashboard',
-    group: 'Pages',
     keywords: ['admin', 'stats', 'analytics', 'sign in', 'login'],
-    hint: '/dashboard',
   },
   {
-    id: 'privacy',
-    title: 'Privacy Policy',
     href: '/privacy',
+    title: 'Privacy Policy',
     group: 'Legal',
     keywords: ['data', 'gdpr', 'cookies', 'policy'],
-    hint: '/privacy',
   },
   {
-    id: 'terms',
-    title: 'Terms of Service',
     href: '/terms',
+    title: 'Terms of Service',
     group: 'Legal',
     keywords: ['legal', 'conditions', 'tos', 'agreement', 'license'],
-    hint: '/terms',
   },
   /*
-   * Three apps ship their own store-required privacy page. They are listed one
-   * by one rather than generated per app, because only these three exist and a
-   * generated row would 404 for every other app in the catalogue.
+   * Three apps ship their own store-required privacy page. The generator finds
+   * them but titles each one "Privacy" under its own app group, which reads as
+   * three identical rows; named and gathered under Legal they stay tellable
+   * apart. Only these three exist — every other app's privacy lives off-site.
    */
   {
+    href: '/apps/bumboo/privacy',
     id: 'privacy-bumboo',
     title: 'Bumboo Privacy Policy',
-    href: '/apps/bumboo/privacy',
     group: 'Legal',
     keywords: ['bumboo', 'app privacy', 'gdpr', 'data', 'store listing'],
-    hint: '/apps/bumboo/privacy',
   },
   {
+    href: '/apps/pitchplease/privacy',
     id: 'privacy-pitchplease',
     title: 'PitchPlease Privacy Policy',
-    href: '/apps/pitchplease/privacy',
     group: 'Legal',
     keywords: ['pitchplease', 'app privacy', 'gdpr', 'data', 'store listing'],
-    hint: '/apps/pitchplease/privacy',
   },
   {
+    href: '/apps/screenful/privacy',
     id: 'privacy-screenful',
     title: 'Screenful Privacy Policy',
-    href: '/apps/screenful/privacy',
     group: 'Legal',
     keywords: ['screenful', 'app privacy', 'gdpr', 'data', 'store listing'],
-    hint: '/apps/screenful/privacy',
   },
 ];
+
+const PAGES: QuickSearchItem[] = mergeQuickSearchItems(ROUTE_ITEMS, OVERRIDES);
 
 /** Extra aliases per app id, for vocabulary the tags and tagline miss. */
 const APP_ALIASES: Record<string, string[]> = {

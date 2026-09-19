@@ -44,7 +44,7 @@ export function useQuickSearch(
         // Best hit across the literal word and its synonyms; the literal word
         // is always alternatives[0] and scores at full weight.
         let best: { score: number; ranges: Array<[number, number]> } | null = null;
-        for (const alt of expanded[w]) {
+        for (const alt of expanded[w] ?? []) {
           const weight = alt === words[w] ? 1 : SYNONYM_WEIGHT;
           const titleHit = fuzzyMatch(alt, title);
           if (titleHit && (!best || titleHit.score * weight > best.score)) {
@@ -77,11 +77,13 @@ export function useQuickSearch(
 function mergeRanges(ranges: Array<[number, number]>): Array<[number, number]> {
   if (ranges.length < 2) return ranges;
   const sorted = [...ranges].sort((a, b) => a[0] - b[0]);
-  const merged: Array<[number, number]> = [sorted[0]];
-  for (let i = 1; i < sorted.length; i++) {
+  const merged: Array<[number, number]> = [];
+  for (const range of sorted) {
     const last = merged[merged.length - 1];
-    if (sorted[i][0] <= last[1]) last[1] = Math.max(last[1], sorted[i][1]);
-    else merged.push([sorted[i][0], sorted[i][1]]);
+    // Push a copy: merging writes through [1], and the caller's tuples came
+    // straight out of fuzzyMatch.
+    if (!last || range[0] > last[1]) merged.push([range[0], range[1]]);
+    else last[1] = Math.max(last[1], range[1]);
   }
   return merged;
 }

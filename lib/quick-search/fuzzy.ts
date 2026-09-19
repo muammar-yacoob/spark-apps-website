@@ -15,7 +15,7 @@ const MAX_GAP_PENALTY = 10;
 
 function isWordStart(text: string, index: number): boolean {
   if (index === 0) return true;
-  const prev = text[index - 1];
+  const prev = text.charAt(index - 1);
   return prev === ' ' || prev === '-' || prev === '_' || prev === '/' || prev === '.';
 }
 
@@ -40,19 +40,20 @@ export function fuzzyMatch(
     // one word.
     let found = -1;
     for (let i = ti; i < text.length; i++) {
-      if (text[i] === query[qi] && isWordStart(text, i)) {
+      if (text.charAt(i) === query.charAt(qi) && isWordStart(text, i)) {
         found = i;
         break;
       }
     }
-    if (found === -1) found = text.indexOf(query[qi], ti);
+    if (found === -1) found = text.indexOf(query.charAt(qi), ti);
     if (found === -1) return null;
 
     if (found === 0) score += FIRST_CHAR_BONUS;
     if (isWordStart(text, found)) score += WORD_START_BONUS;
-    if (found === lastMatch + 1) {
+    const open = ranges[ranges.length - 1];
+    if (found === lastMatch + 1 && open) {
       score += CONSECUTIVE_BONUS;
-      ranges[ranges.length - 1][1] = found + 1;
+      open[1] = found + 1;
     } else {
       score -= Math.min(MAX_GAP_PENALTY, (found - ti) * GAP_PENALTY);
       ranges.push([found, found + 1]);

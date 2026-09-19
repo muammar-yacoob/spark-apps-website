@@ -22,7 +22,8 @@
       "!**/app/opengraph-image.tsx",
       "!**/app/opengraph-image/portrait/route.tsx",
       "!**/app/twitter-image.tsx",
-      "!**/app/globals.css"
+      "!**/app/globals.css",
+      "!**/lib/quick-search/items.generated.ts"
     ]
   },
   "formatter": {

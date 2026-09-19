@@ -3,10 +3,105 @@
 A self-contained Ctrl/Cmd+K command palette for React + Tailwind apps. No
 dependencies beyond `react` / `react-dom`; copy this folder into any project.
 
+The item list is generated from the App Router tree, so the palette knows every
+page without anyone maintaining a list by hand — see **Generated items** below.
+
 ## Usage
 
-Define the destinations and mount the component once in any client component
-(a header is the natural home):
+Mount the component once in any client component (a header is the natural
+home). `ROUTE_ITEMS` is the generated list; `QuickSearchTrigger` is the
+launcher button:
+
+```tsx
+"use client";
+
+import {
+  QuickSearch,
+  QuickSearchTrigger,
+  ROUTE_ITEMS,
+} from "@/lib/quick-search";
+
+export function Header() {
+  return (
+    <QuickSearch
+      items={ROUTE_ITEMS}
+      trigger={(open) => <QuickSearchTrigger onClick={open} />}
+    />
+  );
+}
+```
+
+`QuickSearchTrigger` takes its colours from `currentColor`, so it inherits the
+surrounding header on a dark bar or a light one, and shows `⌘` on Mac and
+`Ctrl` everywhere else. Pass `className` to restyle it outright, or
+`hideKeysBelow` (`""` | `"sm"` | `"md"` | `"lg"`) to choose when the shortcut
+is hidden on narrow screens.
+
+## Generated items
+
+`generate.mjs` walks the App Router tree and writes `items.generated.ts`:
+
+```bash
+node lib/quick-search/generate.mjs          # write the list
+node lib/quick-search/generate.mjs --check  # fail if it is stale (CI)
+```
+
+Wire it up as `"quick-search": "node lib/quick-search/generate.mjs"` and re-run
+it after adding or renaming a page.
+
+What it derives, with no configuration:
+
+| From the tree                     | Becomes                               |
+| --------------------------------- | ------------------------------------- |
+| `app/pricing/page.tsx`            | "Pricing" in group "Pages"            |
+| `app/dashboard/inbox/page.tsx`    | "Inbox" in group "Dashboard"          |
+| `app/dashboard/settings/api/…`    | "API" in group "Dashboard · Settings" |
+| `app/(marketing)/docs/page.tsx`   | "Docs" — route groups leave the URL   |
+| `app/blog/[slug]/page.tsx`        | nothing — no params to link with      |
+
+Nesting becomes the section header, so sections appear as the app grows rather
+than being declared. Acronyms stay uppercase (`api` → "API"), joining words
+stay lowercase, an area's index page is listed inside its own area, and path
+words become search terms. Pages under `/api`, `/auth`, sign-in and error
+routes, and `*-success` landings are left out by default.
+
+Routes come from `git ls-files` when the project is a git repo, so scratch
+pages that were never committed stay out of the palette.
+
+Override any of it with a `quick-search.config.json` at the repo root:
+
+```json
+{
+  "appDir": "app",
+  "out": "lib/quick-search/items.generated.ts",
+  "groups": { "Dashboard · Settings": "Settings" },
+  "titles": { "/dashboard": "Overview" },
+  "keywords": { "/dashboard/junk": ["spam", "trash"] },
+  "skip": ["/internal"],
+  "extra": [{ "title": "Status", "href": "https://status.example.com" }],
+  "exclude": ["^/api(/|$)"],
+  "acronyms": ["api", "dns"]
+}
+```
+
+For anything JSON cannot hold — an `icon`, vocabulary you would rather keep
+type-checked next to the app — layer it on in TypeScript instead:
+
+```tsx
+import { mergeQuickSearchItems, ROUTE_ITEMS } from "@/lib/quick-search";
+
+export const ITEMS = mergeQuickSearchItems(ROUTE_ITEMS, [
+  { href: "/dashboard", title: "Overview", keywords: ["stats", "unread"] },
+  { href: "/dashboard?view=settings", title: "Appearance", group: "Settings" },
+]);
+```
+
+Fields replace, `keywords` accumulate, and an override for an href with no page
+of its own (a query-param view, an external link) is appended as a new row.
+
+## Hand-written items
+
+Nothing stops you passing a list directly:
 
 ```tsx
 'use client';
@@ -88,4 +183,13 @@ typing always wins.
 - `synonyms.ts` - default synonym map + query expansion
 - `useQuickSearch.ts` - ranking hook over an item list
 - `QuickSearch.tsx` - the palette (portal, hotkey, keyboard nav)
+- `QuickSearchTrigger.tsx` - the header launcher (theme-agnostic, platform-aware)
+- `generate.mjs` - route scanner that writes `items.generated.ts`
+- `items.generated.ts` - the generated list, committed
+- `merge.ts` - layers hand-written detail over the generated list
 - `index.ts` - public exports
+
+The source files are written for the strictest setup they might be copied into:
+they pass `noUncheckedIndexedAccess` and contain no `any`. Run the host
+project's own formatter after copying — house styles differ, and an unformatted
+copy re-diverges on the next `npm run format`.
