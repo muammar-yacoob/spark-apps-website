@@ -168,20 +168,27 @@ export function useSitemapItems(
   options: SitemapOptions = {}
 ): QuickSearchItem[] {
   const [items, setItems] = useState(fallback);
-  const url = options.url ?? '/sitemap.xml';
+
+  // Callers pass an inline object literal, which is a new reference every
+  // render. Serialising it gives the effect one honest dependency that changes
+  // only when the settings really do. The signal is dropped: this hook makes
+  // its own, and a live AbortSignal is not serialisable anyway.
+  const settings = JSON.stringify(options, (key, value) => (key === 'signal' ? undefined : value));
 
   useEffect(() => {
     const controller = new AbortController();
-    fetchSitemapItems({ ...options, url, signal: controller.signal })
+    const parsed = JSON.parse(settings) as SitemapOptions;
+
+    fetchSitemapItems({ ...parsed, signal: controller.signal })
       .then((found) => {
         if (found.length > 0) setItems(found);
       })
       .catch(() => {
-        // Keep the fallback; an unreachable sitemap is not worth a error.
+        // Keep the fallback; an unreachable sitemap is not worth an error.
       });
+
     return () => controller.abort();
-    // The options object is usually an inline literal; the url is what identifies it.
-  }, [url]);
+  }, [settings]);
 
   return items;
 }
