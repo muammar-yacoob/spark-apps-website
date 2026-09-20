@@ -1,5 +1,6 @@
-Contact: mailto:hello@example.com
-Expires: 2027-06-05T00:00:00.000Z
+# Spark Apps (SparkGames Ltd, company 15379140)
+Contact: mailto:muammar.yacoob@gmail.com
+Expires: 2027-09-20T00:00:00.000Z
 Preferred-Languages: en
-Canonical: https://example.com/.well-known/security.txt
-Policy: https://example.com/terms
+Canonical: https://spark-apps.co/.well-known/security.txt
+Policy: https://spark-apps.co/terms
