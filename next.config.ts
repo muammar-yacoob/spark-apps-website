@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     '/opengraph-image': ['./lib/og/res/**/*', './app/favicon.png'],
     '/twitter-image': ['./lib/og/res/**/*', './app/favicon.png'],
+    // The per-app card reads each app's icon off disk for its colour and its
+    // artwork. public/ is served by the CDN and is NOT in the function's
+    // filesystem unless it is traced, so without this the card rendered with
+    // the icon missing and the fallback background.
+    '/apps/[slug]/opengraph-image': ['./lib/og/res/**/*', './public/imgs/apps/**/*'],
   },
   headers: async () => [
     {
