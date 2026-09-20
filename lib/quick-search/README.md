@@ -40,6 +40,34 @@ Pass `className` to restyle it outright, `hideKeysBelow` to drop the shortcut
 on narrow screens, or `hideBelow` to hide the whole button (both take `""` |
 `"sm"` | `"md"` | `"lg"`).
 
+## Where the pages come from
+
+Two ways, same naming and grouping rules (`derive.mjs`), so a page found either
+way reads the same:
+
+| | |
+| --- | --- |
+| **Generated** (`generate.mjs`) | Reads the App Router tree at build time. Exact, offline, reviewable in the diff. Next.js only. |
+| **Sitemap** (`sitemap.ts`) | Reads `/sitemap.xml` at runtime. No build step and no framework assumption — any app that publishes a sitemap. |
+
+Sitemap discovery is the zero-setup option: the app already lists its pages for
+search engines, so the palette can just read that.
+
+```tsx
+import { QuickSearch, ROUTE_ITEMS, useSitemapItems } from "@/lib/quick-search";
+
+// ROUTE_ITEMS shows instantly; the sitemap replaces it once it lands.
+const items = useSitemapItems(ROUTE_ITEMS);
+```
+
+Pass nothing where there is no build step (`useSitemapItems()`), or
+`fetchSitemapItems()` / `itemsFromSitemapXml(xml)` to do it yourself — a server
+component can hand the XML straight over. Both take the same `titles`,
+`keywords`, `groups`, `skip` and `exclude` options as the generator, plus `url`
+for a sitemap somewhere other than `/sitemap.xml`. A sitemap index is followed
+one level. An unreachable sitemap keeps the fallback rather than emptying the
+palette.
+
 ## Generated items
 
 `generate.mjs` walks the App Router tree and writes `items.generated.ts`:
@@ -50,7 +78,8 @@ node lib/quick-search/generate.mjs --check  # fail if it is stale (CI)
 ```
 
 Wire it up as `"quick-search": "node lib/quick-search/generate.mjs"` and re-run
-it after adding or renaming a page.
+it after adding or renaming a page. `--check` compares content, not layout, so
+a copy the host project's formatter has reindented or re-quoted still passes.
 
 What it derives, with no configuration:
 
@@ -101,6 +130,18 @@ export const ITEMS = mergeQuickSearchItems(ROUTE_ITEMS, [
 
 Fields replace, `keywords` accumulate, and an override for an href with no page
 of its own (a query-param view, an external link) is appended as a new row.
+
+Rows that live *inside* a page — an editor's tools, a settings page's sections —
+share that page's href, so they cannot be overrides: keyed by href, they would
+overwrite the page's own row. Pass them as the third argument instead, and they
+are appended as they are:
+
+```tsx
+mergeQuickSearchItems(ROUTE_ITEMS, OVERRIDES, [
+  { id: "tool-trim", title: "Trim", href: "/app", group: "Tools" },
+  { id: "tool-captions", title: "Captions", href: "/app", group: "Tools" },
+]);
+```
 
 ## Hand-written items
 
@@ -187,7 +228,9 @@ typing always wins.
 - `useQuickSearch.ts` - ranking hook over an item list
 - `QuickSearch.tsx` - the palette (portal, hotkey, keyboard nav)
 - `QuickSearchTrigger.tsx` - the header launcher (theme-agnostic, platform-aware)
+- `derive.mjs` - how a path becomes a row: title, group, keywords, order
 - `generate.mjs` - route scanner that writes `items.generated.ts`
+- `sitemap.ts` - the same rows, read from `/sitemap.xml` at runtime
 - `items.generated.ts` - the generated list, committed
 - `merge.ts` - layers hand-written detail over the generated list
 - `index.ts` - public exports

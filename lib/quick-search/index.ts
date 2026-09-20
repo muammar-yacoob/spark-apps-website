@@ -6,6 +6,12 @@ export {
 } from './merge';
 export { QuickSearch } from './QuickSearch';
 export { QuickSearchTrigger } from './QuickSearchTrigger';
+export {
+  fetchSitemapItems,
+  itemsFromSitemapXml,
+  type SitemapOptions,
+  useSitemapItems,
+} from './sitemap';
 export { DEFAULT_SYNONYMS, expandWord, type SynonymMap } from './synonyms';
 export type { QuickSearchItem, QuickSearchResult } from './types';
 export { useQuickSearch } from './useQuickSearch';

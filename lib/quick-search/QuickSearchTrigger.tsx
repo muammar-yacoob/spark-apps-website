@@ -4,6 +4,10 @@
  * The header launcher for the palette: a magnifier and the shortcut inside one
  * pill, sized so the glyphs and the lens share a top and bottom edge.
  *
+ * It sits at the weight of the icons around it and swells slightly while Ctrl
+ * or ⌘ is held — the moment the shortcut is about to matter. That growth is a
+ * transform rather than a size change, so nothing beside it reflows.
+ *
  * The shortcut reads ⌘ K on every platform — it is the palette's mark rather
  * than a claim about the keyboard, and Ctrl+K opens it just the same, which
  * the accessible name says.
@@ -13,6 +17,8 @@
  * the same component works on a dark app bar or a light one. Pass `className`
  * to restyle it outright.
  */
+
+import { useEffect, useState } from 'react';
 
 /** Inline SVG rather than an icon package, so the folder stays dependency-free. */
 function Magnifier({ size }: { size: number }) {
@@ -32,6 +38,39 @@ function Magnifier({ size }: { size: number }) {
       <path d="m21 21-4.3-4.3" />
     </svg>
   );
+}
+
+/**
+ * True while Ctrl or ⌘ is held.
+ *
+ * Clears on blur as well as keyup: holding a modifier and switching window
+ * swallows the keyup, and a pill left swollen would be lying about the
+ * keyboard.
+ */
+function useModifierHeld() {
+  const [held, setHeld] = useState(false);
+
+  useEffect(() => {
+    const isModifier = (key: string) => key === 'Meta' || key === 'Control';
+    const down = (e: KeyboardEvent) => {
+      if (isModifier(e.key)) setHeld(true);
+    };
+    const up = (e: KeyboardEvent) => {
+      if (isModifier(e.key)) setHeld(false);
+    };
+    const clear = () => setHeld(false);
+
+    window.addEventListener('keydown', down);
+    window.addEventListener('keyup', up);
+    window.addEventListener('blur', clear);
+    return () => {
+      window.removeEventListener('keydown', down);
+      window.removeEventListener('keyup', up);
+      window.removeEventListener('blur', clear);
+    };
+  }, []);
+
+  return held;
 }
 
 /** Written out in full: Tailwind only emits classes it can see as literals. */
@@ -67,9 +106,7 @@ export function QuickSearchTrigger({
   /** Breakpoint below which the whole button is hidden; "" always shows it. */
   hideBelow?: '' | 'sm' | 'md' | 'lg';
 }) {
-  // currentColor at 30% keeps the outline legible on any header colour without
-  // the component knowing the palette.
-  const subtle = 'color-mix(in srgb, currentColor 30%, transparent)';
+  const held = useModifierHeld();
   const keysHidden = KEY_VISIBILITY[hideKeysBelow];
 
   return (
@@ -80,24 +117,37 @@ export function QuickSearchTrigger({
       title={`${label} (Ctrl or ⌘ K)`}
       className={
         className ??
-        `${BUTTON_VISIBILITY[hideBelow]} items-center gap-2 rounded-lg border px-3 py-1.5 opacity-70 transition-[opacity,background-color] hover:bg-[color-mix(in_srgb,currentColor_12%,transparent)] hover:opacity-100`
+        `${BUTTON_VISIBILITY[hideBelow]} origin-center items-center gap-1.5 rounded-md border px-2 py-1 transition-[transform,opacity,background-color,border-color] duration-150 ease-out hover:bg-[color-mix(in_srgb,currentColor_12%,transparent)] hover:opacity-100 motion-reduce:transition-none`
       }
-      style={className ? undefined : { borderColor: subtle }}
+      style={
+        className
+          ? undefined
+          : {
+              // currentColor keeps the pill legible on any header without the
+              // component knowing the palette; it firms up while the shortcut
+              // is live.
+              borderColor: `color-mix(in srgb, currentColor ${held ? 50 : 22}%, transparent)`,
+              opacity: held ? 1 : 0.65,
+              // Transform, not font size: the pill grows in place and the
+              // header beside it never moves.
+              transform: held ? 'scale(1.14)' : 'scale(1)',
+            }
+      }
     >
-      <Magnifier size={21} />
+      <Magnifier size={15} />
       {/* fontFamily inherit: a bare <kbd> falls back to the browser's
 			    monospace, which never matches the header it sits in. */}
       <kbd
-        className={`${keysHidden} items-center gap-1 font-semibold leading-none`}
+        className={`${keysHidden} items-center gap-0.5 font-semibold leading-none`}
         style={{ fontFamily: 'inherit' }}
       >
-        {/* Sized so the ⌘ ink box matches the lens and the K: 15px tall, same
-				    centre line. The nudges cancel the descender space each glyph
+        {/* Sized so the ⌘ ink box matches the lens and the K: same height,
+				    same centre line. The nudges cancel the descender space each glyph
 				    reserves but never draws into. */}
-        <span className="leading-none" style={{ fontSize: 18, transform: 'translateY(1.5px)' }}>
+        <span className="leading-none" style={{ fontSize: 13, transform: 'translateY(1px)' }}>
           ⌘
         </span>
-        <span className="leading-none" style={{ fontSize: 21, transform: 'translateY(1.5px)' }}>
+        <span className="leading-none" style={{ fontSize: 15, transform: 'translateY(1px)' }}>
           K
         </span>
       </kbd>

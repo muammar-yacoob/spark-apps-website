@@ -12,12 +12,18 @@ export type QuickSearchOverride = Partial<QuickSearchItem> & Pick<QuickSearchIte
  * href that has no page yet (a query-param view, an external link) is appended
  * as its own row.
  *
- * Both lists keep their order: generated rows stay where the tree put them,
- * extra rows follow.
+ * `siblings` is for rows that share an href with a page that DOES exist — the
+ * tools inside one editor, the sections of one settings page. Those cannot be
+ * overrides: an override keyed by href would overwrite the page's own row
+ * instead of joining it. They are appended as they are, in order.
+ *
+ * Every list keeps its order: generated rows stay where the tree put them,
+ * then override-only rows, then siblings.
  */
 export function mergeQuickSearchItems(
   generated: QuickSearchItem[],
-  overrides: QuickSearchOverride[] = []
+  overrides: QuickSearchOverride[] = [],
+  siblings: QuickSearchItem[] = []
 ): QuickSearchItem[] {
   const byHref = new Map(generated.map((item) => [item.href, item]));
   // Rows for hrefs the generator never saw. Keyed by id where one is given:
@@ -51,7 +57,14 @@ export function mergeQuickSearchItems(
     });
   }
 
-  return [...byHref.values(), ...appended.values()].map(stripEmptyKeywords);
+  // Siblings are appended verbatim, deduped by id so a list concatenated twice
+  // does not double the palette.
+  const bySiblingId = new Map<string, QuickSearchItem>();
+  for (const sibling of siblings) bySiblingId.set(sibling.id, sibling);
+
+  return [...byHref.values(), ...appended.values(), ...bySiblingId.values()].map(
+    stripEmptyKeywords
+  );
 }
 
 function slugify(href: string) {
