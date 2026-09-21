@@ -131,7 +131,7 @@ export interface CookieConsentProps {
   cookieName?: string;
   /** Link target. Omit to hide the link if the app has no policy page yet. */
   privacyUrl?: string | null;
-  /** Primary button colour. */
+  /** Primary button colour. Pass the app's own token, e.g. `var(--color-brand)`. */
   accent?: string;
   /** Override the default wording to match what the app actually loads. */
   message?: string;
@@ -184,23 +184,30 @@ export function CookieConsent({
 
       {visible && (
         <div className="fixed bottom-0 inset-x-0 z-50 border-t border-white/10 bg-[hsl(224,71%,6%)]/95 backdrop-blur-xl">
-          <div className="max-w-5xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
-            <p className="text-sm text-slate-300 leading-relaxed">
-              {message}{' '}
+          {/* Always one row. The sentence is the only part allowed to shrink, so
+              the Privacy Policy link and both buttons keep their full width at any
+              viewport instead of the banner reflowing into two or three lines and
+              shoving the page content up. The sentence truncates rather than wraps;
+              the full text stays in the DOM and in the title tooltip. */}
+          <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3 sm:gap-6">
+            <div className="flex min-w-0 flex-1 items-center gap-1.5 text-xs sm:text-sm text-slate-300">
+              <span className="truncate" title={message}>
+                {message}
+              </span>
               {privacyUrl && (
                 <Link
                   href={privacyUrl}
-                  className="text-slate-400 underline underline-offset-2 hover:text-white"
+                  className="shrink-0 text-slate-400 underline underline-offset-2 hover:text-white"
                 >
                   Privacy Policy
                 </Link>
               )}
-            </p>
+            </div>
             <div className="flex items-center gap-2 shrink-0">
               <button
                 type="button"
                 onClick={() => handleChoice('0')}
-                className="px-4 py-1.5 rounded-lg border border-white/15 text-slate-400 text-sm hover:text-slate-200 hover:border-white/30 transition-colors"
+                className="px-3 sm:px-4 py-1.5 rounded-lg border border-white/15 text-slate-400 text-xs sm:text-sm whitespace-nowrap hover:text-slate-200 hover:border-white/30 transition-colors"
               >
                 Necessary only
               </button>
@@ -208,7 +215,7 @@ export function CookieConsent({
                 type="button"
                 onClick={() => handleChoice('1')}
                 style={{ backgroundColor: accent }}
-                className="px-4 py-1.5 rounded-lg text-white text-sm font-medium hover:opacity-90 transition-opacity"
+                className="px-3 sm:px-4 py-1.5 rounded-lg text-white text-xs sm:text-sm font-medium whitespace-nowrap hover:opacity-90 transition-opacity"
               >
                 Accept
               </button>
