@@ -15,6 +15,15 @@ export const SITE_NAME = 'Spark Apps';
 /** One-liner used in metadata description and marketing. */
 export const SITE_DESCRIPTION = pkg.description;
 
+/**
+ * The product's short strapline.
+ *
+ * Here rather than in lib/seo/config.ts, which re-exports it, because client
+ * components want it too and that module is not always free to import.
+ * One string, and the cheap module is the one the client reaches for.
+ */
+export const SITE_TAGLINE = 'Productivity Apps for Vibe Coders';
+
 /** Primary brand color (used for BgBokeh, accents, etc.). */
 export const THEME_COLOR = '#3b82f6';
 

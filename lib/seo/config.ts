@@ -1,4 +1,10 @@
-import { SITE_DESCRIPTION, SITE_NAME, SITE_URL, SUPPORT_EMAIL } from '@/lib/config/site';
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_TAGLINE,
+  SITE_URL,
+  SUPPORT_EMAIL,
+} from '@/lib/config/site';
 import { sparkApps } from '@/lib/data/apps';
 
 /**
@@ -17,7 +23,7 @@ export const seoConfig = {
   supportEmail: SUPPORT_EMAIL,
 
   // ---- Site-specific ----
-  tagline: 'Productivity Apps for Vibe Coders',
+  tagline: SITE_TAGLINE,
   category: 'Software Portfolio',
   applicationCategory: 'UtilitiesApplication' as const,
 
