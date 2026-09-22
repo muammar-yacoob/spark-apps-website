@@ -63,7 +63,7 @@ Props
 -----
 
   show        mounts the overlay
-  onDone      fires at the end, or the instant it is skipped
+  onDone      fires at the end
   logoSrc     brand mark above the wordmark; row skipped when absent or 404
   title       the brand line, e.g. `Welcome to Sellular`
   tagline     the product's one-liner, under the brand line
@@ -206,8 +206,14 @@ Accessibility
 -------------
 
 prefers-reduced-motion holds the starfield still at a fixed depth, drops the
-settle and reveals the whole message at once, and leaves the fades alone, so the beat still reads as a moment rather than a black
-flash. Escape skips it, and so does a click anywhere; nine seconds is short
-but it is nine seconds of somebody's screen being covered. The overlay is a
-polite live region rather than a control, which is why it is not focusable and
-why the keyboard escape hatch is a window listener.
+settle and reveals the whole message at once, and leaves the fades alone, so
+the beat still reads as a moment rather than a black flash. The overlay is a
+polite live region rather than a control: it is not focusable, it takes no
+input, and there is nothing in it to tab to.
+
+It cannot be skipped. There is no Escape handler and no click-to-skip, on
+purpose: it plays once, on a first run, immediately before the tour that
+explains the app, so the only person who can ever dismiss it is the one person
+who has not seen it. Nine seconds of a covered screen is the price of that
+being true. A caller that needs it gone early pulls `show` false; the timer is
+cleared on unmount, so nothing fires against an overlay that has left.

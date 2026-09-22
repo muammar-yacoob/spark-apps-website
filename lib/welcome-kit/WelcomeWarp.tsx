@@ -58,7 +58,7 @@ const TYPE_SHARE = 0.2;
 export type WelcomeWarpProps = {
   /** Mounts the overlay. Flip it false again after `onDone` fires. */
   show: boolean;
-  /** Fires once the animation has run its course, or the moment it is skipped. */
+  /** Fires once the animation has run its course. */
   onDone?: () => void;
   /** Brand mark above the wordmark. Any URL the host serves; row skipped if absent. */
   logoSrc?: string;
@@ -111,26 +111,18 @@ export function WelcomeWarp({
   const finish = useCallback(() => done.current?.(), []);
 
   // One timer for the whole thing, started on mount and cleared on unmount, so
-  // a caller that pulls `show` early (a route change, a skip) cannot leave a
-  // callback queued against an overlay that is no longer on screen.
+  // a caller that pulls `show` early (a route change) cannot leave a callback
+  // queued against an overlay that is no longer on screen.
+  //
+  // It is the ONLY way out. There is no Escape handler and no click-to-skip:
+  // this plays once, on a first run, immediately before the tour that explains
+  // the app, and a first-time user who dismisses it by reflex never sees it
+  // again. Nine seconds of a covered screen is the price of that being true.
   useEffect(() => {
     if (!show) return;
     const timer = setTimeout(finish, durationMs);
     return () => clearTimeout(timer);
   }, [show, durationMs, finish]);
-
-  // Escape skips it. Nine seconds is short, but it is nine seconds of
-  // someone's screen being covered and there has to be a way out. This is also
-  // the keyboard half of the pointer skip below: the overlay is a live region
-  // rather than a control, so it is deliberately not focusable.
-  useEffect(() => {
-    if (!show) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') finish();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [show, finish]);
 
   // Each mount gets a clean slate, or a retried logo stays hidden on replay.
   useEffect(() => {
@@ -157,7 +149,6 @@ export function WelcomeWarp({
       className="swk-root"
       role="status"
       aria-live="polite"
-      onPointerDown={finish}
       style={
         {
           '--swk-dur': `${durationMs}ms`,

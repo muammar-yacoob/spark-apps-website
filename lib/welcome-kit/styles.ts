@@ -46,7 +46,11 @@ export const WELCOME_CSS = `
   z-index: var(--swk-z);
   overflow: hidden;
   background: var(--swk-bg);
-  cursor: pointer;
+  /* Not \`pointer\`: the overlay takes no input and cannot be skipped, and a
+     hand cursor over it advertises a click that does nothing. It still eats
+     pointer events rather than letting them through, so nobody clicks blind
+     into the app mounting underneath. */
+  cursor: default;
   /* Layout and paint only, deliberately not \`strict\`: that adds size
      containment, which sizes an element as if it were empty. This one is
      sized by its insets so it survives, but a copy of this kit that is ever
