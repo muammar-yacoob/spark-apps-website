@@ -169,6 +169,16 @@ export const sparkApps: SparkApp[] = [
     ],
   },
   {
+    id: 'minutely',
+    name: 'Minutely',
+    tagline: 'AI Meeting Minutes',
+    description:
+      'Live transcript in a side panel, then AI minutes with action items and dates. Zoom, Teams and Meet, in the browser. Chrome extension.',
+    icon: '/imgs/apps/minutely.png',
+    tags: ['Chrome Extension', 'AI', 'Communication'],
+    links: [{ label: 'Privacy', url: '/apps/minutely/privacy', type: 'website' }],
+  },
+  {
     id: 'screenful',
     name: 'Screenful',
     tagline: 'Full-Page Screenshots',
