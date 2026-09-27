@@ -7,11 +7,17 @@ import { useEffect, useRef, useState } from 'react';
 import { Toaster } from 'sonner';
 import PageLoader from '@/app/_components/feedback/PageLoader';
 import { useRotatingTagline } from '@/app/_components/hooks/useRotatingTagline';
-import { OnBoarding, resetOnboarding } from '@/app/_components/onboarding/OnBoarding';
+import {
+  isOnboardingDone,
+  markOnboardingDone,
+  OnBoarding,
+  resetOnboarding,
+} from '@/app/_components/onboarding/OnBoarding';
 import SocialShareButton from '@/app/_components/social-share/SocialShareButton';
 import { SHARE_CONFIG } from '@/app/_components/social-share/share-config';
-import { SITE_NAME } from '@/lib/config/site';
+import { SITE_NAME, SITE_TAGLINE } from '@/lib/config/site';
 import { TOAST_CONFIG } from '@/lib/config/toast';
+import { WelcomeWarp } from '@/lib/welcome-kit';
 import { OverviewPanel } from './_components/OverviewPanel';
 import { SettingsView } from './_components/SettingsView';
 import type { View } from './_components/types';
@@ -21,6 +27,27 @@ import { useDashboardStats } from './hooks/useDashboardStats';
 export default function DashboardPage() {
   const { data: session, status } = useSession();
   const [mounted, setMounted] = useState(false);
+  /**
+   * Whether this is the first login, read once after mount: `null` until the
+   * answer is known, because localStorage does not exist on the server and
+   * deciding it during render would hand the client different markup from the
+   * one the server sent. The same flag gates the tour, so the welcome and the
+   * tour are shown on exactly the same occasions.
+   */
+  const [firstRun, setFirstRun] = useState<boolean | null>(null);
+  const [welcomeDone, setWelcomeDone] = useState(false);
+
+  useEffect(() => {
+    const first = !isOnboardingDone();
+    setFirstRun(first);
+    // Marked as soon as we commit to SHOWING it, not when the tour is
+    // dismissed as it used to be: anyone who refreshed, shut the tab or
+    // wandered off before that dismissal never wrote the flag at all, so the
+    // nine-second splash played again on every single load. `firstRun` stays
+    // true in state for the rest of this session, so the tour still runs.
+    if (first) markOnboardingDone();
+  }, []);
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [view, setView] = useState<View>('home');
   const menuRef = useRef<HTMLDivElement>(null);
@@ -45,8 +72,37 @@ export default function DashboardPage() {
     return () => document.removeEventListener('mousedown', handleClick);
   }, [menuOpen]);
 
+  /**
+   * The welcome splash IS the first login's loading screen.
+   *
+   * It used to be mounted by OnBoarding, which lives inside the gate below, so
+   * a new account got the page loader first and only then the greeting: the
+   * greeting arriving after the moment it exists for. Mounted out here it
+   * covers the whole boot, and the loader is not drawn behind it.
+   *
+   * It is the first child of the fragment in BOTH branches, which is what
+   * keeps React reconciling it as the same element when the gate opens
+   * underneath it. Remount it and its nine-second clock starts again.
+   */
+  const welcoming = firstRun === true && !welcomeDone;
+  const welcome = (
+    <WelcomeWarp
+      show={welcoming}
+      onDone={() => setWelcomeDone(true)}
+      logoSrc="/favicon.png"
+      title={`Welcome to ${SITE_NAME}`}
+      tagline={SITE_TAGLINE}
+      accent="#3b82f6"
+    />
+  );
+
   if (!mounted || status === 'loading') {
-    return <PageLoader />;
+    return (
+      <>
+        {welcome}
+        {welcoming ? null : <PageLoader />}
+      </>
+    );
   }
 
   if (status === 'unauthenticated') {
@@ -66,209 +122,214 @@ export default function DashboardPage() {
   }
 
   return (
-    <OnBoarding>
-      <div className="min-h-screen bg-gray-950 text-gray-100">
-        <Toaster {...TOAST_CONFIG} />
+    <>
+      {welcome}
+      <OnBoarding run={firstRun === true && welcomeDone}>
+        <div className="min-h-screen bg-gray-950 text-gray-100">
+          <Toaster {...TOAST_CONFIG} />
 
-        <div className="flex flex-col md:flex-row">
-          {/* Sidebar */}
-          <aside
-            id="onborda-sidebar"
-            className="hidden md:flex w-56 min-h-screen border-r border-white/[0.06] bg-gray-900/40 p-4 flex-col gap-1"
-          >
-            <div className="mb-6" />
-            <button
-              type="button"
-              onClick={() => setView('home')}
-              className={`${styles.sidebarItem} ${view === 'home' ? styles.sidebarItemActive : ''} ${styles.iconPopTrigger}`}
-              suppressHydrationWarning
+          <div className="flex flex-col md:flex-row">
+            {/* Sidebar */}
+            <aside
+              id="onborda-sidebar"
+              className="hidden md:flex w-56 min-h-screen border-r border-white/[0.06] bg-gray-900/40 p-4 flex-col gap-1"
             >
-              <BarChart3
-                suppressHydrationWarning
-                className={`w-4 h-4 text-gray-500 ${styles.iconPop}`}
-              />
-              <span className="text-sm text-gray-300">Overview</span>
-            </button>
-            <button
-              type="button"
-              id="onborda-settings"
-              onClick={() => setView('settings')}
-              className={`${styles.sidebarItem} ${view === 'settings' ? styles.sidebarItemActive : ''} ${styles.iconSpinTrigger}`}
-              suppressHydrationWarning
-            >
-              <Settings
-                suppressHydrationWarning
-                className={`w-4 h-4 text-gray-500 ${styles.iconSpin}`}
-              />
-              <span className="text-sm text-gray-300">Settings</span>
-            </button>
-          </aside>
-
-          {/* Main content */}
-          <div className="flex-1">
-            {/* Header */}
-            <header className="border-b border-white/[0.06] bg-gray-900/40 backdrop-blur-sm sticky top-0 z-10">
-              <div className="px-4 sm:px-6 h-14 flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  {/* biome-ignore lint/performance/noImgElement: static favicon fallback rendered at a fixed small size; not worth a next/image wrapper. */}
-                  <img src="/favicon.ico" alt="" width={22} height={22} className="rounded" />
-                  <div>
-                    <h1 className="text-sm font-semibold text-white leading-tight">{SITE_NAME}</h1>
-                    <div className="relative h-3 w-36 overflow-hidden hidden sm:block">
-                      <AnimatePresence mode="wait">
-                        <motion.span
-                          key={taglineIndex}
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -8 }}
-                          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                          className="absolute inset-0 text-[9px] text-gray-600 truncate"
-                        >
-                          {tagline}
-                        </motion.span>
-                      </AnimatePresence>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1">
-                  {/* Share */}
-                  <SocialShareButton
-                    size={16}
-                    className={`p-1.5 rounded-lg hover:bg-white/[0.04] transition-colors ${styles.iconPopTrigger}`}
-                    {...SHARE_CONFIG}
-                  />
-
-                  {/* Avatar menu */}
-                  <div id="onborda-user-menu" className="relative" ref={menuRef}>
-                    <button
-                      type="button"
-                      onClick={() => setMenuOpen((v) => !v)}
-                      className="flex items-center gap-2 cursor-pointer rounded-lg px-2 py-1 hover:bg-white/[0.04] transition-colors"
-                      suppressHydrationWarning
-                    >
-                      {session?.user?.image ? (
-                        // biome-ignore lint/performance/noImgElement: OAuth avatar URL from an arbitrary provider host; next/image would need every provider host in remotePatterns.
-                        <img
-                          src={session.user.image}
-                          alt=""
-                          width={28}
-                          height={28}
-                          className="rounded-full"
-                          referrerPolicy="no-referrer"
-                        />
-                      ) : (
-                        <div className="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">
-                          {session?.user?.name?.charAt(0)?.toUpperCase() ?? '?'}
-                        </div>
-                      )}
-                      <span className="text-sm text-gray-300 hidden sm:inline">
-                        {session?.user?.name ?? 'User'}
-                      </span>
-                      <ChevronDown
-                        suppressHydrationWarning
-                        className={`w-3.5 h-3.5 text-gray-500 transition-transform ${menuOpen ? 'rotate-180' : ''}`}
-                      />
-                    </button>
-
-                    {menuOpen && (
-                      <div
-                        className={`absolute right-0 top-full mt-1 w-56 bg-gray-900 border border-white/[0.08] rounded-xl shadow-xl overflow-hidden ${styles.menuDropdown}`}
-                      >
-                        <div className="px-4 py-3 border-b border-white/[0.06]">
-                          <p className="text-xs text-gray-300 font-medium truncate">
-                            {session?.user?.name ?? 'User'}
-                          </p>
-                          <p className="text-[11px] text-gray-500 truncate">
-                            {session?.user?.email ?? ''}
-                          </p>
-                        </div>
-                        <div className="py-1" suppressHydrationWarning>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              resetOnboarding();
-                              setMenuOpen(false);
-                              window.location.reload();
-                            }}
-                            className={`${styles.menuItem} w-full text-left px-4 py-2 text-sm text-gray-300 flex items-center gap-2.5`}
-                            suppressHydrationWarning
-                          >
-                            <HelpCircle
-                              suppressHydrationWarning
-                              className="w-3.5 h-3.5 text-gray-500"
-                            />
-                            Dashboard Tour
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setView('settings');
-                              setMenuOpen(false);
-                            }}
-                            className={`${styles.menuItem} w-full text-left px-4 py-2 text-sm text-gray-300 flex items-center gap-2.5 ${styles.iconSpinTrigger}`}
-                            suppressHydrationWarning
-                          >
-                            <Settings
-                              suppressHydrationWarning
-                              className={`w-3.5 h-3.5 text-gray-500 ${styles.iconSpin}`}
-                            />
-                            Settings
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => signOut({ callbackUrl: '/' })}
-                            className={`${styles.menuItem} w-full text-left px-4 py-2 text-sm text-gray-300 flex items-center gap-2.5`}
-                            suppressHydrationWarning
-                          >
-                            <LogOut
-                              suppressHydrationWarning
-                              className="w-3.5 h-3.5 text-gray-500"
-                            />
-                            Sign out
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </header>
-
-            {/* Mobile tab bar */}
-            <div
-              className="md:hidden flex border-b border-white/[0.06] bg-gray-900/40"
-              suppressHydrationWarning
-            >
+              <div className="mb-6" />
               <button
                 type="button"
                 onClick={() => setView('home')}
-                className={`${styles.tabBtn} flex-1 flex items-center justify-center gap-1.5 ${view === 'home' ? styles.tabBtnActive : ''}`}
+                className={`${styles.sidebarItem} ${view === 'home' ? styles.sidebarItemActive : ''} ${styles.iconPopTrigger}`}
                 suppressHydrationWarning
               >
-                <BarChart3 suppressHydrationWarning className="w-3.5 h-3.5" />
-                Overview
+                <BarChart3
+                  suppressHydrationWarning
+                  className={`w-4 h-4 text-gray-500 ${styles.iconPop}`}
+                />
+                <span className="text-sm text-gray-300">Overview</span>
               </button>
               <button
                 type="button"
+                id="onborda-settings"
                 onClick={() => setView('settings')}
-                className={`${styles.tabBtn} flex-1 flex items-center justify-center gap-1.5 ${view === 'settings' ? styles.tabBtnActive : ''}`}
+                className={`${styles.sidebarItem} ${view === 'settings' ? styles.sidebarItemActive : ''} ${styles.iconSpinTrigger}`}
                 suppressHydrationWarning
               >
-                <Settings suppressHydrationWarning className="w-3.5 h-3.5" />
-                Settings
+                <Settings
+                  suppressHydrationWarning
+                  className={`w-4 h-4 text-gray-500 ${styles.iconSpin}`}
+                />
+                <span className="text-sm text-gray-300">Settings</span>
               </button>
-            </div>
+            </aside>
 
-            <main id="onborda-overview" className="p-4 sm:p-6 overflow-hidden" key={view}>
-              {view === 'settings' ? (
-                <SettingsView />
-              ) : (
-                <OverviewPanel session={session} loading={loading} db={db} />
-              )}
-            </main>
+            {/* Main content */}
+            <div className="flex-1">
+              {/* Header */}
+              <header className="border-b border-white/[0.06] bg-gray-900/40 backdrop-blur-sm sticky top-0 z-10">
+                <div className="px-4 sm:px-6 h-14 flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    {/* biome-ignore lint/performance/noImgElement: static favicon fallback rendered at a fixed small size; not worth a next/image wrapper. */}
+                    <img src="/favicon.ico" alt="" width={22} height={22} className="rounded" />
+                    <div>
+                      <h1 className="text-sm font-semibold text-white leading-tight">
+                        {SITE_NAME}
+                      </h1>
+                      <div className="relative h-3 w-36 overflow-hidden hidden sm:block">
+                        <AnimatePresence mode="wait">
+                          <motion.span
+                            key={taglineIndex}
+                            initial={{ opacity: 0, y: 8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -8 }}
+                            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                            className="absolute inset-0 text-[9px] text-gray-600 truncate"
+                          >
+                            {tagline}
+                          </motion.span>
+                        </AnimatePresence>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    {/* Share */}
+                    <SocialShareButton
+                      size={16}
+                      className={`p-1.5 rounded-lg hover:bg-white/[0.04] transition-colors ${styles.iconPopTrigger}`}
+                      {...SHARE_CONFIG}
+                    />
+
+                    {/* Avatar menu */}
+                    <div id="onborda-user-menu" className="relative" ref={menuRef}>
+                      <button
+                        type="button"
+                        onClick={() => setMenuOpen((v) => !v)}
+                        className="flex items-center gap-2 cursor-pointer rounded-lg px-2 py-1 hover:bg-white/[0.04] transition-colors"
+                        suppressHydrationWarning
+                      >
+                        {session?.user?.image ? (
+                          // biome-ignore lint/performance/noImgElement: OAuth avatar URL from an arbitrary provider host; next/image would need every provider host in remotePatterns.
+                          <img
+                            src={session.user.image}
+                            alt=""
+                            width={28}
+                            height={28}
+                            className="rounded-full"
+                            referrerPolicy="no-referrer"
+                          />
+                        ) : (
+                          <div className="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">
+                            {session?.user?.name?.charAt(0)?.toUpperCase() ?? '?'}
+                          </div>
+                        )}
+                        <span className="text-sm text-gray-300 hidden sm:inline">
+                          {session?.user?.name ?? 'User'}
+                        </span>
+                        <ChevronDown
+                          suppressHydrationWarning
+                          className={`w-3.5 h-3.5 text-gray-500 transition-transform ${menuOpen ? 'rotate-180' : ''}`}
+                        />
+                      </button>
+
+                      {menuOpen && (
+                        <div
+                          className={`absolute right-0 top-full mt-1 w-56 bg-gray-900 border border-white/[0.08] rounded-xl shadow-xl overflow-hidden ${styles.menuDropdown}`}
+                        >
+                          <div className="px-4 py-3 border-b border-white/[0.06]">
+                            <p className="text-xs text-gray-300 font-medium truncate">
+                              {session?.user?.name ?? 'User'}
+                            </p>
+                            <p className="text-[11px] text-gray-500 truncate">
+                              {session?.user?.email ?? ''}
+                            </p>
+                          </div>
+                          <div className="py-1" suppressHydrationWarning>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                resetOnboarding();
+                                setMenuOpen(false);
+                                window.location.reload();
+                              }}
+                              className={`${styles.menuItem} w-full text-left px-4 py-2 text-sm text-gray-300 flex items-center gap-2.5`}
+                              suppressHydrationWarning
+                            >
+                              <HelpCircle
+                                suppressHydrationWarning
+                                className="w-3.5 h-3.5 text-gray-500"
+                              />
+                              Dashboard Tour
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setView('settings');
+                                setMenuOpen(false);
+                              }}
+                              className={`${styles.menuItem} w-full text-left px-4 py-2 text-sm text-gray-300 flex items-center gap-2.5 ${styles.iconSpinTrigger}`}
+                              suppressHydrationWarning
+                            >
+                              <Settings
+                                suppressHydrationWarning
+                                className={`w-3.5 h-3.5 text-gray-500 ${styles.iconSpin}`}
+                              />
+                              Settings
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => signOut({ callbackUrl: '/' })}
+                              className={`${styles.menuItem} w-full text-left px-4 py-2 text-sm text-gray-300 flex items-center gap-2.5`}
+                              suppressHydrationWarning
+                            >
+                              <LogOut
+                                suppressHydrationWarning
+                                className="w-3.5 h-3.5 text-gray-500"
+                              />
+                              Sign out
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </header>
+
+              {/* Mobile tab bar */}
+              <div
+                className="md:hidden flex border-b border-white/[0.06] bg-gray-900/40"
+                suppressHydrationWarning
+              >
+                <button
+                  type="button"
+                  onClick={() => setView('home')}
+                  className={`${styles.tabBtn} flex-1 flex items-center justify-center gap-1.5 ${view === 'home' ? styles.tabBtnActive : ''}`}
+                  suppressHydrationWarning
+                >
+                  <BarChart3 suppressHydrationWarning className="w-3.5 h-3.5" />
+                  Overview
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setView('settings')}
+                  className={`${styles.tabBtn} flex-1 flex items-center justify-center gap-1.5 ${view === 'settings' ? styles.tabBtnActive : ''}`}
+                  suppressHydrationWarning
+                >
+                  <Settings suppressHydrationWarning className="w-3.5 h-3.5" />
+                  Settings
+                </button>
+              </div>
+
+              <main id="onborda-overview" className="p-4 sm:p-6 overflow-hidden" key={view}>
+                {view === 'settings' ? (
+                  <SettingsView />
+                ) : (
+                  <OverviewPanel session={session} loading={loading} db={db} />
+                )}
+              </main>
+            </div>
           </div>
         </div>
-      </div>
-    </OnBoarding>
+      </OnBoarding>
+    </>
   );
 }

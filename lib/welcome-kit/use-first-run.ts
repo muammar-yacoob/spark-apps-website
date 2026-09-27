@@ -25,7 +25,18 @@ export function useFirstRun(storageKey: string, enabled = true) {
   useEffect(() => {
     if (!enabled) return;
     try {
-      if (localStorage.getItem(storageKey) !== '1') setShow(true);
+      if (localStorage.getItem(storageKey) === '1') return;
+      // Recorded as soon as the overlay is RAISED, not when it finishes.
+      // `dismiss` used to be the only writer, so a reader who refreshed, shut
+      // the tab or wandered off mid-animation never wrote the flag at all and
+      // got the whole thing again on every single load, which is the opposite
+      // of a first-run splash. The cost is the replay of a genuinely
+      // interrupted first run, which is much the cheaper of the two mistakes.
+      //
+      // The write is also the gate: if it throws, nothing is shown, per the
+      // blocked-storage note below.
+      localStorage.setItem(storageKey, '1');
+      setShow(true);
     } catch {
       // Storage blocked (private mode, strict privacy settings). A welcome
       // that cannot be remembered is better skipped than replayed on every

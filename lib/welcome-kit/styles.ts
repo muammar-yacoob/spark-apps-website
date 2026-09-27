@@ -231,10 +231,14 @@ export const WELCOME_CSS = `
 @keyframes swk-type {
   to { opacity: 1; }
 }
+/* Symmetric fades, and both short. The fade out used to take 16% of the
+   duration (1.44s at the 9s default), which at full-screen black reads as the
+   overlay being reluctant to leave rather than as a transition. Matching it to
+   the fade in spends the reclaimed second holding the message instead. */
 @keyframes swk-veil {
   0% { opacity: 0; }
   6% { opacity: 1; }
-  84% { opacity: 1; }
+  94% { opacity: 1; }
   100% { opacity: 0; }
 }
 @keyframes swk-zoom {
