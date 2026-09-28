@@ -1,6 +1,14 @@
 {
   "framework": "nextjs",
-  "regions": ["lhr1"],
+  "regions": [
+    "lhr1"
+  ],
   "buildCommand": "bun run build",
-  "installCommand": "bun install"
+  "installCommand": "bun install",
+  "git": {
+    "deploymentEnabled": {
+      "*": false,
+      "main": true
+    }
+  }
 }
