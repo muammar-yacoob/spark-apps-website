@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/next';
 import type { Metadata, Viewport } from 'next';
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL, THEME_COLOR } from '@/lib/config/site';
 import { seoConfig } from '@/lib/seo/config';
@@ -96,6 +97,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           privacyUrl="/privacy"
           message="Essential cookies keep this site working. Accepting also loads optional third-party services."
         />
+        <Analytics />
       </body>
     </html>
   );
