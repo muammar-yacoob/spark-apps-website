@@ -113,14 +113,17 @@ export default async function Image() {
   const light = luminance(bg) > 100;
   // The badge ships in two art variants; which one reads on the card
   // depends on the background, which is only settled here.
-  const badgeSrc = OG.badge
-    ? await loadImageWithShadow(ogAsset(light ? OG.badgeOnLight : OG.badge), 96)
-    : '';
   const veryLight = luminance(bg) > 200;
+  const badgeSrc = OG.badge
+    ? await loadImageWithShadow(ogAsset(veryLight ? OG.badgeOnLight : OG.badge), 96)
+    : '';
   const rawAccent = light ? darken(ctaColor, 0.55) : ctaColor;
   const accentColor = ensureContrast(rawAccent, bg);
   const textColor = light ? accentColor : '#f5f5f5';
-  const mutedColor = light ? darken(accentColor, 0.7) : 'rgba(245,245,245,0.6)';
+  // The Claude row -- label, MCP glyph and AI badge -- reads as one
+  // whitesmoke unit, and only gives that up on a near-white card
+  // where it would disappear.
+  const chromeColor = veryLight ? accentColor : '#f5f5f5';
   const brandShadow = light
     ? '0 2px 12px rgba(0,0,0,0.25)'
     : '0 2px 12px rgba(0,0,0,0.5)';
@@ -196,7 +199,7 @@ export default async function Image() {
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <span style={{ fontSize: 16, fontWeight: 700, fontFamily: hFont, color: mutedColor }}>
+          <span style={{ fontSize: 16, fontWeight: 700, fontFamily: hFont, color: chromeColor }}>
             Works with Claude
           </span>
           <svg
@@ -204,7 +207,7 @@ export default async function Image() {
             height={76}
             viewBox="0 0 24 24"
             fill="none"
-            stroke={textColor}
+            stroke={chromeColor}
             strokeWidth={1.6}
             strokeLinecap="round"
             strokeLinejoin="round"
