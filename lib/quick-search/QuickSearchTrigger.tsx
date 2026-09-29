@@ -5,10 +5,10 @@
  * pill, sized so the glyphs and the lens share a top and bottom edge.
  *
  * It sits at the weight of the icons around it and swells slightly while Ctrl
- * or ⌘ is held — the moment the shortcut is about to matter. That growth is a
+ * or ⌘ is held, the moment the shortcut is about to matter. That growth is a
  * transform rather than a size change, so nothing beside it reflows.
  *
- * The shortcut reads ⌘ K on every platform — it is the palette's mark rather
+ * The shortcut reads ⌘ K on every platform, it is the palette's mark rather
  * than a claim about the keyboard, and Ctrl+K opens it just the same, which
  * the accessible name says.
  *

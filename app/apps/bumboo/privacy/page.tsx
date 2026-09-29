@@ -1,16 +1,17 @@
 import type { Metadata } from 'next';
 import { LegalCompanyByline } from '@/app/_components/layout/LegalCompany';
+import { LegalAppHeading } from '@/app/_components/layout/LegalAppHeading';
 import { LegalPageFooter } from '@/app/_components/layout/LegalPageFooter';
 
 export const metadata: Metadata = {
-  title: 'BumBoo — Privacy Policy',
+  title: 'BumBoo: Privacy Policy',
   description:
     'Privacy policy for BumBoo, the used-vehicle history Chrome extension. Plates are read on your machine; identifiers go only to the public register of the country they belong to.',
   alternates: { canonical: '/apps/bumboo/privacy' },
 };
 
 /**
- * Mirrors PRIVACY.md in the bumboo repo. Change both together — the store
+ * Mirrors PRIVACY.md in the bumboo repo. Change both together, the store
  * listing points here, and the file ships beside the extension.
  */
 const LAST_UPDATED = '31 August 2026';
@@ -20,10 +21,11 @@ export default function BumbooPrivacyPolicy() {
     <div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col">
       <div className="flex-1 py-16 px-6">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold text-white mb-2">BumBoo — Privacy Policy</h1>
-          <p className="text-gray-400 mb-2">
-            The official record of a used vehicle, on the advert itself.
-          </p>
+          <LegalAppHeading
+            icon="bumboo.png"
+            name="BumBoo"
+            tagline="The official record of a used vehicle, on the advert itself."
+          />
           <LegalCompanyByline />
 
           <div className="space-y-8 text-gray-300">
@@ -51,8 +53,8 @@ export default function BumbooPrivacyPolicy() {
               <p className="mt-2">
                 One feature reaches a third party, and only when you press it. The locate button
                 beside the postcode field asks your browser where you are and sends those
-                coordinates to <code>postcodes.io</code> &mdash; a free public service over Ordnance
-                Survey&rsquo;s open postcode data &mdash; to get the nearest postcode, so a vehicle
+                coordinates to <code>postcodes.io</code> (a free public service over Ordnance
+                Survey&rsquo;s open postcode data) to get the nearest postcode, so a vehicle
                 search can be centred without you typing it. The coordinates are used for that one
                 request and discarded; the postcode is kept on your machine so you do not have to do
                 it twice. Nothing happens on install, on startup, or on opening the popup, and you

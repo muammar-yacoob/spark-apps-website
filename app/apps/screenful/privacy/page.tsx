@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import { LegalCompanyByline } from '@/app/_components/layout/LegalCompany';
+import { LegalAppHeading } from '@/app/_components/layout/LegalAppHeading';
 import { LegalLastUpdated, LegalPageFooter } from '@/app/_components/layout/LegalPageFooter';
 
 export const metadata: Metadata = {
-  title: 'Screenful — Privacy Policy',
+  title: 'Screenful: Privacy Policy',
   description:
     'Privacy policy for Screenful, the full-page screenshot Chrome extension. Captures stay in your browser; nothing is uploaded.',
   alternates: { canonical: '/apps/screenful/privacy' },
@@ -14,8 +15,11 @@ export default function ScreenfulPrivacyPolicy() {
     <div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col">
       <div className="flex-1 py-16 px-6">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold text-white mb-2">Screenful — Privacy Policy</h1>
-          <p className="text-gray-400 mb-2">Full-page screenshots in one keystroke.</p>
+          <LegalAppHeading
+            icon="screenful.png"
+            name="Screenful"
+            tagline="Full-page screenshots in one keystroke."
+          />
           <LegalCompanyByline />
 
           <div className="space-y-8 text-gray-300">
@@ -30,7 +34,7 @@ export default function ScreenfulPrivacyPolicy() {
               </p>
               <p className="mt-2">
                 There is no analytics, no telemetry, no crash reporting, no account, and no network
-                request of any kind &mdash; the extension ships with no host permissions, so it is
+                request of any kind. The extension ships with no host permissions, so it is
                 not technically capable of contacting a server.
               </p>
             </section>
@@ -38,7 +42,7 @@ export default function ScreenfulPrivacyPolicy() {
             <section>
               <h2 className="text-2xl font-semibold text-white mb-4">What Is Stored</h2>
               <p>
-                Your two preferences only &mdash; whether repeated sticky headers are removed, and
+                Your two preferences only: whether repeated sticky headers are removed, and
                 whether the preview is skipped. These live in <code>chrome.storage.sync</code>,
                 which means Chrome may sync them between your own signed-in browsers. Uninstalling
                 the extension removes them.
@@ -61,7 +65,7 @@ export default function ScreenfulPrivacyPolicy() {
                     <code>scripting</code>:
                   </strong>{' '}
                   injects the capture script into that tab to measure the page and step the scroll
-                  position. It is not a persistent content script &mdash; nothing runs on pages you
+                  position. It is not a persistent content script, so nothing runs on pages you
                   never capture.
                 </li>
                 <li>

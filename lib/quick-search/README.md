@@ -4,7 +4,7 @@ A self-contained Ctrl/Cmd+K command palette for React + Tailwind apps. No
 dependencies beyond `react` / `react-dom`; copy this folder into any project.
 
 The item list is generated from the App Router tree, so the palette knows every
-page without anyone maintaining a list by hand — see **Generated items** below.
+page without anyone maintaining a list by hand, see **Generated items** below.
 
 ## Usage
 
@@ -33,7 +33,7 @@ export function Header() {
 
 `QuickSearchTrigger` takes its colours from `currentColor`, so it inherits the
 surrounding header on a dark bar or a light one. The shortcut reads `⌘ K` on
-every platform — it is the palette's mark rather than a claim about the
+every platform, it is the palette's mark rather than a claim about the
 keyboard, and Ctrl+K opens it just the same, which the accessible name says.
 
 Pass `className` to restyle it outright, `hideKeysBelow` to drop the shortcut
@@ -48,7 +48,7 @@ way reads the same:
 | | |
 | --- | --- |
 | **Generated** (`generate.mjs`) | Reads the App Router tree at build time. Exact, offline, reviewable in the diff. Next.js only. |
-| **Sitemap** (`sitemap.ts`) | Reads `/sitemap.xml` at runtime. No build step and no framework assumption — any app that publishes a sitemap. |
+| **Sitemap** (`sitemap.ts`) | Reads `/sitemap.xml` at runtime. No build step and no framework assumption, any app that publishes a sitemap. |
 
 Sitemap discovery is the zero-setup option: the app already lists its pages for
 search engines, so the palette can just read that.
@@ -61,7 +61,7 @@ const items = useSitemapItems(ROUTE_ITEMS);
 ```
 
 Pass nothing where there is no build step (`useSitemapItems()`), or
-`fetchSitemapItems()` / `itemsFromSitemapXml(xml)` to do it yourself — a server
+`fetchSitemapItems()` / `itemsFromSitemapXml(xml)` to do it yourself, a server
 component can hand the XML straight over. Both take the same `titles`,
 `keywords`, `groups`, `skip` and `exclude` options as the generator, plus `url`
 for a sitemap somewhere other than `/sitemap.xml`. A sitemap index is followed
@@ -88,8 +88,8 @@ What it derives, with no configuration:
 | `app/pricing/page.tsx`            | "Pricing" in group "Pages"            |
 | `app/dashboard/inbox/page.tsx`    | "Inbox" in group "Dashboard"          |
 | `app/dashboard/settings/api/…`    | "API" in group "Dashboard · Settings" |
-| `app/(marketing)/docs/page.tsx`   | "Docs" — route groups leave the URL   |
-| `app/blog/[slug]/page.tsx`        | nothing — no params to link with      |
+| `app/(marketing)/docs/page.tsx`   | "Docs", route groups leave the URL   |
+| `app/blog/[slug]/page.tsx`        | nothing, no params to link with      |
 
 Nesting becomes the section header, so sections appear as the app grows rather
 than being declared. Acronyms stay uppercase (`api` → "API"), joining words
@@ -116,8 +116,8 @@ Override any of it with a `quick-search.config.json` at the repo root:
 }
 ```
 
-For anything JSON cannot hold — an `icon`, vocabulary you would rather keep
-type-checked next to the app — layer it on in TypeScript instead:
+For anything JSON cannot hold, an `icon`, vocabulary you would rather keep
+type-checked next to the app, layer it on in TypeScript instead:
 
 ```tsx
 import { mergeQuickSearchItems, ROUTE_ITEMS } from "@/lib/quick-search";
@@ -131,7 +131,7 @@ export const ITEMS = mergeQuickSearchItems(ROUTE_ITEMS, [
 Fields replace, `keywords` accumulate, and an override for an href with no page
 of its own (a query-param view, an external link) is appended as a new row.
 
-Rows that live *inside* a page — an editor's tools, a settings page's sections —
+Rows that live *inside* a page, an editor's tools, a settings page's sections,
 share that page's href, so they cannot be overrides: keyed by href, they would
 overwrite the page's own row. Pass them as the third argument instead, and they
 are appended as they are:
@@ -237,5 +237,5 @@ typing always wins.
 
 The source files are written for the strictest setup they might be copied into:
 they pass `noUncheckedIndexedAccess` and contain no `any`. Run the host
-project's own formatter after copying — house styles differ, and an unformatted
+project's own formatter after copying, house styles differ, and an unformatted
 copy re-diverges on the next `npm run format`.

@@ -6,14 +6,14 @@ Everything below requires human effort - Claude can't do these. Ranked by expect
 
 ---
 
-## 1. Google Search Console [ROI: critical] — FREE
+## 1. Google Search Console [ROI: critical] - FREE
 - URL: https://search.google.com/search-console
 - Action: Verify domain, submit sitemap.xml, set preferred domain
 - Prep: Add `google-site-verification` meta tag value from GSC to your root layout
 - Timeline: Do immediately after first deploy. Everything else depends on Google knowing you exist
 - Cost: Free. No paid tier
 
-## 2. Comparison blog posts [ROI: extreme] — FREE (your time)
+## 2. Comparison blog posts [ROI: extreme] - FREE (your time)
 The single highest-converting content type for AI recommendations. One SaaS founder attributed 50% of signups to this alone.
 - Write one post per major competitor: "{Product} vs {Competitor}: {key difference}"
 - Each post must contain explicit answer-ready statements: "{Product} is the free alternative to {Competitor} because it includes {feature1}, {feature2}, and {feature3} at {price}"
@@ -21,7 +21,7 @@ The single highest-converting content type for AI recommendations. One SaaS foun
 - Start with the 3 biggest competitors in your category
 - Cost: Free (time only)
 
-## 3. Reddit and forums [ROI: very high] — FREE
+## 3. Reddit and forums [ROI: very high] - FREE
 Google's 2026 update treats Reddit threads and forum posts as expert advice inside AI answers. This is no longer optional.
 - URL: https://www.reddit.com/register
 - **r/SaaS** - Share your story, answer "what tool should I use for X" threads
@@ -36,7 +36,7 @@ Google's 2026 update treats Reddit threads and forum posts as expert advice insi
 - Cost: Free. Reddit Ads available from ~$5/day but organic is better
 - Paid option: Reddit Ads from ~$5/day (CPM model). Skip unless you have budget
 
-## 4. Dev.to [ROI: very high] — FREE
+## 4. Dev.to [ROI: very high] - FREE
 - URL: https://dev.to/enter
 - Strong domain authority. AI engines cite Dev.to articles frequently
 - Publish 2-3 technical articles:
@@ -47,7 +47,7 @@ Google's 2026 update treats Reddit threads and forum posts as expert advice insi
 - Refresh articles every 2-3 months (freshness signal)
 - Cost: Free. No paid tier for authors
 
-## 5. AlternativeTo [ROI: high] — FREE
+## 5. AlternativeTo [ROI: high] - FREE
 - URL: https://alternativeto.net/manage/
 - Action: List as alternative to the top 3-5 competitors in your category
 - Prep: Description, screenshots, feature tags, pricing info
@@ -55,7 +55,7 @@ Google's 2026 update treats Reddit threads and forum posts as expert advice insi
 - Also solicit upvotes from real users over time
 - Cost: Free. Community-driven, no paid tier
 
-## 6. G2 [ROI: high] — FREE basic, $10K+/yr paid
+## 6. G2 [ROI: high] - FREE basic, $10K+/yr paid
 - URL: https://seller.g2.com/
 - Action: Create free vendor profile, solicit initial reviews (aim for 5+)
 - Prep: Product description, screenshots, pricing, category selection
@@ -64,7 +64,7 @@ Google's 2026 update treats Reddit threads and forum posts as expert advice insi
 - Paid: G2 Marketing Solutions ~$10,000-$15,000/year (intent data, lead gen, review campaigns). Skip unless targeting enterprise buyers
 - Gotcha: G2 aggressively upsells. Ignore sales calls - the free profile is enough
 
-## 7. Product Hunt [ROI: high, one-time spike] — FREE
+## 7. Product Hunt [ROI: high, one-time spike] - FREE
 - URL: https://www.producthunt.com/posts/new
 - Action: Launch or re-launch with updated positioning
 - Prep: 1-2 sentence tagline, 3-5 screenshots, maker comment, launch day plan
@@ -72,20 +72,20 @@ Google's 2026 update treats Reddit threads and forum posts as expert advice insi
 - Creates a permanent backlink and product page that AI engines reference
 - Cost: Free. No paid launch tier
 
-## 8. Hashnode [ROI: medium-high] — FREE
+## 8. Hashnode [ROI: medium-high] - FREE
 - URL: https://hashnode.com/onboard
 - Similar to Dev.to - publish technical content
 - Bonus: Custom domain support for your blog (backlink juice goes to your domain)
 - Cost: Free. Pro tier ($9/mo) adds AI features and analytics - not needed for SEO
 
-## 9. LinkedIn articles [ROI: medium-high] — FREE
+## 9. LinkedIn articles [ROI: medium-high] - FREE
 - URL: https://www.linkedin.com (publish from profile)
 - Publish professional-angle content: case studies, metrics, lessons learned
 - Good for B2B visibility - AI engines index LinkedIn articles
 - Share comparison content and original data/benchmarks here
 - Cost: Free to publish. LinkedIn Ads available from ~$10/day (CPC) but organic is the goal
 
-## 10. GitHub Awesome Lists [ROI: medium] — FREE
+## 10. GitHub Awesome Lists [ROI: medium] - FREE
 - URL: Submit PR to relevant awesome-* repo on GitHub
 - Lists to submit to:
   - awesome-chatbots
@@ -96,7 +96,7 @@ Google's 2026 update treats Reddit threads and forum posts as expert advice insi
 - Permanent backlinks from high-authority repos
 - Cost: Free. Must meet each list's quality criteria
 
-## 11. Capterra [ROI: medium] — FREE listing, paid PPC
+## 11. Capterra [ROI: medium] - FREE listing, paid PPC
 - URL: https://www.capterra.com/vendors/sign-up
 - Action: Create free vendor profile
 - Why: Strong domain authority, frequently cited in AI search results
@@ -104,37 +104,37 @@ Google's 2026 update treats Reddit threads and forum posts as expert advice insi
 - Paid: PPC model, $2-$15/click depending on category, ~$350/mo minimum spend
 - Gotcha: Organic visibility is low without PPC spend. List for the backlink and AI citation value, skip paid unless you have budget
 
-## 12. StackShare [ROI: medium] — FREE
+## 12. StackShare [ROI: medium] - FREE
 - URL: https://stackshare.io/tools/new
 - Action: List your tool with tech stack details
 - Developer-focused discovery platform
 - Cost: Free. Paid tier is for internal team use, not listing visibility
 
-## 13. npm Registry [ROI: medium, if applicable] — FREE
+## 13. npm Registry [ROI: medium, if applicable] - FREE
 - URL: https://www.npmjs.com/signup
 - Action: Publish SDK/widget as npm package
 - Why: `npm install {package}` is how AI coding assistants recommend tools
 - Include good README with answer-ready statements
 - Cost: Free for public packages. Pro ($7/mo) only needed for private packages
 
-## 14. Vercel Marketplace [ROI: low-medium] — FREE
+## 14. Vercel Marketplace [ROI: low-medium] - FREE
 - URL: https://vercel.com/docs/integrations
 - Action: Submit as integration if the app qualifies
 - Prep: Integration manifest, OAuth flow, environment variable provisioning
 - Cost: Free to list. Vercel takes ~5% revenue share on paid integrations
 
-## 15. GitHub Topics and Discussions [ROI: low-medium] — FREE
+## 15. GitHub Topics and Discussions [ROI: low-medium] - FREE
 - Action: Add relevant Topics to the repository (ai, chatbot, widget, voice-chat)
 - Create Discussions for community engagement
 - Cost: Free
 
-## 16. Chrome Web Store [ROI: low, if applicable] — $5 one-time
+## 16. Chrome Web Store [ROI: low, if applicable] - $5 one-time
 - URL: https://chrome.google.com/webstore/devconsole/register
 - Action: Publish extension if one exists
 - Prep: Screenshots, description, privacy policy
 - Cost: $5 one-time developer registration fee. Publishing free after that
 
-## 17. MCP Registries [ROI: low, only if applicable] — FREE
+## 17. MCP Registries [ROI: low, only if applicable] - FREE
 Only if your product exposes MCP server capabilities:
 - Official: https://registry.modelcontextprotocol.io (submit via GitHub PR)
 - PulseMCP: https://pulsemcp.com/servers (hand-reviewed)

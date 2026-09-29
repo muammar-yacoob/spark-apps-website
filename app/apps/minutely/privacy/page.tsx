@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import { LegalCompanyByline } from '@/app/_components/layout/LegalCompany';
+import { LegalAppHeading } from '@/app/_components/layout/LegalAppHeading';
 import { LegalLastUpdated, LegalPageFooter } from '@/app/_components/layout/LegalPageFooter';
 
 export const metadata: Metadata = {
-  title: 'Minutely — Privacy Policy',
+  title: 'Minutely: Privacy Policy',
   description:
     'Privacy policy for Minutely, the meeting-minutes Chrome extension. Transcripts stay on your computer; nothing is sent until you press Summarise.',
   alternates: { canonical: '/apps/minutely/privacy' },
@@ -14,8 +15,11 @@ export default function MinutelyPrivacyPolicy() {
     <div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col">
       <div className="flex-1 py-16 px-6">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold text-white mb-2">Minutely — Privacy Policy</h1>
-          <p className="text-gray-400 mb-2">Meeting minutes, written where the meeting happens.</p>
+          <LegalAppHeading
+            icon="minutely.png"
+            name="Minutely"
+            tagline="Meeting minutes, written where the meeting happens."
+          />
           <LegalCompanyByline />
 
           <div className="space-y-8 text-gray-300">
@@ -226,7 +230,7 @@ export default function MinutelyPrivacyPolicy() {
                     <code>sidePanel</code>:
                   </strong>{' '}
                   Minutely&rsquo;s entire interface is a Chrome side panel, deliberately rather than
-                  a panel injected into the meeting page &mdash; an injected panel disappears the
+                  a panel injected into the meeting page, because an injected panel disappears the
                   moment anyone presents, and is captured when the user shares that tab, which would
                   broadcast a private transcript to the room.
                 </li>
@@ -248,7 +252,7 @@ export default function MinutelyPrivacyPolicy() {
               </ul>
               <p className="mt-4">
                 Alongside those, Minutely declares content scripts for the three meeting sites it
-                supports &mdash; <code>meet.google.com</code>, <code>teams.microsoft.com</code> /{' '}
+                supports: <code>meet.google.com</code>, <code>teams.microsoft.com</code> /{' '}
                 <code>teams.live.com</code>, and <code>*.zoom.us/wc/*</code>. Those scripts read
                 caption text and participant names from the page you are already on, and send
                 nothing to any network destination.

@@ -11,7 +11,7 @@ import { sparkApps } from '@/lib/data/apps';
  * Centralized SEO configuration.
  * All SEO artifacts (llms.txt, JSON-LD, sitemap, metadata) pull from here.
  *
- * This site is the Spark Apps portfolio — the shop window for the apps in
+ * This site is the Spark Apps portfolio, the shop window for the apps in
  * lib/data/apps.ts. It is not a product in itself, and nothing here should
  * describe it as one.
  */
@@ -45,7 +45,7 @@ export const seoConfig = {
    * lib/data/apps.ts so a new app never has to be added here as well.
    */
   get features(): string[] {
-    return sparkApps.map((app) => `${app.name} — ${app.tagline}: ${app.description}`);
+    return sparkApps.map((app) => `${app.name} (${app.tagline}): ${app.description}`);
   },
 
   /** Pricing tiers shown in JSON-LD and llms.txt. */
@@ -70,7 +70,7 @@ export const seoConfig = {
     },
     {
       name: 'generic app marketplaces',
-      statement: `${SITE_NAME} lists only apps built and maintained in-house, so every tool here has a named maintainer and a live support address — unlike open marketplaces where listings are abandoned without notice.`,
+      statement: `${SITE_NAME} lists only apps built and maintained in-house, so every tool here has a named maintainer and a live support address, unlike open marketplaces where listings are abandoned without notice.`,
     },
   ],
 

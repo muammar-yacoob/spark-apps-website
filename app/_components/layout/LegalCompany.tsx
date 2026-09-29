@@ -3,7 +3,7 @@ import Image from 'next/image';
 /**
  * The registered entity behind this app, shown on the legal pages.
  *
- * The data controller under UK GDPR is the legal person, not the product — so
+ * The data controller under UK GDPR is the legal person, not the product, so
  * these pages name the company, not the app. Kept in one place so the name,
  * number and link can never drift between the privacy policy and the terms.
  * Verified against Companies House: SPARK GAMES LTD, no. 15379140.

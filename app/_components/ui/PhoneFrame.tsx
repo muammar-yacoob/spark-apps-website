@@ -6,7 +6,7 @@
  * (PhoneDemo) and the static screenshot (PhoneSnapshot) sit in the same
  * hardware and read as the same product.
  *
- * Ships identically in spark-stack and expotemplate-site — keep them in sync.
+ * Ships identically in spark-stack and expotemplate-site, keep them in sync.
  */
 
 import { motion } from 'framer-motion';

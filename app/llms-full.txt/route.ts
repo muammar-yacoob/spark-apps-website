@@ -9,7 +9,7 @@ export function GET() {
       const linkLines = app.links
         .map((l) => `- ${l.label}: ${l.url.startsWith('http') ? l.url : `${url}${l.url}`}`)
         .join('\n');
-      return `### ${app.name} — ${app.tagline}
+      return `### ${app.name}, ${app.tagline}
 
 ${app.description}
 

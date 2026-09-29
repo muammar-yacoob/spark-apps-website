@@ -3,7 +3,7 @@ export interface AppLink {
   url: string;
   /**
    * 'website' is the app's own branded domain and becomes its homepage.
-   * 'app' is a bare deployment URL (a *.vercel.app) — reachable, but not a
+   * 'app' is a bare deployment URL (a *.vercel.app), reachable, but not a
    * homepage, so the app's page here stays canonical.
    */
   type: 'website' | 'app' | 'chrome' | 'npm' | 'github';
@@ -13,7 +13,7 @@ export interface AppLink {
  * A narrow-screen screenshot of the app's own dashboard, shown inside a phone
  * frame on the landing page (see app/_components/ui/PhoneSnapshot.tsx).
  *
- * Only set this for apps that actually run on a phone — a PWA or a store app.
+ * Only set this for apps that actually run on a phone, a PWA or a store app.
  * Capture at 2x the frame size (536x1080), crop off the browser chrome and the
  * device status bar, and drop the PNG at /public/imgs/app-shots/<id>.png.
  */
@@ -149,7 +149,7 @@ export const sparkApps: SparkApp[] = [
   {
     // Live on the Chrome Web Store since September 2026, and the privacy page
     // for that listing has been served from /apps/bumboo/privacy since before
-    // this entry existed — the app itself was simply never added here, so the
+    // this entry existed, the app itself was simply never added here, so the
     // store listing's own homepage link had nowhere to point.
     id: 'bumboo',
     demoVideo: 'F2nX0rPA-1M',
@@ -299,7 +299,7 @@ export const sparkApps: SparkApp[] = [
     description: 'Know when the quietest time to be in a place is.',
     icon: '/imgs/apps/fullhouse.png',
     tags: ['Mobile', 'Places', 'AI'],
-    // Not store-listed yet and its old preview deployment is dead (404) —
+    // Not store-listed yet and its old preview deployment is dead (404),
     // no link means the tooltip reads "Coming soon" instead of a dead one.
     links: [],
     mobile: {
@@ -340,7 +340,7 @@ export const sparkApps: SparkApp[] = [
     description: 'Personal safety companion for iOS and Android, built with Expo.',
     icon: '/imgs/apps/safesound.png',
     tags: ['Mobile', 'Expo', 'Safety'],
-    // No public listing yet, and the repo is private — no link means the
+    // No public listing yet, and the repo is private, no link means the
     // tooltip reads "Coming soon" instead of a 404 GitHub page.
     links: [],
     mobile: {
@@ -406,7 +406,7 @@ export const sparkApps: SparkApp[] = [
 
 /**
  * The app's own site, if it has one. Relative links (a privacy page hosted
- * here) don't count — this answers "does it live somewhere else?".
+ * here) don't count, this answers "does it live somewhere else?".
  */
 export function externalHomepage(app: SparkApp): AppLink | undefined {
   return app.links.find((l) => l.type === 'website' && /^https?:\/\//.test(l.url));
@@ -416,8 +416,8 @@ export function externalHomepage(app: SparkApp): AppLink | undefined {
  * Where an app lives: its own site if it has one, else its page on this site.
  *
  * Several apps ship without a domain (a CLI on npm, an extension awaiting the
- * store). `/apps/<id>` is their homepage — real enough for a store listing, a
- * README badge, or a sitemap entry — and stays a valid fallback after a domain
+ * store). `/apps/<id>` is their homepage, real enough for a store listing, a
+ * README badge, or a sitemap entry, and stays a valid fallback after a domain
  * shows up.
  */
 export function appHomepage(app: SparkApp): string {

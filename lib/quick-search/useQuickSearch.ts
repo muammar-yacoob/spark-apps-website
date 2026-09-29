@@ -66,7 +66,7 @@ interface Hit {
  * Best hit for one query word, across the word itself and its synonyms.
  *
  * The literal word scores at full weight; synonyms and keyword hits are
- * discounted, so exact typing always wins. Only title hits carry ranges — a
+ * discounted, so exact typing always wins. Only title hits carry ranges, a
  * keyword match highlights nothing, because the matched text is not on screen.
  */
 function bestHit(

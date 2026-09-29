@@ -6,13 +6,13 @@ export type QuickSearchOverride = Partial<QuickSearchItem> & Pick<QuickSearchIte
 /**
  * Layers hand-written detail over the generated route list.
  *
- * The generator knows every page but nothing about vocabulary — that "Junk" is
+ * The generator knows every page but nothing about vocabulary, that "Junk" is
  * what somebody calls spam, or which row deserves an icon. Overrides supply
  * that by `href`: fields replace, `keywords` accumulate, and an override for an
  * href that has no page yet (a query-param view, an external link) is appended
  * as its own row.
  *
- * `siblings` is for rows that share an href with a page that DOES exist — the
+ * `siblings` is for rows that share an href with a page that DOES exist, the
  * tools inside one editor, the sections of one settings page. Those cannot be
  * overrides: an override keyed by href would overwrite the page's own row
  * instead of joining it. They are appended as they are, in order.
@@ -27,8 +27,8 @@ export function mergeQuickSearchItems(
 ): QuickSearchItem[] {
   const byHref = new Map(generated.map((item) => [item.href, item]));
   // Rows for hrefs the generator never saw. Keyed by id where one is given:
-  // several rows legitimately share an href — in-page views and anchors have no
-  // URL of their own — and only a repeat of the same id is a duplicate.
+  // several rows legitimately share an href, in-page views and anchors have no
+  // URL of their own, and only a repeat of the same id is a duplicate.
   const appended = new Map<string, QuickSearchItem>();
 
   for (const override of overrides) {

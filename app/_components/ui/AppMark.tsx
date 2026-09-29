@@ -12,7 +12,7 @@ export function AppMark({ size = 22, accent = THEME_COLOR }: { size?: number; ac
       className="relative inline-flex items-center justify-center flex-shrink-0"
       style={{ width: size, height: size }}
     >
-      {/* Soft accent bloom behind the glyph — reads as a lit app icon without
+      {/* Soft accent bloom behind the glyph, reads as a lit app icon without
           reintroducing a solid background plate. */}
       <span
         aria-hidden

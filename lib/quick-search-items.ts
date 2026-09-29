@@ -7,7 +7,7 @@
  * know: that /privacy is called "Privacy Policy", that the legal pages belong
  * together, and the vocabulary people actually type.
  *
- * The Apps group stays derived from lib/data/apps.ts — those rows are served by
+ * The Apps group stays derived from lib/data/apps.ts, those rows are served by
  * /apps/[slug], which has no file of its own for the generator to find.
  */
 
@@ -61,7 +61,7 @@ const OVERRIDES: QuickSearchOverride[] = [
    * Three apps ship their own store-required privacy page. The generator finds
    * them but titles each one "Privacy" under its own app group, which reads as
    * three identical rows; named and gathered under Legal they stay tellable
-   * apart. Only these three exist — every other app's privacy lives off-site.
+   * apart. Only these three exist, every other app's privacy lives off-site.
    */
   {
     href: '/apps/bumboo/privacy',

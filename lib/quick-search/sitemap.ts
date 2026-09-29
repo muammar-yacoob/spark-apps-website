@@ -5,7 +5,7 @@
  *
  * The generator (generate.mjs) reads the App Router tree, which is exact but
  * needs a build step. This is the zero-setup alternative: drop the folder into
- * any app that serves /sitemap.xml — Next, Astro, Rails, a static site — and
+ * any app that serves /sitemap.xml, Next, Astro, Rails, a static site, and
  * the palette knows its pages without being told, because the app already
  * publishes the list for search engines.
  *
@@ -159,7 +159,7 @@ async function read(url: string, signal?: AbortSignal): Promise<string> {
 /**
  * The sitemap rows, fetched once on mount.
  *
- * `fallback` is what the palette shows until the fetch lands — pass the
+ * `fallback` is what the palette shows until the fetch lands, pass the
  * generated list where there is one, so the palette is never empty, or leave
  * it out for an app with no build step.
  */

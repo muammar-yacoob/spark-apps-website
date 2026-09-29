@@ -147,7 +147,7 @@ export default function Home() {
           <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10">
             <div className="flex flex-wrap justify-center gap-3">
               {sparkApps.map((app, i) => {
-                // Its own site if it has one, else its page here — an app with
+                // Its own site if it has one, else its page here, an app with
                 // nothing but an npm or store listing still lands somewhere.
                 const href = appHomepage(app);
                 const isExternal = href.startsWith('http');

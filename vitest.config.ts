@@ -5,7 +5,7 @@ import { defineConfig } from 'vitest/config';
 /**
  * Vitest, not jest and not `bun test`.
  *
- * `bun test` is faster and needed no config, which is why it was here — but it
+ * `bun test` is faster and needed no config, which is why it was here, but it
  * pins the test suite to a bun runtime, and these tests are the only thing in
  * the repo that could not then run anywhere else. jest is the other direction:
  * it needs `next/jest` plus a `transformIgnorePatterns` carve-out purely

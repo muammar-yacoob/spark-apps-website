@@ -265,7 +265,7 @@ curl -X POST https://bottled.email/api/v1/send \
 | Field | Type | Required | Notes |
 |-------|------|----------|-------|
 | `from` | string | yes | Must be a verified email address |
-| `to` | string | yes | Recipient email — validated for syntax, role-address denylist, and MX record before send. Returns `INVALID_RECIPIENT` (422) on failure. |
+| `to` | string | yes | Recipient email, validated for syntax, role-address denylist, and MX record before send. Returns `INVALID_RECIPIENT` (422) on failure. |
 | `subject` | string | yes | Max 998 characters |
 | `text` | string | conditional | At least one of `text`/`html` required |
 | `html` | string | conditional | At least one of `text`/`html` required |
@@ -432,7 +432,7 @@ All errors follow this format:
 
 ## HTML Email Formatting Guide
 
-Bottled automatically wraps your HTML in an email-safe shell with a proper DOCTYPE, email client resets, Outlook VML fixes, and a centered 600px table layout. You only need to provide the **body content** — no `<html>`, `<head>`, or `<body>` tags.
+Bottled automatically wraps your HTML in an email-safe shell with a proper DOCTYPE, email client resets, Outlook VML fixes, and a centered 600px table layout. You only need to provide the **body content**, no `<html>`, `<head>`, or `<body>` tags.
 
 The wrapper gives you:
 - XHTML 1.0 Transitional DOCTYPE (required by Outlook desktop)
@@ -445,21 +445,21 @@ The wrapper gives you:
 
 ### Rules for cross-client HTML
 
-1. **Use tables for layout** — `<div>` positioning breaks in Outlook desktop
-2. **Inline all styles** — most clients strip `<style>` blocks; always use `style="..."` on each element
-3. **No `<div>` for spacing** — use `padding` on `<td>` elements instead
-4. **No CSS shorthand** — write `padding-top:12px;padding-bottom:12px;` not `padding:12px 0`
-5. **No `background-image`** — Outlook ignores it; use `background-color` only
-6. **Set `width` on `<table>` and `<td>`** — don't rely on percentages alone; Outlook needs explicit values
-7. **Images need explicit `width`/`height`** — prevents layout shifts; use `style="display:block"` to remove gaps
-8. **Use `align="center"` on tables** — not `margin:0 auto` (Outlook ignores margin on tables)
-9. **Always include `text`** alongside `html` — plain-text fallback improves deliverability and spam scores
-10. **No JavaScript, `<form>`, `<video>`, `<iframe>`** — stripped by all major clients
-11. **Use `role="presentation"` on layout tables** — improves accessibility for screen readers
+1. **Use tables for layout**, `<div>` positioning breaks in Outlook desktop
+2. **Inline all styles**, most clients strip `<style>` blocks; always use `style="..."` on each element
+3. **No `<div>` for spacing**, use `padding` on `<td>` elements instead
+4. **No CSS shorthand**, write `padding-top:12px;padding-bottom:12px;` not `padding:12px 0`
+5. **No `background-image`**, Outlook ignores it; use `background-color` only
+6. **Set `width` on `<table>` and `<td>`**, don't rely on percentages alone; Outlook needs explicit values
+7. **Images need explicit `width`/`height`**, prevents layout shifts; use `style="display:block"` to remove gaps
+8. **Use `align="center"` on tables**, not `margin:0 auto` (Outlook ignores margin on tables)
+9. **Always include `text`** alongside `html`, plain-text fallback improves deliverability and spam scores
+10. **No JavaScript, `<form>`, `<video>`, `<iframe>`**, stripped by all major clients
+11. **Use `role="presentation"` on layout tables**, improves accessibility for screen readers
 
 ### Template: Simple Text Email
 
-For plain messages with basic formatting. The wrapper handles fonts and layout — you just provide content.
+For plain messages with basic formatting. The wrapper handles fonts and layout, you just provide content.
 
 ```bash
 curl -X POST https://bottled.email/api/v1/send \
@@ -504,7 +504,7 @@ A status notification with inline icon and metadata row. Good for alerts, receip
 {
   "from": "alerts@yourapp.com",
   "to": "user@example.com",
-  "subject": "Payment received — $49.00",
+  "subject": "Payment received, $49.00",
   "text": "Payment received\n\nAmount: $49.00\nPlan: Pro\nDate: Apr 27, 2026\nReceipt: https://yourapp.com/receipts/1234\n\nThanks for your support!\nYourApp",
   "html": "<table role='presentation' width='100%' cellpadding='0' cellspacing='0' border='0' style='border-collapse:collapse;background-color:#f0fdf4;border-radius:8px;'><tr><td style='padding:20px 24px;'><table role='presentation' cellpadding='0' cellspacing='0' border='0'><tr><td style='vertical-align:middle;padding-right:12px;font-size:24px;'>&#10003;</td><td style='vertical-align:middle;'><p style='margin:0;font-size:16px;font-weight:700;color:#166534;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;'>Payment received</p></td></tr></table></td></tr></table><table role='presentation' width='100%' cellpadding='0' cellspacing='0' border='0' style='border-collapse:collapse;margin-top:20px;'><tr><td style='padding:12px 0;border-bottom:1px solid #e5e7eb;'><table role='presentation' width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td style='font-size:13px;color:#666666;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;' width='100'>Amount</td><td style='font-size:15px;font-weight:600;color:#1a1a1a;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;'>$49.00</td></tr></table></td></tr><tr><td style='padding:12px 0;border-bottom:1px solid #e5e7eb;'><table role='presentation' width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td style='font-size:13px;color:#666666;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;' width='100'>Plan</td><td style='font-size:15px;font-weight:600;color:#1a1a1a;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;'>Pro</td></tr></table></td></tr><tr><td style='padding:12px 0;'><table role='presentation' width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td style='font-size:13px;color:#666666;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;' width='100'>Date</td><td style='font-size:15px;font-weight:600;color:#1a1a1a;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;'>Apr 27, 2026</td></tr></table></td></tr></table><p style='margin:20px 0 0;font-size:15px;line-height:1.6;color:#1a1a1a;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;'>Thanks for your support!</p>"
 }
@@ -513,7 +513,7 @@ A status notification with inline icon and metadata row. Good for alerts, receip
 **What this renders:**
 - Green success banner with checkmark and "Payment received"
 - Clean key-value rows with dividers (Amount, Plan, Date)
-- All table-based — renders identically in Outlook and Gmail
+- All table-based, renders identically in Outlook and Gmail
 
 ### Template: Multi-Section Newsletter
 
@@ -551,7 +551,7 @@ Avoid patterns that spam filters penalize:
 - **Verify domains first**: Ensure domains are fully verified before creating email addresses
 - **Handle rate limits**: Respect `429` responses and retry with exponential backoff
 - **Store API keys securely**: Never commit API keys to version control; use environment variables
-- **Group sends**: Each recipient in a group send counts individually toward your monthly limit — check `GET /status` before sending to large groups
+- **Group sends**: Each recipient in a group send counts individually toward your monthly limit, check `GET /status` before sending to large groups
 - **Always send both `text` and `html`**: Plain-text fallback improves deliverability and spam scores
 - **Test with your own inbox**: Send to yourself first to verify formatting before sending to real recipients
 - **Use SES simulator for load testing**: Send to `success@simulator.amazonses.com` for volume tests without reputation impact

@@ -4,16 +4,16 @@
  * The static version of the phone preview: a real screenshot of the app's own
  * dashboard at narrow width, dropped into the same device frame as PhoneDemo.
  *
- * This is what goes on a shipped app's landing hero (SafeSound, FullHouse) —
+ * This is what goes on a shipped app's landing hero (SafeSound, FullHouse),
  * there is no generated content to render there, and a screenshot of the real
  * thing is more honest than a mockup approximating it. No JSON, no catalog, no
  * client work beyond loading one image.
  *
  * Take the screenshot at 2x the frame's CSS size (536x1080 for the default) so
- * it stays sharp on retina, and crop out the browser chrome and status bar —
+ * it stays sharp on retina, and crop out the browser chrome and status bar,
  * the frame draws its own.
  *
- * Ships identically in spark-stack and expotemplate-site — keep them in sync.
+ * Ships identically in spark-stack and expotemplate-site, keep them in sync.
  */
 
 import { motion } from 'framer-motion';
@@ -23,7 +23,7 @@ import { PhoneFrame } from './PhoneFrame';
 export interface PhoneSnapshotProps {
   /** Screenshot of the app at narrow width. Local asset or absolute URL. */
   src: string;
-  /** Describe what the screen shows — this is content, not decoration. */
+  /** Describe what the screen shows; this is content, not decoration. */
   alt: string;
   /** Tints the bezel and status bar so the frame matches the app. */
   accent?: string;

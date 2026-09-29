@@ -2,7 +2,7 @@
  * The per-app page, generated from lib/data/apps.ts.
  *
  * Exists so that every app has a homepage URL even when it has no domain of
- * its own — a CLI that only lives on npm, an extension still queued for the
+ * its own, a CLI that only lives on npm, an extension still queued for the
  * store. Store submissions, README badges, and the sitemap all want a link,
  * and `/apps/<id>` is one without buying DNS or standing up a project.
  *
@@ -45,12 +45,12 @@ export async function generateMetadata({
   if (!app) return { title: 'App not found' };
 
   return {
-    title: `${app.name} — ${app.tagline}`,
+    title: `${app.name}, ${app.tagline}`,
     description: app.description,
     keywords: app.tags,
     alternates: { canonical: `/apps/${app.id}` },
     openGraph: {
-      title: `${app.name} — ${app.tagline}`,
+      title: `${app.name}, ${app.tagline}`,
       description: app.description,
       url: `${SITE_URL}/apps/${app.id}`,
       siteName: SITE_NAME,

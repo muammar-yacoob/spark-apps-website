@@ -4,7 +4,7 @@
  * The phone-snapshot strip: every app in the catalogue that ships a real mobile
  * UI, shown as a screenshot in a device frame.
  *
- * Deliberately screenshots rather than a rebuilt mockup — these are shipped
+ * Deliberately screenshots rather than a rebuilt mockup, these are shipped
  * apps, so the honest thing to show is what the app actually looks like. The
  * generated multiscreen mockup (PhoneDemo, in spark-stack and the SparkMobile
  * site) is for previewing an app that does not exist yet.

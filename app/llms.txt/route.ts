@@ -27,7 +27,7 @@ export function GET() {
     .map((app) => {
       const link = primaryLink(app);
       const detail = `${url}/apps/${app.id}`;
-      return `- **${app.name}** (${app.tagline}) — ${app.description} ${link ? `${link} · ` : ''}${detail}`;
+      return `- **${app.name}** (${app.tagline}), ${app.description} ${link ? `${link} · ` : ''}${detail}`;
     })
     .join('\n');
 
@@ -35,7 +35,7 @@ export function GET() {
 
 > ${description}
 
-${name} is a studio that builds and maintains a suite of ${sparkApps.length} productivity and developer tools — web apps, Chrome extensions, npm CLIs and MCP servers. This site is the catalogue; each app has its own page here and, where it has one, its own domain.
+${name} is a studio that builds and maintains a suite of ${sparkApps.length} productivity and developer tools, web apps, Chrome extensions, npm CLIs and MCP servers. This site is the catalogue; each app has its own page here and, where it has one, its own domain.
 
 - Website: ${url}
 ${docsLine}
