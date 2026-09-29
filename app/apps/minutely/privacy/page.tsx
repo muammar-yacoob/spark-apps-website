@@ -159,6 +159,46 @@ export default function MinutelyPrivacyPolicy() {
             </section>
 
             <section>
+              <h2 className="text-2xl font-semibold text-white mb-4">
+                The Claude Connector, If You Switch It On
+              </h2>
+              <p>
+                Off by default, and it asks for the permission it needs only at the moment you turn
+                it on. It exists so Claude, ChatGPT or Cursor can answer questions about your
+                meetings.
+              </p>
+              <p className="mt-2">
+                When it is on, Minutely copies your meetings to a small connector listening on{' '}
+                <code>127.0.0.1</code>, <strong>your own computer&rsquo;s loopback address, which
+                is not reachable from anywhere else</strong>, and the connector keeps them in a file
+                at <code>~/.minutely</code> so those tools can still read them when Chrome is
+                closed. The connector is a separate program you install and run yourself; it is not
+                bundled with the extension, and the feature does nothing without it.
+              </p>
+              <ul className="list-disc list-inside space-y-3 ml-4 mt-4">
+                <li>
+                  <strong>Nothing leaves this machine.</strong> Loopback traffic never reaches a
+                  network.
+                </li>
+                <li>
+                  <strong>The traffic is one-way.</strong> Minutely sends; nothing reads back into
+                  Chrome. Turning the switch off stops the copying and hands the permission back.
+                </li>
+                <li>
+                  <strong>The copy outlives Chrome.</strong> That is the point of it, and it is also
+                  the one way this differs from everything else Minutely stores. Deleting{' '}
+                  <code>~/.minutely</code> removes it.
+                </li>
+              </ul>
+              <p className="mt-4">
+                Requests carry a token the connector generates, because loopback on its own would
+                let any page in any browser reach the port. The connector also refuses to tell an
+                unauthenticated browser anything at all, the fact that it is running included, and
+                refuses any request arriving under a name other than <code>localhost</code>.
+              </p>
+            </section>
+
+            <section>
               <h2 className="text-2xl font-semibold text-white mb-4">Recording Other People</h2>
               <p>
                 Keeping a written record of a meeting is recording it, whatever the source of the
@@ -172,7 +212,7 @@ export default function MinutelyPrivacyPolicy() {
 
             <section>
               <h2 className="text-2xl font-semibold text-white mb-4">Permissions</h2>
-              <p>Minutely requests four things, and nothing that could be avoided:</p>
+              <p>Minutely requests four things at install, and nothing that could be avoided:</p>
               <ul className="list-disc list-inside space-y-3 ml-4 mt-4">
                 <li>
                   <strong>
@@ -212,6 +252,12 @@ export default function MinutelyPrivacyPolicy() {
                 <code>teams.live.com</code>, and <code>*.zoom.us/wc/*</code>. Those scripts read
                 caption text and participant names from the page you are already on, and send
                 nothing to any network destination.
+              </p>
+              <p className="mt-4">
+                One further host permission, <code>http://127.0.0.1:41777/*</code>, is{' '}
+                <strong>optional</strong> and is not requested at install. Minutely asks for it only
+                when you switch on the connector described above, and hands it back to Chrome when
+                you switch it off, so the grant lasts exactly as long as you use the feature.
               </p>
               <p className="mt-4">
                 Minutely deliberately does <strong>not</strong> request <code>tabs</code>,{' '}
