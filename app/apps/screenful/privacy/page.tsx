@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import { LegalCompanyByline } from '@/app/_components/layout/LegalCompany';
 import { LegalAppHeading } from '@/app/_components/layout/LegalAppHeading';
+import { LegalCompanyByline } from '@/app/_components/layout/LegalCompany';
 import { LegalLastUpdated, LegalPageFooter } from '@/app/_components/layout/LegalPageFooter';
 
 export const metadata: Metadata = {
@@ -34,18 +34,18 @@ export default function ScreenfulPrivacyPolicy() {
               </p>
               <p className="mt-2">
                 There is no analytics, no telemetry, no crash reporting, no account, and no network
-                request of any kind. The extension ships with no host permissions, so it is
-                not technically capable of contacting a server.
+                request of any kind. The extension ships with no host permissions, so it is not
+                technically capable of contacting a server.
               </p>
             </section>
 
             <section>
               <h2 className="text-2xl font-semibold text-white mb-4">What Is Stored</h2>
               <p>
-                Your two preferences only: whether repeated sticky headers are removed, and
-                whether the preview is skipped. These live in <code>chrome.storage.sync</code>,
-                which means Chrome may sync them between your own signed-in browsers. Uninstalling
-                the extension removes them.
+                Your two preferences only: whether repeated sticky headers are removed, and whether
+                the preview is skipped. These live in <code>chrome.storage.sync</code>, which means
+                Chrome may sync them between your own signed-in browsers. Uninstalling the extension
+                removes them.
               </p>
             </section>
 

@@ -292,7 +292,7 @@ export const sparkApps: SparkApp[] = [
     // (knowbee, "A simple cache remover", 2020) and pointing at it shipped our
     // visitors to unrelated software. Our own repo (muammar-yacoob/Cleaner) is
     // private, so it 404s for anonymous visitors and cannot be linked either.
-    // appHomepage() falls back to /apps/klean, which stays correct.
+    // With no link at all, hasPublicDestination() keeps it off the grid.
     links: [],
   },
   {
@@ -434,16 +434,31 @@ export function externalHomepage(app: SparkApp): AppLink | undefined {
   return app.links.find((l) => l.type === 'website' && /^https?:\/\//.test(l.url));
 }
 
+/** Which link to lead with, in the order a visitor would want it. */
+const PRIMARY_ORDER: AppLink['type'][] = ['website', 'app', 'chrome', 'npm', 'github'];
+
 /**
- * Where an app lives: its own site if it has one, else its page on this site.
+ * The one destination this app most wants a visitor to reach.
  *
- * Several apps ship without a domain (a CLI on npm, an extension awaiting the
- * store). `/apps/<id>` is their homepage, real enough for a store listing, a
- * README badge, or a sitemap entry, and stays a valid fallback after a domain
- * shows up.
+ * There are no per-app pages on this site any more, so this is the real
+ * answer rather than a stop on the way to one: an app's own domain, else
+ * wherever it is installed from. A relative link (an on-site privacy policy)
+ * is the last resort, because it is a footnote rather than a destination, and
+ * an app with nothing at all returns undefined. hasPublicDestination() keeps
+ * those off the landing page.
  */
+export function primaryLink(app: SparkApp): AppLink | undefined {
+  const external = app.links.filter((l) => /^https?:\/\//.test(l.url));
+  for (const type of PRIMARY_ORDER) {
+    const hit = external.find((l) => l.type === type);
+    if (hit) return hit;
+  }
+  return external[0] ?? app.links[0];
+}
+
+/** Where an app lives, or '' when it lives nowhere we can link to. */
 export function appHomepage(app: SparkApp): string {
-  return externalHomepage(app)?.url ?? `/apps/${app.id}`;
+  return primaryLink(app)?.url ?? '';
 }
 
 /**
@@ -453,8 +468,8 @@ export function appHomepage(app: SparkApp): string {
  *
  * A bare *.vercel.app and an app with no links at all do not: the landing
  * page's grid hides those rather than advertising a card that leads nowhere.
- * The entry stays in this list, so /apps/<id>, the sitemap, llms.txt and the
- * privacy pages linked from live store listings are all untouched.
+ * The entry stays in this list, so llms.txt, the MCP catalogue and the privacy
+ * pages linked from live store listings are all untouched.
  */
 export function hasPublicDestination(app: SparkApp): boolean {
   return app.links.some((l) => !/\.vercel\.app/.test(l.url));

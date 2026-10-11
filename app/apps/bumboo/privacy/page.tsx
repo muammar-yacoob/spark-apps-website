@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import { LegalCompanyByline } from '@/app/_components/layout/LegalCompany';
 import { LegalAppHeading } from '@/app/_components/layout/LegalAppHeading';
+import { LegalCompanyByline } from '@/app/_components/layout/LegalCompany';
 import { LegalPageFooter } from '@/app/_components/layout/LegalPageFooter';
 
 export const metadata: Metadata = {
@@ -54,11 +54,11 @@ export default function BumbooPrivacyPolicy() {
                 One feature reaches a third party, and only when you press it. The locate button
                 beside the postcode field asks your browser where you are and sends those
                 coordinates to <code>postcodes.io</code> (a free public service over Ordnance
-                Survey&rsquo;s open postcode data) to get the nearest postcode, so a vehicle
-                search can be centred without you typing it. The coordinates are used for that one
-                request and discarded; the postcode is kept on your machine so you do not have to do
-                it twice. Nothing happens on install, on startup, or on opening the popup, and you
-                can always just type the postcode instead.
+                Survey&rsquo;s open postcode data) to get the nearest postcode, so a vehicle search
+                can be centred without you typing it. The coordinates are used for that one request
+                and discarded; the postcode is kept on your machine so you do not have to do it
+                twice. Nothing happens on install, on startup, or on opening the popup, and you can
+                always just type the postcode instead.
               </p>
               <p className="mt-2">
                 An AI verdict feature exists in the code and is switched off: the build carries no

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import { LegalCompanyByline } from '@/app/_components/layout/LegalCompany';
 import { LegalAppHeading } from '@/app/_components/layout/LegalAppHeading';
+import { LegalCompanyByline } from '@/app/_components/layout/LegalCompany';
 import { LegalLastUpdated, LegalPageFooter } from '@/app/_components/layout/LegalPageFooter';
 
 export const metadata: Metadata = {
@@ -173,11 +173,15 @@ export default function MinutelyPrivacyPolicy() {
               </p>
               <p className="mt-2">
                 When it is on, Minutely copies your meetings to a small connector listening on{' '}
-                <code>127.0.0.1</code>, <strong>your own computer&rsquo;s loopback address, which
-                is not reachable from anywhere else</strong>, and the connector keeps them in a file
-                at <code>~/.minutely</code> so those tools can still read them when Chrome is
-                closed. The connector is a separate program you install and run yourself; it is not
-                bundled with the extension, and the feature does nothing without it.
+                <code>127.0.0.1</code>,{' '}
+                <strong>
+                  your own computer&rsquo;s loopback address, which is not reachable from anywhere
+                  else
+                </strong>
+                , and the connector keeps them in a file at <code>~/.minutely</code> so those tools
+                can still read them when Chrome is closed. The connector is a separate program you
+                install and run yourself; it is not bundled with the extension, and the feature does
+                nothing without it.
               </p>
               <ul className="list-disc list-inside space-y-3 ml-4 mt-4">
                 <li>

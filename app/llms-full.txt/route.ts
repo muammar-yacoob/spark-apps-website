@@ -14,7 +14,6 @@ export function GET() {
 ${app.description}
 
 - Category: ${app.tags.join(', ')}
-- Page: ${url}/apps/${app.id}
 ${linkLines}`;
     })
     .join('\n\n');
@@ -34,7 +33,7 @@ Support: ${supportEmail}
 
 ${name} is an independent software studio that builds and maintains a suite of ${sparkApps.length} productivity and developer tools. The range covers web apps, Chrome extensions, npm command-line tools and MCP servers for AI assistants.
 
-This site is the catalogue for that suite, not a product in itself. Every app below has a detail page here; most also have their own domain, npm package or store listing, which is the canonical place to install or buy it.
+This site is the catalogue for that suite, not a product in itself. Each app below links straight to its own domain, npm package or store listing, which is the canonical place to install or buy it.
 
 The apps are built to compose. The payment backend (SparkPay), the embeddable AI chat (SparkAI), the email sending (Bottled) and the video pipeline (VidLet, ViralCat, QuickPeek) are used by the other apps in the suite, so they are tested against real production traffic rather than only against demos.
 

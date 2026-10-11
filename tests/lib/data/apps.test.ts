@@ -15,12 +15,28 @@ describe('app catalogue', () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it('gives every app a homepage, with or without a domain of its own', () => {
+  it('sends every listed app somewhere real, and never to a page of ours', () => {
+    // There are no /apps/<id> detail pages any more, so a homepage is a link
+    // the catalogue actually holds. Anything on the landing grid must have one.
     for (const app of sparkApps) {
       const home = appHomepage(app);
-      expect(home === externalHomepage(app)?.url || home === `/apps/${app.id}`).toBe(true);
-      expect(home).not.toBe('');
+      if (hasPublicDestination(app)) {
+        expect(home, app.id).not.toBe('');
+        expect(
+          app.links.some((l) => l.url === home),
+          app.id
+        ).toBe(true);
+      }
+      expect(home, app.id).not.toMatch(/^\/apps\/[^/]+$/);
     }
+  });
+
+  it('gives an app with no links at all no homepage, rather than a dead one', () => {
+    const klean = getApp('klean');
+    if (!klean) throw new Error('klean missing from the catalogue');
+    expect(klean.links).toEqual([]);
+    expect(appHomepage(klean)).toBe('');
+    expect(hasPublicDestination(klean)).toBe(false);
   });
 
   it('ignores relative privacy links when looking for the app’s own site', () => {
@@ -28,7 +44,15 @@ describe('app catalogue', () => {
     if (!screenful) throw new Error('screenful missing from the catalogue');
     expect(screenful.links.some((l) => l.url.startsWith('/'))).toBe(true);
     expect(externalHomepage(screenful)).toBeUndefined();
-    expect(appHomepage(screenful)).toBe('/apps/screenful');
+    // No domain of its own, so the store listing is where it lives.
+    expect(appHomepage(screenful)).toMatch(/^https:\/\/chromewebstore\.google\.com\//);
+  });
+
+  it('falls back to an on-site privacy page only when there is nothing else', () => {
+    const minutely = getApp('minutely');
+    if (!minutely) throw new Error('minutely missing from the catalogue');
+    expect(minutely.links.every((l) => l.url.startsWith('/'))).toBe(true);
+    expect(appHomepage(minutely)).toBe('/apps/minutely/privacy');
   });
 
   it('keeps bare deployment URLs off the homepage slot', () => {

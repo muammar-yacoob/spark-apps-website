@@ -1,21 +1,5 @@
-import { sparkApps } from '@/lib/data/apps';
+import { appHomepage, sparkApps } from '@/lib/data/apps';
 import { seoConfig } from '@/lib/seo/config';
-
-/**
- * The app's own homepage if it has one, else wherever it can be installed.
- * Relative links (an on-site privacy page) are never a useful primary link,
- * so an app without an external home just gets its detail page below.
- */
-function primaryLink(app: (typeof sparkApps)[number]): string {
-  const external = app.links.filter((l) => l.url.startsWith('http'));
-  const preferred =
-    external.find((l) => l.type === 'website') ??
-    external.find((l) => l.type === 'app') ??
-    external.find((l) => l.type === 'chrome') ??
-    external.find((l) => l.type === 'npm') ??
-    external.find((l) => l.type === 'github');
-  return preferred?.url ?? '';
-}
 
 export function GET() {
   const { name, url, description, supportEmail, pricing, competitors, links } = seoConfig;
@@ -23,11 +7,14 @@ export function GET() {
   const docsLine = links.docs ? `- Docs: ${links.docs}` : '';
   const repoLine = links.repository ? `- Repository: ${links.repository}` : '';
 
+  /* Absolute, always. This file is read by a model with no page context, so a
+     relative link (the on-site privacy policy an app falls back to) would be
+     unresolvable. An app with no link at all gets none. */
   const appLines = sparkApps
     .map((app) => {
-      const link = primaryLink(app);
-      const detail = `${url}/apps/${app.id}`;
-      return `- **${app.name}** (${app.tagline}), ${app.description} ${link ? `${link} · ` : ''}${detail}`;
+      const home = appHomepage(app);
+      const link = home && !home.startsWith('http') ? `${url}${home}` : home;
+      return `- **${app.name}** (${app.tagline}), ${app.description}${link ? ` ${link}` : ''}`;
     })
     .join('\n');
 
@@ -35,7 +22,7 @@ export function GET() {
 
 > ${description}
 
-${name} is a studio that builds and maintains a suite of ${sparkApps.length} productivity and developer tools, web apps, Chrome extensions, npm CLIs and MCP servers. This site is the catalogue; each app has its own page here and, where it has one, its own domain.
+${name} is a studio that builds and maintains a suite of ${sparkApps.length} productivity and developer tools, web apps, Chrome extensions, npm CLIs and MCP servers. This site is the catalogue; each app links straight out to its own domain, store listing or package.
 
 - Website: ${url}
 ${docsLine}

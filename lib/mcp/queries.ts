@@ -4,8 +4,8 @@
  * The catalogue is a static array (lib/data/apps.ts), so nothing here touches a
  * database and nothing needs caching. What these functions do add is
  * absolutisation: a tool result is read by a model that has no page context, so
- * a relative `/apps/<id>` homepage is useless to it and every URL goes out
- * fully qualified.
+ * a relative URL (an on-site privacy policy) is useless to it and every URL
+ * goes out fully qualified.
  */
 
 import { SITE_URL } from '@/lib/config/site';
@@ -24,8 +24,9 @@ function shape(app: SparkApp) {
     tagline: app.tagline,
     description: app.description,
     tags: app.tags,
-    homepage: absolute(appHomepage(app)),
-    page: `${SITE_URL}/apps/${app.id}`,
+    // '' for an app with no link at all, which is the honest answer: there
+    // is no page of ours to send a caller to.
+    homepage: appHomepage(app) ? absolute(appHomepage(app)) : '',
     icon: absolute(app.icon),
     links: app.links.map((l) => ({ label: l.label, url: l.url, type: l.type })),
   };

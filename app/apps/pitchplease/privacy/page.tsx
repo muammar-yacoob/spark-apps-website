@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import { LegalCompanyByline } from '@/app/_components/layout/LegalCompany';
 import { LegalAppHeading } from '@/app/_components/layout/LegalAppHeading';
+import { LegalCompanyByline } from '@/app/_components/layout/LegalCompany';
 import { LegalLastUpdated, LegalPageFooter } from '@/app/_components/layout/LegalPageFooter';
 
 export const metadata: Metadata = {

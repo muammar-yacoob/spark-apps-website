@@ -7,11 +7,11 @@
  * know: that /privacy is called "Privacy Policy", that the legal pages belong
  * together, and the vocabulary people actually type.
  *
- * The Apps group stays derived from lib/data/apps.ts, those rows are served by
- * /apps/[slug], which has no file of its own for the generator to find.
+ * The Apps group stays derived from lib/data/apps.ts: those rows lead straight
+ * out to wherever each app lives, so there is no file here to derive them from.
  */
 
-import { sparkApps } from '@/lib/data/apps';
+import { appHomepage, hasPublicDestination, sparkApps } from '@/lib/data/apps';
 import {
   mergeQuickSearchItems,
   type QuickSearchItem,
@@ -113,10 +113,13 @@ const APP_ALIASES: Record<string, string[]> = {
   safesound: ['safety', 'alert', 'emergency', 'personal'],
 };
 
-const APPS: QuickSearchItem[] = sparkApps.map((app) => ({
+/* Same filter as the landing grid. An app with no link at all (KLean: private
+   repo, and the npm name belongs to somebody else) now has nowhere for a row
+   to point, so it is not a search result either. */
+const APPS: QuickSearchItem[] = sparkApps.filter(hasPublicDestination).map((app) => ({
   id: `app-${app.id}`,
   title: app.name,
-  href: `/apps/${app.id}`,
+  href: appHomepage(app),
   group: 'Apps',
   keywords: [...app.tags, ...app.tagline.split(/\s+/), ...(APP_ALIASES[app.id] ?? [])],
   hint: app.tagline,

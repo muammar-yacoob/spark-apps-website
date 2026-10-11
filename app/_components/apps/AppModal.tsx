@@ -2,10 +2,10 @@
 
 import { ArrowUpRight, Chrome, ExternalLink, Globe, Package, Rocket } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import { CloseButton } from '@/app/_components/ui/CloseButton';
 import type { AppLink, SparkApp } from '@/lib/data/apps';
+import { primaryLink } from '@/lib/data/apps';
 import { fallbackTag, tagConfig } from '@/lib/data/tags';
 
 export const linkIcons: Record<string, React.ElementType> = {
@@ -16,9 +16,6 @@ export const linkIcons: Record<string, React.ElementType> = {
   github: ExternalLink,
 };
 
-/** Where the one prominent button goes, in the order a visitor would want it. */
-const PRIMARY_ORDER: AppLink['type'][] = ['website', 'app', 'chrome', 'npm', 'github'];
-
 const CTA_LABEL: Record<AppLink['type'], string> = {
   website: 'Visit site',
   app: 'Open app',
@@ -28,22 +25,6 @@ const CTA_LABEL: Record<AppLink['type'], string> = {
 };
 
 /**
- * The single destination this app most wants a visitor to reach.
- *
- * Relative links (a privacy page hosted here) are never it: they are a
- * footnote, not a destination, and an app whose only link is one falls through
- * to its page on this site.
- */
-function primaryLink(app: SparkApp): AppLink | undefined {
-  const external = app.links.filter((l) => /^https?:\/\//.test(l.url));
-  for (const type of PRIMARY_ORDER) {
-    const hit = external.find((l) => l.type === type);
-    if (hit) return hit;
-  }
-  return undefined;
-}
-
-/**
  * One modal for the whole grid: the page keeps a single instance and swaps the
  * app into it, so there is one copy of this markup rather than one per card.
  *
@@ -51,11 +32,10 @@ function primaryLink(app: SparkApp): AppLink | undefined {
  * the focus trap, focus restored to the card, the backdrop and top-layer
  * stacking. Pass `app: null` to close it.
  *
- * ONE button, not a row of them. Every link used to get an equal-weight chip,
- * so the commonest app in the catalogue (its own site, plus a Details link)
- * offered two buttons that were really one choice, and the eye had to read
- * both to find it. Now the destination is a single CTA and everything else is
- * an icon the width of its own glyph.
+ * ONE button, not a row of them: the destination is a single CTA and anything
+ * else is an icon the width of its own glyph. There is no Details link because
+ * there are no per-app pages on this site any more, so this modal is the
+ * detail view and the CTA is the only way out of it.
  */
 export function AppModal({ app, onClose }: { app: SparkApp | null; onClose: () => void }) {
   const ref = useRef<HTMLDialogElement>(null);
@@ -146,30 +126,26 @@ export function AppModal({ app, onClose }: { app: SparkApp | null; onClose: () =
             </div>
 
             <div className="mt-5 flex items-center gap-2 pt-1">
-              {primary ? (
+              {primary && (
                 <a
                   href={primary.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  {...(/^https?:\/\//.test(primary.url)
+                    ? { target: '_blank', rel: 'noopener noreferrer' }
+                    : {})}
                   className="inline-flex items-center gap-1.5 rounded-lg bg-blue-500/90 px-3.5 py-2 font-medium text-[12px] text-white transition-colors hover:bg-blue-400"
                 >
-                  {CTA_LABEL[primary.type]}
+                  {/* A relative link is an on-site privacy policy, not a
+                      site, so it keeps its own label rather than being
+                      announced as somewhere to visit. */}
+                  {/^https?:\/\//.test(primary.url)
+                    ? (CTA_LABEL[primary.type] ?? primary.label)
+                    : primary.label}
                   <ArrowUpRight className="h-3.5 w-3.5 flex-shrink-0" />
                 </a>
-              ) : (
-                // Nothing external to send them to, so its page here is the
-                // destination rather than a footnote.
-                <Link
-                  href={`/apps/${app.id}`}
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-blue-500/90 px-3.5 py-2 font-medium text-[12px] text-white transition-colors hover:bg-blue-400"
-                >
-                  Details
-                  <ArrowUpRight className="h-3.5 w-3.5 flex-shrink-0" />
-                </Link>
               )}
 
-              {/* Icon only, and only as wide as the glyph. These are real
-                  destinations but never the one being asked for. */}
+              {/* Icon only, and only as wide as the glyph. Real destinations,
+                  but never the one being asked for. */}
               <div className="flex items-center gap-1">
                 {secondary.map((link) => {
                   const Icon = linkIcons[link.type] ?? ExternalLink;
@@ -187,16 +163,6 @@ export function AppModal({ app, onClose }: { app: SparkApp | null; onClose: () =
                     </a>
                   );
                 })}
-                {primary && (
-                  <Link
-                    href={`/apps/${app.id}`}
-                    title="Details"
-                    aria-label="Details"
-                    className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 text-gray-400 transition-colors hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
-                  >
-                    <ExternalLink className="h-3.5 w-3.5" />
-                  </Link>
-                )}
               </div>
             </div>
           </div>
