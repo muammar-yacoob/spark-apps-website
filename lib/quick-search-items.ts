@@ -90,6 +90,7 @@ const PAGES: QuickSearchItem[] = mergeQuickSearchItems(ROUTE_ITEMS, OVERRIDES);
 
 /** Extra aliases per app id, for vocabulary the tags and tagline miss. */
 const APP_ALIASES: Record<string, string[]> = {
+  calendify: ['calendar', 'google calendar', 'event', 'schedule', 'ics'],
   sparkstack: ['boilerplate', 'template', 'saas kit'],
   sparkmobile: ['expo', 'react native', 'ios', 'android'],
   sellular: ['seo', 'directory', 'visibility', 'marketing'],

@@ -211,6 +211,28 @@ export const sparkApps: SparkApp[] = [
     ],
   },
   {
+    // Live on the Chrome Web Store since 2025. The AI reading of dates landed
+    // in 1.1.0; until that version clears store review the listing still
+    // serves the deterministic 1.0.0, so the description below describes what
+    // is actually installable rather than what the repo now does.
+    id: 'calendify',
+    demoVideo: 'DnWywDT0na8',
+    name: 'Calendify',
+    tagline: 'Pages Into Calendar Events',
+    description:
+      'Highlight an event on any page and get a prefilled Google Calendar entry: date, time, venue and joining link. Chrome extension.',
+    icon: '/imgs/apps/calendify.png',
+    tags: ['Chrome Extension', 'Tools'],
+    links: [
+      {
+        label: 'Chrome',
+        url: 'https://chromewebstore.google.com/detail/calendify/jphgemnlnggiimgclghleogeiigpchji',
+        type: 'chrome',
+      },
+      { label: 'GitHub', url: 'https://github.com/muammar-yacoob/Calendify', type: 'github' },
+    ],
+  },
+  {
     id: 'spark-ai',
     name: 'SparkAI',
     tagline: 'Embeddable AI Chat',
@@ -422,6 +444,40 @@ export function externalHomepage(app: SparkApp): AppLink | undefined {
  */
 export function appHomepage(app: SparkApp): string {
   return externalHomepage(app)?.url ?? `/apps/${app.id}`;
+}
+
+/**
+ * Is there a link here we are happy to publish? Its own domain, a store
+ * listing, an npm package, a public repo or a page on this site (a privacy
+ * policy) all count.
+ *
+ * A bare *.vercel.app and an app with no links at all do not: the landing
+ * page's grid hides those rather than advertising a card that leads nowhere.
+ * The entry stays in this list, so /apps/<id>, the sitemap, llms.txt and the
+ * privacy pages linked from live store listings are all untouched.
+ */
+export function hasPublicDestination(app: SparkApp): boolean {
+  return app.links.some((l) => !/\.vercel\.app/.test(l.url));
+}
+
+/**
+ * Open source means the source is actually readable: a public git repo, and
+ * nothing else. An npm package is a distribution channel, not a licence - the
+ * published tarball of a closed-source tool sits on npm exactly like an open
+ * one, so `type: 'npm'` says nothing about whether the repo is open.
+ */
+export function isOpenSource(app: SparkApp): boolean {
+  return app.links.some((l) => l.type === 'github');
+}
+
+/**
+ * Groups with the extensions on the landing page.
+ *
+ * Keyed on the tag, not on a `chrome` link: an extension is an extension from
+ * the moment it ships, and Minutely is listed here before its store URL is.
+ */
+export function isChromeExtension(app: SparkApp): boolean {
+  return app.tags.includes('Chrome Extension');
 }
 
 export function getApp(id: string): SparkApp | undefined {

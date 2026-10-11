@@ -1,10 +1,11 @@
 'use client';
 
-import { Chrome, ExternalLink, Globe, Package, Rocket } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { SparkAdsCarousel } from '@/app/_components/ads/SparkAdsCarousel';
+import { AppModal, linkIcons } from '@/app/_components/apps/AppModal';
 import { MobileShowcase } from '@/app/_components/apps/MobileShowcase';
 import { EnterIfSignedIn } from '@/app/_components/auth/EnterIfSignedIn';
 import { BgParticles } from '@/app/_components/bg-anims/BgParticles';
@@ -12,73 +13,44 @@ import { BgShootingStars } from '@/app/_components/bg-anims/BgShootingStars';
 import SocialShareButton from '@/app/_components/social-share/SocialShareButton';
 import { SHARE_CONFIG } from '@/app/_components/social-share/share-config';
 import { AppMark } from '@/app/_components/ui/AppMark';
-import { Tooltip } from '@/app/_components/ui/Tooltip';
 import { SITE_NAME } from '@/lib/config/site';
 import type { SparkApp } from '@/lib/data/apps';
-import { appHomepage, externalHomepage, sparkApps } from '@/lib/data/apps';
+import {
+  appHomepage,
+  externalHomepage,
+  hasPublicDestination,
+  isChromeExtension,
+  isOpenSource,
+  sparkApps,
+} from '@/lib/data/apps';
 import { fallbackTag, tagConfig } from '@/lib/data/tags';
 import { QuickSearch, QuickSearchTrigger } from '@/lib/quick-search';
 import { QUICK_SEARCH_ITEMS } from '@/lib/quick-search-items';
 
-const linkIcons: Record<string, React.ElementType> = {
-  website: Globe,
-  app: Rocket,
-  chrome: Chrome,
-  npm: Package,
-  github: ExternalLink,
-};
-
-/** The link whose URL the tooltip shows (site → deployment → store → npm → first). */
-function primaryLink(app: SparkApp) {
-  return (
-    externalHomepage(app) ??
-    app.links.find((l) => l.type === 'app') ??
-    app.links.find((l) => l.type === 'chrome') ??
-    app.links.find((l) => l.type === 'npm') ??
-    app.links[0]
-  );
-}
-
-/** Rich details shown inside the custom Tooltip on hover. */
-function AppTooltipContent({ app }: { app: SparkApp }) {
-  const primary = primaryLink(app);
-  const PrimaryIcon = primary ? (linkIcons[primary.type] ?? ExternalLink) : ExternalLink;
-
-  return (
-    <div className="max-w-[240px]">
-      <p className="text-[11px] text-gray-400 leading-tight mb-1.5">{app.tagline}</p>
-      <p className="text-[11px] text-gray-300 leading-relaxed mb-2">{app.description}</p>
-
-      <div className="flex flex-wrap gap-1 mb-2">
-        {app.tags.map((tag) => {
-          const cfg = tagConfig[tag] ?? fallbackTag;
-          const TagIcon = cfg.icon;
-          return (
-            <span
-              key={tag}
-              className={`inline-flex items-center gap-1 px-1.5 py-0.5 text-[9px] font-medium border rounded ${cfg.color}`}
-            >
-              <TagIcon className="w-2.5 h-2.5 flex-shrink-0" />
-              {tag}
-            </span>
-          );
-        })}
-      </div>
-
-      {primary ? (
-        <p className="flex items-center gap-1 text-[10px] text-blue-300">
-          <PrimaryIcon className="w-3 h-3 flex-shrink-0" />
-          <span className="truncate">{primary.url.replace(/^https?:\/\//, '')}</span>
-        </p>
-      ) : (
-        <p className="text-[10px] text-gray-500">Coming soon</p>
-      )}
-    </div>
-  );
+/**
+ * The grid in three buckets, by what the app actually ships as. First match
+ * wins, so an extension stays with the extensions even once it has a domain
+ * of its own.
+ *
+ * Open Source is a public repo and nothing else. An npm-only tool is not open
+ * source - the tarball says nothing about the repo - so it files with the
+ * products, which is where a paid CLI belongs anyway.
+ */
+function appGroups() {
+  const listed = sparkApps.filter(hasPublicDestination);
+  const extensions = listed.filter(isChromeExtension);
+  const rest = listed.filter((app) => !isChromeExtension(app));
+  return [
+    { title: 'Apps & SaaS', apps: rest.filter((app) => !isOpenSource(app)) },
+    { title: 'Chrome Extensions', apps: extensions },
+    { title: 'Open Source', apps: rest.filter(isOpenSource) },
+  ].filter((group) => group.apps.length > 0);
 }
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
+  /** The card whose details the shared modal is showing; null when closed. */
+  const [selected, setSelected] = useState<SparkApp | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -144,107 +116,115 @@ export default function Home() {
 
         {/* Apps Grid */}
         {mounted && (
-          <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10">
-            <div className="flex flex-wrap justify-center gap-3">
-              {sparkApps.map((app, i) => {
-                // Its own site if it has one, else its page here, an app with
-                // nothing but an npm or store listing still lands somewhere.
-                const href = appHomepage(app);
-                const isExternal = href.startsWith('http');
-                const cardClass =
-                  'group relative rounded-xl border border-white/[0.06] bg-white/[0.02] p-4 transition-all duration-300 hover:border-blue-400/25 hover:bg-white/[0.05] hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(104,176,245,0.1)] animate-fade-in-up flex flex-col text-left w-full h-full';
-                const style = {
-                  animationDelay: `${i * 60}ms`,
-                  animationFillMode: 'both' as const,
-                };
+          <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 space-y-10">
+            {/* Apps with nowhere public to go are hidden here; their pages,
+                sitemap entries and privacy policies all stay put. */}
+            {appGroups().map((group) => (
+              <div key={group.title}>
+                <div className="mb-4 flex items-center gap-3">
+                  <h2 className="font-semibold text-[12px] text-gray-300 uppercase tracking-[0.14em]">
+                    {group.title}
+                  </h2>
+                  <span className="text-[11px] text-gray-600">{group.apps.length}</span>
+                  <div className="h-px flex-1 bg-gradient-to-r from-white/[0.1] to-transparent" />
+                </div>
+                <div className="flex flex-wrap justify-center gap-3">
+                  {group.apps.map((app, i) => {
+                    // Still a real href so the card is crawlable and middle-click
+                    // works; a plain click opens the modal instead (below).
+                    const href = appHomepage(app);
+                    const isExternal = href.startsWith('http');
+                    const cardClass =
+                      'group relative rounded-xl border border-white/[0.06] bg-white/[0.02] p-4 transition-all duration-300 hover:border-blue-400/25 hover:bg-white/[0.05] hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(104,176,245,0.1)] animate-fade-in-up flex flex-col text-left cursor-pointer w-full sm:w-[calc(50%-6px)] lg:w-[calc(33.333%-8px)]';
+                    const style = {
+                      animationDelay: `${i * 60}ms`,
+                      animationFillMode: 'both' as const,
+                    };
 
-                const cardInner = (
-                  <>
-                    {/* Header: icon + name + tagline */}
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="flex-shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-                        <Image
-                          src={app.icon}
-                          alt={app.name}
-                          width={36}
-                          height={36}
-                          className="rounded-lg object-cover"
-                        />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <h3 className="text-sm font-semibold text-white group-hover:text-blue-300 transition-colors duration-200 leading-tight">
-                          {app.name}
-                        </h3>
-                        <p className="text-[11px] text-gray-500 leading-tight">{app.tagline}</p>
-                      </div>
-                      {app.links.length > 0 && (
-                        <div className="flex items-center gap-1 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                          {app.links.slice(0, 2).map((link) => {
-                            const Icon = linkIcons[link.type] ?? ExternalLink;
+                    const cardInner = (
+                      <>
+                        {/* Header: icon + name + tagline */}
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="flex-shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+                            <Image
+                              src={app.icon}
+                              alt={app.name}
+                              width={36}
+                              height={36}
+                              className="rounded-lg object-cover"
+                            />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <h3 className="text-sm font-semibold text-white group-hover:text-blue-300 transition-colors duration-200 leading-tight">
+                              {app.name}
+                            </h3>
+                            <p className="text-[11px] text-gray-500 leading-tight">{app.tagline}</p>
+                          </div>
+                          {app.links.length > 0 && (
+                            <div className="flex items-center gap-1 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                              {app.links.slice(0, 2).map((link) => {
+                                const Icon = linkIcons[link.type] ?? ExternalLink;
+                                return (
+                                  // Keyed on the url, not the type: an app can have
+                                  // two 'website' links (site + privacy page).
+                                  <span key={link.url}>
+                                    <Icon className="w-3 h-3 text-gray-600" />
+                                  </span>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Description */}
+                        <p className="text-xs text-gray-400 leading-relaxed line-clamp-2 mb-3">
+                          {app.description}
+                        </p>
+
+                        {/* Tags - centered, no wrap */}
+                        <div className="flex justify-center gap-1.5 mt-auto overflow-hidden">
+                          {app.tags.map((tag) => {
+                            const cfg = tagConfig[tag] ?? fallbackTag;
+                            const TagIcon = cfg.icon;
                             return (
-                              // Keyed on the url, not the type: an app can have
-                              // two 'website' links (site + privacy page).
-                              <span key={link.url}>
-                                <Icon className="w-3 h-3 text-gray-600" />
+                              <span
+                                key={tag}
+                                className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-medium border rounded-md whitespace-nowrap transition-all duration-200 group-hover:scale-105 ${cfg.color}`}
+                              >
+                                <TagIcon className="w-2.5 h-2.5 flex-shrink-0" />
+                                {tag}
                               </span>
                             );
                           })}
                         </div>
-                      )}
-                    </div>
+                      </>
+                    );
 
-                    {/* Description */}
-                    <p className="text-xs text-gray-400 leading-relaxed line-clamp-2 mb-3">
-                      {app.description}
-                    </p>
-
-                    {/* Tags - centered, no wrap */}
-                    <div className="flex justify-center gap-1.5 mt-auto overflow-hidden">
-                      {app.tags.map((tag) => {
-                        const cfg = tagConfig[tag] ?? fallbackTag;
-                        const TagIcon = cfg.icon;
-                        return (
-                          <span
-                            key={tag}
-                            className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-medium border rounded-md whitespace-nowrap transition-all duration-200 group-hover:scale-105 ${cfg.color}`}
-                          >
-                            <TagIcon className="w-2.5 h-2.5 flex-shrink-0" />
-                            {tag}
-                          </span>
-                        );
-                      })}
-                    </div>
-                  </>
-                );
-
-                return (
-                  <Tooltip
-                    key={app.id}
-                    title={app.name}
-                    content={<AppTooltipContent app={app} />}
-                    className="flex w-full sm:w-[calc(50%-6px)] lg:w-[calc(33.333%-8px)]"
-                  >
-                    {isExternal ? (
+                    return (
                       <a
+                        key={app.id}
                         href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`${cardClass} cursor-pointer`}
+                        {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                        className={cardClass}
                         style={style}
+                        onClick={(e) => {
+                          // Modified clicks keep the browser's own behaviour.
+                          if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+                          e.preventDefault();
+                          setSelected(app);
+                        }}
                       >
                         {cardInner}
                       </a>
-                    ) : (
-                      <Link href={href} className={`${cardClass} cursor-pointer`} style={style}>
-                        {cardInner}
-                      </Link>
-                    )}
-                  </Tooltip>
-                );
-              })}
-            </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </section>
         )}
+
+        <AppModal app={selected} onClose={() => setSelected(null)} />
 
         <MobileShowcase />
 
