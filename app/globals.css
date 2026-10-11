@@ -331,6 +331,87 @@ html {
   outline: none;
 }
 
+/* The browser's own focus ring is a hard WHITE box on this dark palette, and
+ * it reads as a stray selection artefact rather than as focus, especially on
+ * a close button that a dialog focused by itself on open.
+ *
+ * Replaced rather than removed. A keyboard user has nothing else telling them
+ * where they are, so the ring becomes the accent colour at a slight offset,
+ * which belongs to the design instead of fighting it. Deleting focus styling
+ * outright would make the site unusable without a mouse. */
+:focus-visible {
+  outline: 2px solid rgb(104 176 245 / 0.75);
+  outline-offset: 2px;
+}
+
+/* A container that takes focus only so that nothing inside it does (the app
+   modal) should not draw a ring for it. */
+[tabindex="-1"]:focus-visible {
+  outline: none;
+}
+
+/* App modal: boxes in on open, boxes out on close.
+ *
+ * All CSS, no JS. A <dialog> normally pops in and vanishes instantly because
+ * it is toggled with the display property, which has nothing to interpolate.
+ * `transition-behavior: allow-discrete` on display and overlay keeps the
+ * element painted and in the top layer for the length of the transition, and
+ * @starting-style supplies the frame BEFORE it opens, which is what gives it
+ * somewhere to animate from. Without @starting-style only the close would
+ * animate.
+ *
+ * The scale is deliberately shallow (0.94, not 0.5): this is a panel arriving,
+ * not a notification bouncing.
+ */
+dialog[data-app-modal] {
+  opacity: 0;
+  transform: scale(0.94);
+  transition:
+    opacity 170ms ease,
+    transform 190ms cubic-bezier(0.16, 1, 0.3, 1),
+    display 190ms allow-discrete,
+    overlay 190ms allow-discrete;
+}
+
+dialog[data-app-modal][open] {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@starting-style {
+  dialog[data-app-modal][open] {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+
+dialog[data-app-modal]::backdrop {
+  opacity: 0;
+  transition:
+    opacity 170ms ease,
+    display 170ms allow-discrete,
+    overlay 170ms allow-discrete;
+}
+
+dialog[data-app-modal][open]::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  dialog[data-app-modal][open]::backdrop {
+    opacity: 0;
+  }
+}
+
+/* Someone who has asked for less motion gets the panel, not the movement. */
+@media (prefers-reduced-motion: reduce) {
+  dialog[data-app-modal],
+  dialog[data-app-modal]::backdrop {
+    transition-duration: 1ms;
+    transform: none;
+  }
+}
+
 /* Kill the grey flash on tap and stray text selection on controls. */
 * {
   -webkit-tap-highlight-color: transparent;

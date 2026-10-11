@@ -43,8 +43,16 @@ export function AppModal({ app, onClose }: { app: SparkApp | null; onClose: () =
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (app && !el.open) el.showModal();
-    else if (!app && el.open) el.close();
+    if (app && !el.open) {
+      el.showModal();
+      /* showModal() focuses the first control it finds, which is the close
+         button, and Chrome paints a focus ring for that even when the modal
+         was opened with the mouse. autofocus on the dialog is not honoured
+         here, so take the focus explicitly: the dialog is tabindex="-1" and
+         globals.css draws no ring for those, and tabbing from it still
+         reaches every control in order. */
+      el.focus();
+    } else if (!app && el.open) el.close();
   }, [app]);
 
   const primary = app ? primaryLink(app) : undefined;
@@ -60,36 +68,28 @@ export function AppModal({ app, onClose }: { app: SparkApp | null; onClose: () =
       onClick={(e) => {
         if (e.target === ref.current) onClose();
       }}
+      data-app-modal
       aria-labelledby="app-modal-title"
+      // Focused on open in place of the close button; see the effect above.
+      tabIndex={-1}
       className="m-auto w-[min(92vw,32rem)] overflow-hidden rounded-2xl border border-white/10 bg-gray-900/95 p-0 text-gray-100 shadow-[0_24px_64px_rgba(0,0,0,0.6)] backdrop:bg-black/70 backdrop:backdrop-blur-sm"
     >
       {app && (
-        <div className="animate-fade-in-up flex flex-col sm:flex-row">
-          {/* The mark, given the whole left edge. A blurred, scaled copy of the
-              same PNG sits behind it as the bloom, so the panel is tinted by
-              the app's own colours without anyone picking a hex per app. The
-              icons are square, so they are centred at size rather than
-              object-cover stretched to fill a tall panel. */}
-          <div className="relative flex shrink-0 items-center justify-center overflow-hidden border-white/[0.06] border-b bg-white/[0.03] py-7 sm:w-[168px] sm:border-r sm:border-b-0 sm:py-0">
-            <Image
-              src={app.icon}
-              alt=""
-              aria-hidden="true"
-              width={128}
-              height={128}
-              // Eager, like the mark below it. Next lazy-loads by default, and
-              // a <dialog> in the top layer never fires the observer that
-              // would have loaded these, so both images stayed blank.
-              loading="eager"
-              className="pointer-events-none absolute inset-0 h-full w-full scale-125 object-cover opacity-50 blur-2xl saturate-150"
-            />
+        <div className="flex flex-col sm:flex-row">
+          {/* Just the mark. No plate, no tinted panel, no blurred bloom
+              behind it: the icons are already rounded artwork with their own
+              background, and wrapping each one in a second surface read as a
+              sticker on a card rather than as the app's own mark. */}
+          <div className="flex shrink-0 items-center justify-center pt-6 pb-2 sm:p-6 sm:pr-0">
             <Image
               src={app.icon}
               alt={app.name}
-              width={128}
-              height={128}
+              width={256}
+              height={256}
+              // Eager: Next lazy-loads by default and a <dialog> in the top
+              // layer never fires the observer that would have loaded it.
               loading="eager"
-              className="relative h-20 w-20 rounded-2xl object-cover shadow-[0_8px_28px_rgba(0,0,0,0.45)] sm:h-24 sm:w-24"
+              className="h-28 w-28 object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)] sm:h-32 sm:w-32"
             />
           </div>
 
@@ -125,14 +125,14 @@ export function AppModal({ app, onClose }: { app: SparkApp | null; onClose: () =
               })}
             </div>
 
-            <div className="mt-5 flex items-center gap-2 pt-1">
+            <div className="mt-5 flex flex-col gap-2 pt-1">
               {primary && (
                 <a
                   href={primary.url}
                   {...(/^https?:\/\//.test(primary.url)
                     ? { target: '_blank', rel: 'noopener noreferrer' }
                     : {})}
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-blue-500/90 px-3.5 py-2 font-medium text-[12px] text-white transition-colors hover:bg-blue-400"
+                  className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-blue-500/90 px-3.5 py-2.5 font-medium text-[13px] text-white transition-colors hover:bg-blue-400"
                 >
                   {/* A relative link is an on-site privacy policy, not a
                       site, so it keeps its own label rather than being
@@ -146,24 +146,26 @@ export function AppModal({ app, onClose }: { app: SparkApp | null; onClose: () =
 
               {/* Icon only, and only as wide as the glyph. Real destinations,
                   but never the one being asked for. */}
-              <div className="flex items-center gap-1">
-                {secondary.map((link) => {
-                  const Icon = linkIcons[link.type] ?? ExternalLink;
-                  const external = /^https?:\/\//.test(link.url);
-                  return (
-                    <a
-                      key={link.url}
-                      href={link.url}
-                      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                      title={link.label}
-                      aria-label={link.label}
-                      className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 text-gray-400 transition-colors hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
-                    >
-                      <Icon className="h-3.5 w-3.5" />
-                    </a>
-                  );
-                })}
-              </div>
+              {secondary.length > 0 && (
+                <div className="flex items-center justify-center gap-1.5">
+                  {secondary.map((link) => {
+                    const Icon = linkIcons[link.type] ?? ExternalLink;
+                    const external = /^https?:\/\//.test(link.url);
+                    return (
+                      <a
+                        key={link.url}
+                        href={link.url}
+                        {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                        title={link.label}
+                        aria-label={link.label}
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 text-gray-400 transition-colors hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
+                      >
+                        <Icon className="h-3.5 w-3.5" />
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
         </div>
