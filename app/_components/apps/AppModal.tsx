@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import { CloseButton } from '@/app/_components/ui/CloseButton';
-import type { SparkApp } from '@/lib/data/apps';
+import type { AppLink, SparkApp } from '@/lib/data/apps';
 import { fallbackTag, tagConfig } from '@/lib/data/tags';
 
 export const linkIcons: Record<string, React.ElementType> = {
@@ -16,6 +16,33 @@ export const linkIcons: Record<string, React.ElementType> = {
   github: ExternalLink,
 };
 
+/** Where the one prominent button goes, in the order a visitor would want it. */
+const PRIMARY_ORDER: AppLink['type'][] = ['website', 'app', 'chrome', 'npm', 'github'];
+
+const CTA_LABEL: Record<AppLink['type'], string> = {
+  website: 'Visit site',
+  app: 'Open app',
+  chrome: 'Chrome Web Store',
+  npm: 'View on npm',
+  github: 'View on GitHub',
+};
+
+/**
+ * The single destination this app most wants a visitor to reach.
+ *
+ * Relative links (a privacy page hosted here) are never it: they are a
+ * footnote, not a destination, and an app whose only link is one falls through
+ * to its page on this site.
+ */
+function primaryLink(app: SparkApp): AppLink | undefined {
+  const external = app.links.filter((l) => /^https?:\/\//.test(l.url));
+  for (const type of PRIMARY_ORDER) {
+    const hit = external.find((l) => l.type === type);
+    if (hit) return hit;
+  }
+  return undefined;
+}
+
 /**
  * One modal for the whole grid: the page keeps a single instance and swaps the
  * app into it, so there is one copy of this markup rather than one per card.
@@ -23,6 +50,12 @@ export const linkIcons: Record<string, React.ElementType> = {
  * Built on native <dialog> + showModal(), which already gives us Esc to close,
  * the focus trap, focus restored to the card, the backdrop and top-layer
  * stacking. Pass `app: null` to close it.
+ *
+ * ONE button, not a row of them. Every link used to get an equal-weight chip,
+ * so the commonest app in the catalogue (its own site, plus a Details link)
+ * offered two buttons that were really one choice, and the eye had to read
+ * both to find it. Now the destination is a single CTA and everything else is
+ * an icon the width of its own glyph.
  */
 export function AppModal({ app, onClose }: { app: SparkApp | null; onClose: () => void }) {
   const ref = useRef<HTMLDialogElement>(null);
@@ -33,6 +66,9 @@ export function AppModal({ app, onClose }: { app: SparkApp | null; onClose: () =
     if (app && !el.open) el.showModal();
     else if (!app && el.open) el.close();
   }, [app]);
+
+  const primary = app ? primaryLink(app) : undefined;
+  const secondary = app ? app.links.filter((l) => l !== primary) : [];
 
   return (
     // biome-ignore lint/a11y/useKeyWithClickEvents: backdrop dismissal only; showModal() already closes the dialog on Escape and the close button is focusable.
@@ -45,34 +81,55 @@ export function AppModal({ app, onClose }: { app: SparkApp | null; onClose: () =
         if (e.target === ref.current) onClose();
       }}
       aria-labelledby="app-modal-title"
-      className="m-auto w-[min(92vw,30rem)] rounded-2xl border border-white/10 bg-gray-900/95 p-0 text-gray-100 shadow-[0_24px_64px_rgba(0,0,0,0.6)] backdrop:bg-black/70 backdrop:backdrop-blur-sm"
+      className="m-auto w-[min(92vw,32rem)] overflow-hidden rounded-2xl border border-white/10 bg-gray-900/95 p-0 text-gray-100 shadow-[0_24px_64px_rgba(0,0,0,0.6)] backdrop:bg-black/70 backdrop:backdrop-blur-sm"
     >
       {app && (
-        <div className="animate-fade-in-up overflow-hidden rounded-2xl">
-          {/* Accent bloom, so the panel reads as Spark chrome and not a UA dialog */}
-          <div className="h-px bg-gradient-to-r from-transparent via-blue-400/60 to-transparent" />
-
-          <div className="flex items-start gap-3 p-5 pb-3">
+        <div className="animate-fade-in-up flex flex-col sm:flex-row">
+          {/* The mark, given the whole left edge. A blurred, scaled copy of the
+              same PNG sits behind it as the bloom, so the panel is tinted by
+              the app's own colours without anyone picking a hex per app. The
+              icons are square, so they are centred at size rather than
+              object-cover stretched to fill a tall panel. */}
+          <div className="relative flex shrink-0 items-center justify-center overflow-hidden border-white/[0.06] border-b bg-white/[0.03] py-7 sm:w-[168px] sm:border-r sm:border-b-0 sm:py-0">
             <Image
               src={app.icon}
               alt=""
-              width={48}
-              height={48}
-              className="flex-shrink-0 rounded-xl object-cover"
+              aria-hidden="true"
+              width={128}
+              height={128}
+              // Eager, like the mark below it. Next lazy-loads by default, and
+              // a <dialog> in the top layer never fires the observer that
+              // would have loaded these, so both images stayed blank.
+              loading="eager"
+              className="pointer-events-none absolute inset-0 h-full w-full scale-125 object-cover opacity-50 blur-2xl saturate-150"
             />
-            <div className="min-w-0 flex-1">
-              <h2 id="app-modal-title" className="font-semibold text-base text-white leading-tight">
-                {app.name}
-              </h2>
-              <p className="text-[12px] text-gray-500 leading-tight">{app.tagline}</p>
-            </div>
-            <CloseButton onClick={onClose} />
+            <Image
+              src={app.icon}
+              alt={app.name}
+              width={128}
+              height={128}
+              loading="eager"
+              className="relative h-20 w-20 rounded-2xl object-cover shadow-[0_8px_28px_rgba(0,0,0,0.45)] sm:h-24 sm:w-24"
+            />
           </div>
 
-          <div className="px-5 pb-5">
-            <p className="text-gray-300 text-sm leading-relaxed">{app.description}</p>
+          <div className="flex min-w-0 flex-1 flex-col p-5">
+            <div className="flex items-start gap-3">
+              <div className="min-w-0 flex-1">
+                <h2
+                  id="app-modal-title"
+                  className="font-semibold text-base text-white leading-tight"
+                >
+                  {app.name}
+                </h2>
+                <p className="text-[12px] text-gray-500 leading-tight">{app.tagline}</p>
+              </div>
+              <CloseButton onClick={onClose} />
+            </div>
 
-            <div className="mt-4 flex flex-wrap gap-1.5">
+            <p className="mt-3 text-[13px] text-gray-300 leading-relaxed">{app.description}</p>
+
+            <div className="mt-3 flex flex-wrap gap-1.5">
               {app.tags.map((tag) => {
                 const cfg = tagConfig[tag] ?? fallbackTag;
                 const TagIcon = cfg.icon;
@@ -88,31 +145,59 @@ export function AppModal({ app, onClose }: { app: SparkApp | null; onClose: () =
               })}
             </div>
 
-            <div className="mt-5 flex flex-wrap gap-2 border-white/[0.06] border-t pt-4">
-              {app.links.map((link) => {
-                const Icon = linkIcons[link.type] ?? ExternalLink;
-                const external = /^https?:\/\//.test(link.url);
-                return (
-                  <a
-                    key={link.url}
-                    href={link.url}
-                    {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[12px] text-gray-200 transition-colors hover:border-blue-400/30 hover:bg-white/[0.08] hover:text-white"
+            <div className="mt-5 flex items-center gap-2 pt-1">
+              {primary ? (
+                <a
+                  href={primary.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-blue-500/90 px-3.5 py-2 font-medium text-[12px] text-white transition-colors hover:bg-blue-400"
+                >
+                  {CTA_LABEL[primary.type]}
+                  <ArrowUpRight className="h-3.5 w-3.5 flex-shrink-0" />
+                </a>
+              ) : (
+                // Nothing external to send them to, so its page here is the
+                // destination rather than a footnote.
+                <Link
+                  href={`/apps/${app.id}`}
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-blue-500/90 px-3.5 py-2 font-medium text-[12px] text-white transition-colors hover:bg-blue-400"
+                >
+                  Details
+                  <ArrowUpRight className="h-3.5 w-3.5 flex-shrink-0" />
+                </Link>
+              )}
+
+              {/* Icon only, and only as wide as the glyph. These are real
+                  destinations but never the one being asked for. */}
+              <div className="flex items-center gap-1">
+                {secondary.map((link) => {
+                  const Icon = linkIcons[link.type] ?? ExternalLink;
+                  const external = /^https?:\/\//.test(link.url);
+                  return (
+                    <a
+                      key={link.url}
+                      href={link.url}
+                      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                      title={link.label}
+                      aria-label={link.label}
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 text-gray-400 transition-colors hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
+                    >
+                      <Icon className="h-3.5 w-3.5" />
+                    </a>
+                  );
+                })}
+                {primary && (
+                  <Link
+                    href={`/apps/${app.id}`}
+                    title="Details"
+                    aria-label="Details"
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 text-gray-400 transition-colors hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
                   >
-                    <Icon className="h-3.5 w-3.5 flex-shrink-0" />
-                    {link.label}
-                  </a>
-                );
-              })}
-              {/* Every app has a catalogue page here, even the ones with no
-                  external link at all, so this is never a dead end. */}
-              <Link
-                href={`/apps/${app.id}`}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-blue-400/30 bg-blue-400/10 px-3 py-1.5 text-[12px] text-blue-200 transition-colors hover:bg-blue-400/20 hover:text-white"
-              >
-                Details
-                <ArrowUpRight className="h-3.5 w-3.5 flex-shrink-0" />
-              </Link>
+                    <ExternalLink className="h-3.5 w-3.5" />
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
         </div>
