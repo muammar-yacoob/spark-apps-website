@@ -82,16 +82,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <JsonLd />
         <ServiceWorkerRegistrar />
         <NavigationLoader>{children}</NavigationLoader>
+        {/* Support chat is functional, not tracking: behind the banner,
+            anyone who chose "Necessary only" had no way to ask for help. */}
+        <script
+          async
+          src="https://sparkbrain.app/chat.js"
+          data-domain="spark-apps.co"
+          data-api-key={CHAT_API_KEY}
+        />
         <CookieConsent
-          scripts={[
-            {
-              src: 'https://sparkbrain.app/chat.js',
-              attrs: {
-                'data-domain': 'spark-apps.co',
-                ...(CHAT_API_KEY ? { 'data-api-key': CHAT_API_KEY } : {}),
-              },
-            },
-          ]}
           cookieName="spark_apps_website_consent"
           accent="#3b82f6"
           privacyUrl="/privacy"
