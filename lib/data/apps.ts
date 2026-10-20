@@ -324,12 +324,13 @@ export const sparkApps: SparkApp[] = [
     // Not store-listed yet and its old preview deployment is dead (404),
     // no link means the tooltip reads "Coming soon" instead of a dead one.
     links: [],
-    mobile: {
-      screenshot: '/imgs/app-shots/fullhouse.png',
-      alt: 'FullHouse showing how busy a place is through the day',
-      accent: '#f59e0b',
-      caption: 'Busiest hours, at a glance',
-    },
+    // No `mobile` entry until public/imgs/app-shots/fullhouse.png exists.
+    // It claimed one that was never captured, and a claim is not free: the
+    // section server-renders a phone frame per entry, so the page shipped two
+    // frames, fetched two 404s, and MobileShowcase then dropped both and
+    // removed the whole section on the client. Visitors saw it flash and
+    // vanish; crawlers saw a section nobody could read. Capture rules are in
+    // public/imgs/app-shots/README.md -- drop the PNG in and restore this.
   },
   {
     id: 'piclet',
@@ -365,12 +366,8 @@ export const sparkApps: SparkApp[] = [
     // No public listing yet, and the repo is private, no link means the
     // tooltip reads "Coming soon" instead of a 404 GitHub page.
     links: [],
-    mobile: {
-      screenshot: '/imgs/app-shots/safesound.png',
-      alt: 'Safe & Sound showing active check-ins and trusted contacts',
-      accent: '#10b981',
-      caption: 'Check in, or someone gets told',
-    },
+    // Same as FullHouse above: no `mobile` entry until
+    // public/imgs/app-shots/safesound.png exists.
   },
   {
     id: 'chat-faker',

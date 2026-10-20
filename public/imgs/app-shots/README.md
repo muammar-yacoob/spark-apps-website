@@ -16,5 +16,8 @@ Capture rules:
 - **Content**: the app's dashboard or main screen with realistic data. No
   placeholder text, no lorem, no empty states.
 
-Until a PNG exists the section renders nothing, so a missing file is invisible
-rather than broken.
+`lib/data/apps.ts` must not carry a `mobile` entry until its PNG is actually
+here. The drop-on-error handling in `MobileShowcase` hides a missing one from
+the eye, but only after the page has already server-rendered the frame and the
+browser has fetched a 404 -- so the section flashes and vanishes, and a crawler
+reads a section no visitor sees. Add the PNG first, then the entry.
