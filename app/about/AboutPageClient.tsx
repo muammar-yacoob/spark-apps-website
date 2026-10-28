@@ -1,72 +1,13 @@
 'use client';
 
-import { ArrowLeft, Boxes, Loader2, Mail, PlayCircle, Users } from 'lucide-react';
+import { ArrowLeft, Mail } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { BgParticles } from '@/app/_components/bg-anims/BgParticles';
 import { BgShootingStars } from '@/app/_components/bg-anims/BgShootingStars';
 import { LegalPageFooter } from '@/app/_components/layout/LegalPageFooter';
 import { SITE_NAME } from '@/lib/config/site';
 
-const PORTFOLIO_URL = 'https://muammar-yacoob.github.io/InteractivePortfolio3D/';
-const PORTFOLIO_REPO = 'https://github.com/muammar-yacoob/InteractivePortfolio3D#setup';
-
-function UnityPortfolio() {
-  // 'idle' = placeholder, 'loading' = spinner shown, 'ready' = iframe loaded.
-  const [state, setState] = useState<'idle' | 'loading' | 'ready'>('idle');
-
-  return (
-    <div className="relative w-full overflow-hidden rounded-2xl border border-blue-400/20 bg-gradient-to-br from-blue-400/[0.08] to-blue-400/[0.03] pt-[56.25%]">
-      {state === 'idle' && (
-        <button
-          type="button"
-          onClick={() => setState('loading')}
-          className="group absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 text-center transition-all duration-300 hover:bg-blue-400/[0.06]"
-        >
-          <PlayCircle className="h-14 w-14 text-blue-400 transition-transform duration-300 group-hover:scale-110" />
-          <h3 className="text-lg sm:text-xl font-semibold text-white drop-shadow">
-            Interactive 3D Portfolio
-          </h3>
-          <p className="text-sm text-gray-300">Click to explore the interactive experience</p>
-          <span className="mt-1 inline-flex items-center gap-2 rounded-full border border-blue-400/40 bg-blue-400/20 px-4 py-1.5 text-xs font-semibold tracking-wide text-blue-100">
-            <Boxes className="h-3.5 w-3.5" />
-            UNITY WEBGL
-          </span>
-        </button>
-      )}
-
-      {state === 'loading' && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 text-center">
-          <Loader2 className="h-8 w-8 animate-spin text-blue-400" />
-          <h3 className="text-base sm:text-lg font-semibold text-white">
-            Loading Interactive Portfolio...
-          </h3>
-          <p className="text-sm text-gray-400">Please wait while the 3D experience loads</p>
-        </div>
-      )}
-
-      {state !== 'idle' && (
-        <iframe
-          src={PORTFOLIO_URL}
-          title="Interactive 3D Portfolio"
-          allowFullScreen
-          onLoad={() => setState('ready')}
-          className={`absolute inset-0 h-full w-full border-0 transition-opacity duration-500 ${
-            state === 'ready' ? 'opacity-100' : 'opacity-0'
-          }`}
-        />
-      )}
-    </div>
-  );
-}
-
 export function AboutPageClient() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   return (
     <div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col">
       <BgParticles />
@@ -92,9 +33,6 @@ export function AboutPageClient() {
             <Link href="/" className="hover:text-white transition-colors">
               Apps
             </Link>
-            <Link href="/team" className="hover:text-white transition-colors">
-              Team
-            </Link>
             <Link href="/contact" className="hover:text-white transition-colors">
               Contact
             </Link>
@@ -109,49 +47,43 @@ export function AboutPageClient() {
             About {SITE_NAME}
           </h1>
           <p className="mt-3 text-base sm:text-lg text-blue-400 font-medium animate-fade-in animation-delay-200">
-            Crafting Seasonal Gaming Wonders and Developer Solutions
+            Small tools, shipped often
           </p>
           <p className="mt-4 text-base text-gray-400 leading-relaxed max-w-xl mx-auto animate-fade-in animation-delay-200">
-            Our journey began with a spark of inspiration to create games that bring joy to players
-            of all ages. Alongside our games, we build tools that empower fellow developers on their
-            game-making journey. Explore the magic of our seasonal gaming world!
+            Spark Apps is an independent studio building SaaS products, Chrome extensions and
+            developer tooling. Everything in the catalogue is built and maintained in house, and
+            most of it started as something needed for another project.
           </p>
-
-          {/* Meet the Team link */}
-          <Link
-            href="/team"
-            className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors animate-fade-in animation-delay-400"
-          >
-            <Users className="h-4 w-4" />
-            Meet the Team
-          </Link>
         </div>
       </section>
 
-      {/* Interactive Portfolio */}
-      {mounted && (
-        <section className="max-w-3xl w-full mx-auto px-4 sm:px-6 pb-4 relative z-[1] animate-fade-in-up animation-delay-200">
-          <UnityPortfolio />
-
-          <p className="mt-4 text-center text-sm text-gray-400">
-            Make it yours with{' '}
+      {/* What we build */}
+      <section className="max-w-3xl w-full mx-auto px-6 pb-4 relative z-[1] animate-fade-in animation-delay-400">
+        <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-6 sm:p-8">
+          <h2 className="text-lg font-semibold text-white mb-3">How it fits together</h2>
+          <p className="text-sm text-gray-400 leading-relaxed">
+            The products share one foundation. SparkStack is the starter the web apps are built
+            from, SparkPay handles their payments, Bottled sends their email and Spark AI answers
+            their support questions. Each one is sold on its own, and each one is used in anger
+            across the rest of the catalogue before it ships.
+          </p>
+          <p className="mt-4 text-sm text-gray-400 leading-relaxed">
+            The games and Unity back-catalogue live separately, at{' '}
             <a
-              href={PORTFOLIO_REPO}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="https://spark-games.co.uk"
               className="font-medium text-blue-400 hover:text-blue-300 transition-colors"
             >
-              this tool
+              spark-games.co.uk
             </a>
             .
           </p>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* Get in touch */}
       <section className="max-w-3xl w-full mx-auto px-6 py-10 text-center relative z-[1]">
         <p className="text-sm text-gray-400">
-          Got a project in mind, questions about our services, or collaboration ideas?
+          Questions about a product, or want something built? Get in touch.
         </p>
         <Link
           href="/contact"

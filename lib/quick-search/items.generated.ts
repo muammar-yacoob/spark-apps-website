@@ -10,7 +10,7 @@ export const ROUTE_ITEMS: QuickSearchItem[] = [
 		title: "Home",
 		href: "/",
 		group: "Pages",
-		keywords: ["landing","overview","start"],
+		keywords: ["landing", "overview", "start"],
 		hint: "/",
 	},
 	{
@@ -19,13 +19,6 @@ export const ROUTE_ITEMS: QuickSearchItem[] = [
 		href: "/about",
 		group: "Pages",
 		hint: "/about",
-	},
-	{
-		id: "careers",
-		title: "Careers",
-		href: "/careers",
-		group: "Pages",
-		hint: "/careers",
 	},
 	{
 		id: "contact",
@@ -49,13 +42,6 @@ export const ROUTE_ITEMS: QuickSearchItem[] = [
 		hint: "/privacy",
 	},
 	{
-		id: "team",
-		title: "Team",
-		href: "/team",
-		group: "Pages",
-		hint: "/team",
-	},
-	{
 		id: "terms",
 		title: "Terms",
 		href: "/terms",
@@ -67,15 +53,23 @@ export const ROUTE_ITEMS: QuickSearchItem[] = [
 		title: "Privacy",
 		href: "/apps/bumboo/privacy",
 		group: "Apps · Bumboo",
-		keywords: ["apps","bumboo"],
+		keywords: ["apps", "bumboo"],
 		hint: "/apps/bumboo/privacy",
+	},
+	{
+		id: "apps-minutely-privacy",
+		title: "Privacy",
+		href: "/apps/minutely/privacy",
+		group: "Apps · Minutely",
+		keywords: ["apps", "minutely"],
+		hint: "/apps/minutely/privacy",
 	},
 	{
 		id: "apps-pitchplease-privacy",
 		title: "Privacy",
 		href: "/apps/pitchplease/privacy",
 		group: "Apps · Pitchplease",
-		keywords: ["apps","pitchplease"],
+		keywords: ["apps", "pitchplease"],
 		hint: "/apps/pitchplease/privacy",
 	},
 	{
@@ -83,7 +77,7 @@ export const ROUTE_ITEMS: QuickSearchItem[] = [
 		title: "Privacy",
 		href: "/apps/screenful/privacy",
 		group: "Apps · Screenful",
-		keywords: ["apps","screenful"],
+		keywords: ["apps", "screenful"],
 		hint: "/apps/screenful/privacy",
 	},
 ];

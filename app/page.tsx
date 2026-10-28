@@ -17,7 +17,6 @@ import { SITE_NAME } from '@/lib/config/site';
 import type { SparkApp } from '@/lib/data/apps';
 import {
   appHomepage,
-  externalHomepage,
   hasPublicDestination,
   isChromeExtension,
   isOpenSource,
@@ -78,12 +77,6 @@ export default function Home() {
             <Link href="/about" className="hidden sm:inline hover:text-white transition-colors">
               About
             </Link>
-            <Link href="/team" className="hidden sm:inline hover:text-white transition-colors">
-              Team
-            </Link>
-            <Link href="/careers" className="hidden sm:inline hover:text-white transition-colors">
-              Careers
-            </Link>
             <Link href="/contact" className="hidden sm:inline hover:text-white transition-colors">
               Contact
             </Link>
@@ -109,7 +102,7 @@ export default function Home() {
               Tools for Creators
             </h1>
             <p className="mt-4 sm:mt-5 text-base sm:text-lg text-gray-400 leading-relaxed max-w-xl mx-auto animate-fade-in animation-delay-200">
-              Tools, starters, and utilities built to help you ship faster.
+              SaaS products, Chrome extensions and developer tools for indie builders.
             </p>
           </div>
         </section>
@@ -239,14 +232,6 @@ export default function Home() {
             <div className="flex items-center justify-center gap-6 text-sm text-gray-500">
               <Link href="/about" className="hover:text-gray-400 transition-colors">
                 About
-              </Link>
-              <span>·</span>
-              <Link href="/team" className="hover:text-gray-400 transition-colors">
-                Team
-              </Link>
-              <span>·</span>
-              <Link href="/careers" className="hover:text-gray-400 transition-colors">
-                Careers
               </Link>
               <span>·</span>
               <Link href="/privacy" className="hover:text-gray-400 transition-colors">

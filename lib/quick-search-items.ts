@@ -30,14 +30,6 @@ const OVERRIDES: QuickSearchOverride[] = [
     keywords: ['story', 'company', 'studio', 'mission', 'who we are'],
   },
   {
-    href: '/team',
-    keywords: ['people', 'founders', 'developers', 'who', 'staff'],
-  },
-  {
-    href: '/careers',
-    keywords: ['jobs', 'hiring', 'work', 'join', 'positions', 'vacancies'],
-  },
-  {
     href: '/contact',
     keywords: ['email', 'support', 'help', 'reach', 'message', 'feedback'],
   },
