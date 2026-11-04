@@ -9,14 +9,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const base = SITE_URL;
   const now = new Date();
 
-  const privacy: MetadataRoute.Sitemap = ['bumboo', 'minutely', 'pitchplease', 'screenful'].map(
-    (id) => ({
-      url: `${base}/apps/${id}/privacy`,
-      lastModified: now,
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    })
-  );
+  const privacy: MetadataRoute.Sitemap = [
+    'botornot',
+    'bumboo',
+    'calendify',
+    'minutely',
+    'pitchplease',
+    'screenful',
+    'textpert',
+  ].map((id) => ({
+    url: `${base}/apps/${id}/privacy`,
+    lastModified: now,
+    changeFrequency: 'yearly',
+    priority: 0.3,
+  }));
 
   return [
     { url: base, lastModified: now, changeFrequency: 'weekly', priority: 1 },

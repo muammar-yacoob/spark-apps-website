@@ -144,6 +144,7 @@ export const sparkApps: SparkApp[] = [
         url: 'https://chromewebstore.google.com/detail/bot-or-not/njohmblkingfikcgcbfcnjmciibhlmci',
         type: 'chrome',
       },
+      { label: 'Privacy', url: '/apps/botornot/privacy', type: 'website' },
     ],
   },
   {
@@ -208,6 +209,7 @@ export const sparkApps: SparkApp[] = [
         url: 'https://chromewebstore.google.com/detail/ogfhfgojcfmgjnalejpbomllbkehmmch',
         type: 'chrome',
       },
+      { label: 'Privacy', url: '/apps/textpert/privacy', type: 'website' },
     ],
   },
   {
@@ -230,6 +232,7 @@ export const sparkApps: SparkApp[] = [
         type: 'chrome',
       },
       { label: 'GitHub', url: 'https://github.com/muammar-yacoob/Calendify', type: 'github' },
+      { label: 'Privacy', url: '/apps/calendify/privacy', type: 'website' },
     ],
   },
   {

@@ -49,12 +49,28 @@ export const ROUTE_ITEMS: QuickSearchItem[] = [
 		hint: "/terms",
 	},
 	{
+		id: "apps-botornot-privacy",
+		title: "Privacy",
+		href: "/apps/botornot/privacy",
+		group: "Apps · Botornot",
+		keywords: ["apps", "botornot"],
+		hint: "/apps/botornot/privacy",
+	},
+	{
 		id: "apps-bumboo-privacy",
 		title: "Privacy",
 		href: "/apps/bumboo/privacy",
 		group: "Apps · Bumboo",
 		keywords: ["apps", "bumboo"],
 		hint: "/apps/bumboo/privacy",
+	},
+	{
+		id: "apps-calendify-privacy",
+		title: "Privacy",
+		href: "/apps/calendify/privacy",
+		group: "Apps · Calendify",
+		keywords: ["apps", "calendify"],
+		hint: "/apps/calendify/privacy",
 	},
 	{
 		id: "apps-minutely-privacy",
@@ -79,5 +95,13 @@ export const ROUTE_ITEMS: QuickSearchItem[] = [
 		group: "Apps · Screenful",
 		keywords: ["apps", "screenful"],
 		hint: "/apps/screenful/privacy",
+	},
+	{
+		id: "apps-textpert-privacy",
+		title: "Privacy",
+		href: "/apps/textpert/privacy",
+		group: "Apps · Textpert",
+		keywords: ["apps", "textpert"],
+		hint: "/apps/textpert/privacy",
 	},
 ];

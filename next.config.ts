@@ -19,6 +19,13 @@ const nextConfig: NextConfig = {
     // the icon missing and the fallback background.
     '/apps/[slug]/opengraph-image': ['./lib/og/res/**/*', './public/imgs/apps/**/*'],
   },
+  redirects: async () => [
+    {
+      source: '/:slug(botornot|bumboo|calendify|minutely|pitchplease|screenful|textpert)/privacy',
+      destination: '/apps/:slug/privacy',
+      permanent: true,
+    },
+  ],
   headers: async () => [
     {
       source: '/llms.txt',

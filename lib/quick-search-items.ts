@@ -50,10 +50,9 @@ const OVERRIDES: QuickSearchOverride[] = [
     keywords: ['legal', 'conditions', 'tos', 'agreement', 'license'],
   },
   /*
-   * Three apps ship their own store-required privacy page. The generator finds
+   * Apps ship their own store-required privacy page. The generator finds
    * them but titles each one "Privacy" under its own app group, which reads as
-   * three identical rows; named and gathered under Legal they stay tellable
-   * apart. Only these three exist, every other app's privacy lives off-site.
+   * identical rows; named and gathered under Legal they stay tellable apart.
    */
   {
     href: '/apps/bumboo/privacy',
@@ -75,6 +74,27 @@ const OVERRIDES: QuickSearchOverride[] = [
     title: 'Screenful Privacy Policy',
     group: 'Legal',
     keywords: ['screenful', 'app privacy', 'gdpr', 'data', 'store listing'],
+  },
+  {
+    href: '/apps/botornot/privacy',
+    id: 'privacy-botornot',
+    title: 'BotOrNot Privacy Policy',
+    group: 'Legal',
+    keywords: ['botornot', 'app privacy', 'gdpr', 'data', 'store listing'],
+  },
+  {
+    href: '/apps/calendify/privacy',
+    id: 'privacy-calendify',
+    title: 'Calendify Privacy Policy',
+    group: 'Legal',
+    keywords: ['calendify', 'app privacy', 'gdpr', 'data', 'store listing'],
+  },
+  {
+    href: '/apps/textpert/privacy',
+    id: 'privacy-textpert',
+    title: 'TextPert Privacy Policy',
+    group: 'Legal',
+    keywords: ['textpert', 'app privacy', 'gdpr', 'data', 'store listing'],
   },
 ];
 
