@@ -68,7 +68,10 @@ export function DemoVideo({
           className="absolute -inset-6 rounded-[2.5rem] bg-white/[0.06] blur-2xl opacity-70 transition-opacity duration-500 group-hover:opacity-100"
         />
 
-        <div ref={screenRef} className="relative w-[240px] sm:w-[280px] aspect-[9/16] rounded-[2rem] overflow-hidden border border-white/[0.14] bg-black shadow-2xl shadow-black/60 ring-1 ring-inset ring-white/[0.06] [&:fullscreen]:h-screen [&:fullscreen]:w-screen [&:fullscreen]:rounded-none">
+        <div
+          ref={screenRef}
+          className="relative w-[240px] sm:w-[280px] aspect-[9/16] rounded-[2rem] overflow-hidden border border-white/[0.14] bg-black shadow-2xl shadow-black/60 ring-1 ring-inset ring-white/[0.06] [&:fullscreen]:h-screen [&:fullscreen]:w-screen [&:fullscreen]:rounded-none"
+        >
           {playing ? (
             <iframe
               className="w-full h-full"
