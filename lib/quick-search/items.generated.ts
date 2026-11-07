@@ -73,6 +73,14 @@ export const ROUTE_ITEMS: QuickSearchItem[] = [
 		hint: "/apps/calendify/privacy",
 	},
 	{
+		id: "apps-gonogo-privacy",
+		title: "Privacy",
+		href: "/apps/gonogo/privacy",
+		group: "Apps · Gonogo",
+		keywords: ["apps", "gonogo"],
+		hint: "/apps/gonogo/privacy",
+	},
+	{
 		id: "apps-minutely-privacy",
 		title: "Privacy",
 		href: "/apps/minutely/privacy",
